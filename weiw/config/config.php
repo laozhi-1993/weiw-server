@@ -1,0 +1,1 @@
+<?php return Array('title' => 'laozhi','serverName' => '老志的服务器','domain' => 'mc.laozhi.cc','home' => 'https://mc.laozhi.cc/','register' => 'https://mc.laozhi.cc/index.php','download' => 'https://mc.laozhi.cc/download','Yggdrasil' => 'https://m.laozhi.cc:8000/weiw/index_auth.php','sign_in_money' => '1000','initial_money' => '1000');

@@ -1,0 +1,1 @@
+<?php return function($_MKH){ return "<?php if(file_exists({$_MKH[0]}) && is_file({$_MKH[0]})) include({$_MKH[0]}) ?>"; };
