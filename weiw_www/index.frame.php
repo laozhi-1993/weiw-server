@@ -537,6 +537,7 @@
 					<div class="xx">
 						<div class="fenlei">浏览</div>
 						<ul>
+							<li><a href="https://laozhi.cc" target="_blank">{include:"icons/internet.svg"} 主站</a></li>
 							<li><a href="https://littleskin.cn" target="_blank">{include:"icons/internet.svg"} littleskin 皮肤站</a></li>
 						</ul>
 					</div>
