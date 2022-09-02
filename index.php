@@ -1,1 +1,1 @@
-<?php header('Location: /weiw_mc/');
+<?php header('Location: /weiw_www/');
