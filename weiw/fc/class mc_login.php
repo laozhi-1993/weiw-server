@@ -42,6 +42,11 @@
 				$token['login_token'] = "{$email}_{$random}";
 			}
 			
+			if(isset($token['accessToken']) === false)
+			{
+				$token['accessToken'] = "{$email}_{$random}";
+			}
+			
 			$user['login_time'] = $this->login_time;
 			$user['login_ip']   = $this->login_ip;
 			

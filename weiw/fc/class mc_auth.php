@@ -11,7 +11,6 @@
 	public $uploadableTextures;
     public function __construct()
 	{
-
 		$this->data    = json_decode(file_get_contents('php://input'),true);
 		$this->userdir = __MKHDIR__;
 		

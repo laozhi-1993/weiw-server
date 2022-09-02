@@ -77,6 +77,7 @@
 			
 			$token = Array();
 			$token['login_token'] = $email.'_'.mc_auth::random();
+			$token['accessToken'] = $email.'_'.mc_auth::random();
 			$token['id']          = $email;
 			$token['uuid'][]      = $uuid;
 			$token['email']       = $this->email;
