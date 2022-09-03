@@ -20,7 +20,7 @@
 							$list = $Rcon->list();
 							if(in_array($user['name'],$list['list']))
 							{
-								$text = $Rcon->send(str_ireplace('{name}',"'{$user['name']}'",$prop[$_GET['id']]['command']));
+								$text = $Rcon->send(str_ireplace('{name}',$user['name'],$prop[$_GET['id']]['command']));
 								$text = preg_replace('!(§[0-9a-z]?)!i','',$text);
 								$text = nl2br($text);
 								
