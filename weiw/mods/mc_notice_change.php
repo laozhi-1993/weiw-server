@@ -1,6 +1,5 @@
 <?php return function ()
 	{
-		mkh_csrf::domain();
 		mkh_csrf::token();
 		
 		
