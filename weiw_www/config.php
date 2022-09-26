@@ -17,8 +17,6 @@
 				url = {"mods":"mc_server"};
 				url['serverName']    = $("#serverName").val();
 				url['domain']        = $("#domain").val();
-				url['home']          = $("#home").val();
-				url['register']      = $("#register").val();
 				url['download']      = $("#download").val();
 				url['Yggdrasil']     = $("#Yggdrasil").val();
 				url['initial_money'] = $("#initial_money").val();
@@ -159,13 +157,11 @@
 					<div class="zuo">
 						<div class="server"><span>网站名字：</span><input type="text" value="{echo:[config.serverName]}" id="serverName" /></div>
 						<div class="server"><span>网站域名：</span><input type="text" value="{echo:[config.domain]}" id="domain" /></div>
-						<div class="server"><span>初始金币：</span><input type="text" value="{echo:[config.initial_money]}" id="initial_money" /></div>
-						<div class="server"><span>签到金币：</span><input type="text" value="{echo:[config.sign_in_money]}" id="sign_in_money" /></div>
+						<div class="server"><span>认证地址：</span><input type="text" value="{echo:[config.Yggdrasil]}" id="Yggdrasil" /></div>
 					</div>
 					<div class="you">
-						<div class="server"><span>首页地址：</span><input type="text" value="{echo:[config.home]}" id="home" /></div>
-						<div class="server"><span>注册地址：</span><input type="text" value="{echo:[config.register]}" id="register" /></div>
-						<div class="server"><span>认证地址：</span><input type="text" value="{echo:[config.Yggdrasil]}" id="Yggdrasil" /></div>
+						<div class="server"><span>初始金币：</span><input type="text" value="{echo:[config.initial_money]}" id="initial_money" /></div>
+						<div class="server"><span>签到金币：</span><input type="text" value="{echo:[config.sign_in_money]}" id="sign_in_money" /></div>
 						<div class="server"><span>下载地址：</span><input type="text" value="{echo:[config.download]}" id="download" /></div>
 					</div>
 				</div>

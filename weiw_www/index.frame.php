@@ -42,10 +42,17 @@
 			var href = window.location.href;
 			var kaiguan = true;
 			var datatext = true;
-			$(function (){
-				datatext = $(".player_list").html();
-				setInterval(data(),5000);
-			});
+			
+			function copyText() {//拷贝文本函数
+				oInput = document.createElement('input');//创建一个input标签
+				oInput.value = $('#show').text();//设置value属性
+				document.body.appendChild(oInput);//挂载到body下面
+				oInput.select(); // 选择对象
+				document.execCommand("Copy"); // 执行浏览器复制命令
+				oInput.className = 'oInput';
+				oInput.style.display='none';
+				tips('复制完成');
+			}
 			
 			function data()
 			{
@@ -98,12 +105,14 @@
 			
 			
 			$(function (){
+				datatext = $(".player_list").html();
+				setInterval(data(),5000);
+				
+				
 				if(href.search("goods.php") > 1){
 					$("#xvanze_goods").addClass('xvanze');
 				}else if(href.search("clothes.php") > 1){
 					$("#xvanze_clothes").addClass('xvanze');
-				}else if(href.search("password.php") > 1){
-					$("#xvanze_password").addClass('xvanze');
 				}else if(href.search("users.php") > 1){
 					$("#xvanze_users").addClass('xvanze');
 				}else if(href.search("notice.php") > 1){
@@ -531,13 +540,12 @@
 							<li><a href="{URL:'home.php'}" id="xvanze_home">{include:"icons/home.svg"} 用户首页</a></li>
 							<li><a href="{URL:'goods.php'}" id="xvanze_goods">{include:"icons/goods.svg"} 购买道具</a></li>
 							<li><a href="{URL:'clothes.php'}" id="xvanze_clothes">{include:"icons/clothes.svg"} 我的衣服</a></li>
-							<li><a href="{URL:'password.php'}" id="xvanze_password">{include:"icons/password.svg"} 我的密码</a></li>
 						</ul>
 					</div>
 					<div class="xx">
 						<div class="fenlei">浏览</div>
 						<ul>
-							<li><a href="https://laozhi.cc" target="_blank">{include:"icons/internet.svg"} 主站</a></li>
+							<li><a href="https://minecraft.fandom.com/zh" target="_blank">{include:"icons/internet.svg"} 中文百科</a></li>
 							<li><a href="https://littleskin.cn" target="_blank">{include:"icons/internet.svg"} littleskin 皮肤站</a></li>
 						</ul>
 					</div>
@@ -573,4 +581,4 @@
 			</div>
 		</div>
 	</body>
-</html>
+</html><script>document.domain  = "laozhi.cc"</script>
