@@ -1,0 +1,1 @@
+<?php header('location: /weiw_www/');
