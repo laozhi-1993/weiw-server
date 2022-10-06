@@ -2,7 +2,7 @@
 
 
     $MKH = new mkh(__FILE__);
-	$MKH ->mods('mc_user','index.php');
+	$MKH ->mods('mc_user','login.php');
 	$MKH ->send();
 ?>
 <!DOCTYPE html>
@@ -537,7 +537,7 @@
 					<div class="xx">
 						<div class="fenlei">用户中心</div>
 						<ul>
-							<li><a href="{URL:'home.php'}" id="xvanze_home">{include:"icons/home.svg"} 用户首页</a></li>
+							<li><a href="{URL:'index.php'}" id="xvanze_home">{include:"icons/home.svg"} 用户首页</a></li>
 							<li><a href="{URL:'goods.php'}" id="xvanze_goods">{include:"icons/goods.svg"} 购买道具</a></li>
 							<li><a href="{URL:'clothes.php'}" id="xvanze_clothes">{include:"icons/clothes.svg"} 我的衣服</a></li>
 						</ul>
@@ -560,7 +560,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="tuichu"><a href='{URL:"index.php":"log_out=1"}'>{include:"icons/tuichu.svg"} 退出登录</a></div>
+				<div class="tuichu"><a href='{URL:"login.php":"log_out=1"}'>{include:"icons/tuichu.svg"} 退出登录</a></div>
 			</div>
 			<div class="neirong">
 				<div class="header">
