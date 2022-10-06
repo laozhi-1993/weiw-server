@@ -581,4 +581,4 @@
 			</div>
 		</div>
 	</body>
-</html><script>document.domain  = "laozhi.cc"</script>
+</html>
