@@ -3,7 +3,6 @@
 	static function data_user($uuid,$Arr=false)
 	{
 		$dir = __MKHDIR__;
-		$config = config('config.php');
 		if(is_array($Arr))
 		{
 			$STR = json_encode($Arr);
@@ -13,10 +12,7 @@
 		{
 			if(file_exists("{$dir}/user/user_{$uuid}.php"))
 			{
-				$user = json_decode(substr_replace(file_get_contents("{$dir}/user/user_{$uuid}.php"),'',0,12),true);
-				if(isset($user['SKIN']['hash'])) $user['SKIN']['url'] = "{$config['Yggdrasil']}/texture/{$user['SKIN']['hash']}";
-				if(isset($user['CAPE']['hash'])) $user['CAPE']['url'] = "{$config['Yggdrasil']}/texture/{$user['CAPE']['hash']}";
-				return $user;
+				return json_decode(substr_replace(file_get_contents("{$dir}/user/user_{$uuid}.php"),'',0,12),true);
 			}
 			else return false;
 		}
@@ -71,8 +67,7 @@
 			if(isset($token['uuid'][0]))
 			{
 				$user = self::data_user ($token['uuid'][0]);
-				$user['token']    = $token['accessToken'];
-				$user['password'] = $token['password'];
+				$user['token'] = $token['accessToken'];
 			}
 			
 			
@@ -113,37 +108,6 @@
     }
 	
 	
-	static function user_delete($email) //删除用户
-	{
-		$dir  = __MKHDIR__;
-		$uuid = mc_auth::constructOfflinePlayerUuid($email);
-		if(self::data_token($uuid))
-		{
-			$token = "{$dir}/user/token_{$uuid}.php";
-			$user  = "{$dir}/user/user_{$token['uuid'][0]}.php";
-			
-			
-			file_exists($token) && unlink($token);
-			file_exists($user)  && unlink($user);
-			return true;
-		}
-		else throw new Exception('用户不存在');
-	}
-	
-	
-	static function refresh_password($email) //刷新密码
-	{
-		$uuid = mc_auth::constructOfflinePlayerUuid($email);
-		if($token = self::data_token($uuid))
-		{
-			$token['password'] = mc_auth::random();
-			self::data_token($uuid,$token);
-			return $token['password'];
-		}
-		else throw new Exception('用户不存在');
-	}
-	
-	
 	static function money($uuid,$money) //设置金钱
 	{
 		if($user = self::data_user($uuid))
@@ -155,37 +119,23 @@
 	}
 	
 	
-	static function CAPE($uuid,$url) //设置披风
+	static function CAPE($uuid,$hash) //设置披风
 	{
 		if($user = self::data_user($uuid))
 		{
-			if(isset($user['CAPE']['hash']) && file_exists(__MKHDIR__."/user_textures/{$user['CAPE']['hash']}.png"))
-			{
-				unlink(__MKHDIR__."/user_textures/{$user['CAPE']['hash']}.png");
-			}
-			
-			
-			$user['CAPE']['hash'] = hash('sha256',$uuid.$url);
+			$user['CAPE']['hash'] = $hash;
 			self::data_user($uuid,$user);
-			file_put_contents(__MKHDIR__."/user_textures/{$user['CAPE']['hash']}.png",$url);
 		}
 		else throw new Exception('用户不存在');
 	}
 	
 	
-	static function SKIN($uuid,$url,$type='default') //设置皮肤
+	static function SKIN($uuid,$hash) //设置皮肤
 	{
 		if($user = self::data_user($uuid))
 		{
-			if(isset($user['SKIN']['hash']) && file_exists(__MKHDIR__."/user_textures/{$user['SKIN']['hash']}.png"))
-			{
-				unlink(__MKHDIR__."/user_textures/{$user['SKIN']['hash']}.png");
-			}
-			
-			
-			$user['SKIN']['hash']  = hash('sha256',$uuid.$url);
+			$user['SKIN']['hash'] = $hash;
 			self::data_user($uuid,$user);
-			file_put_contents(__MKHDIR__."/user_textures/{$user['SKIN']['hash']}.png",$url);
 		}
 		else throw new Exception('用户不存在');
 	}

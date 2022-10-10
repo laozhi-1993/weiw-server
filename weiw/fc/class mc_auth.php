@@ -16,7 +16,7 @@
 		
 		$this->skinDomains           = Array();
 		$this->implementationName    = 'weiw auth server';
-		$this->implementationVersion = '1.0.0';
+		$this->implementationVersion = '1.1.0';
 		$this->uploadableTextures    = '';
     }
 
@@ -48,15 +48,16 @@
 	
 	static function Profile($user,$unsigned,$uploadableTextures) //角色信息的序列化
 	{
+		$config = config('config.php');
 		$textures = Array();
 		$textures['timestamp']   = time().'000';
 		$textures['profileId']   = $user['id'];
 		$textures['profileName'] = $user['name'];
 		
 		
-		if(isset($user['CAPE']['url'])) $textures['textures']['CAPE']['url'] = $user['CAPE']['url'];
-		if(isset($user['SKIN']['url'])) $textures['textures']['SKIN']['url'] = $user['SKIN']['url'];
-		if(isset($user['SKIN']['url'])) $textures['textures']['SKIN']['metadata']['model'] = 'default';
+		if(isset($user['CAPE']['hash'])) $textures['textures']['CAPE']['url'] = "{$config['Yggdrasil']}/texture/{$user['CAPE']['hash']}";
+		if(isset($user['SKIN']['hash'])) $textures['textures']['SKIN']['url'] = "{$config['Yggdrasil']}/texture/{$user['SKIN']['hash']}";
+		if(isset($user['SKIN']['hash'])) $textures['textures']['SKIN']['metadata']['model'] = 'default';
 		
 		
 			$Arr = Array();
@@ -70,7 +71,7 @@
 		
 		if($unsigned)
 		{
-			$rsa_prikey = include(__MKHDIR__.'/rsa_private.php');
+			$rsa_prikey = config('rsa_private.php');
 			openssl_sign($Arr['properties'][0]['value'],$textures,$rsa_prikey);
 			openssl_sign($Arr['properties'][0]['value'],$uploadableTextures,$rsa_prikey);
 			$Arr['properties'][0]['signature'] = base64_encode($textures);
@@ -118,66 +119,6 @@
 	
 	public function __destruct()
 	{
-		//登录账号分配令牌
-		if(isset($_SERVER['PATH_INFO']) && $_SERVER['PATH_INFO'] == '/authserver/authenticate')
-		{
-			if(isset($this->data['username']))
-			{
-				$token = mc::data_token(self::constructOfflinePlayerUuid($this->data['username']));
-			}
-			
-			if(isset($token['uuid'][0]))
-			{
-				$user  = mc::data_user($token['uuid'][0]);
-			}
-			
-			
-			if(isset($token) && isset($user) && $token && $user)
-			{
-				if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-				{
-					$ip = explode(', ',$_SERVER['HTTP_X_FORWARDED_FOR']);
-					$user['login_time'] = time();
-					$user['login_ip']   = end($ip);
-				}
-				else
-				{
-					$user['login_time'] = time();
-					$user['login_ip']   = $_SERVER['REMOTE_ADDR'];
-				}
-				
-				if($user['blacklist'])
-				{
-					http_response_code(403);
-					die('{"error":"ForbiddenOperationException","errorMessage":"禁止登录"}');
-				}
-				
-				if($token['password'] == $this->data['password'])
-				{
-					if(isset($this->data['clientToken']))
-					{
-						mc::data_user($token['uuid'][0],$user);
-						die($this->token($user,$this->data['clientToken'],$this->data['requestUser']));
-					}
-					else
-					{
-						mc::data_user($token['uuid'][0],$user);
-						die($this->token($user));
-					}
-				}
-				else
-				{
-					http_response_code(403);
-					die('{"error":"ForbiddenOperationException","errorMessage":"密码错误"}');
-				}
-			}
-			else
-			{
-				http_response_code(403);
-				die('{"error":"ForbiddenOperationException","errorMessage":"账号不存在"}');
-			}
-		}
-		
 		//客户端进入服务器
 		if(isset($_SERVER['PATH_INFO']) && $_SERVER['PATH_INFO'] == '/sessionserver/session/minecraft/join')
 		{
@@ -237,89 +178,7 @@
 			die();
 		}
 		
-		//验证令牌
-		if(isset($_SERVER['PATH_INFO']) && $_SERVER['PATH_INFO'] == '/authserver/validate')
-		{
-			if(isset($this->data['accessToken']))
-			{
-				$uuid  = explode('_',$this->data['accessToken']);
-				$token = mc::data_token($uuid[0]);
-				if($token)
-				{
-					if(isset($token['accessToken']) && isset($token['clientToken']) && isset($this->data['accessToken']) && isset($this->data['clientToken']))
-					{
-						if($token['accessToken'] == $this->data['accessToken'] && $token['clientToken'] == $this->data['clientToken'])
-						{
-							http_response_code(204);
-							die();
-						}
-					}
-				}
-			}
-			
-			
-			http_response_code(403);
-			die('{"error":"ForbiddenOperationException","errorMessage":"Invalid token."}');
-		}
-		
-		//刷新令牌
-		if(isset($_SERVER['PATH_INFO']) && $_SERVER['PATH_INFO'] == '/authserver/refresh')
-		{
-			if(isset($this->data['accessToken']))
-			{
-				$uuid  = explode('_',$this->data['accessToken']);
-				$token = mc::data_token($uuid[0]);
-				$user  = mc::data_user ($token['uuid'][0]);
-				if($user && $token)
-				{
-					if(isset($token['accessToken']) && isset($token['clientToken']) && isset($this->data['accessToken']) && isset($this->data['clientToken']))
-					{
-						if($token['accessToken'] == $this->data['accessToken'] && $token['clientToken'] == $this->data['clientToken'])
-						{
-							if(isset($this->data['clientToken']))
-							{
-								die($this->token($user,$this->data['clientToken']));
-							}
-							else
-							{
-								die($this->token($user));
-							}
-						}
-					}
-				}
-			}
-			
-			
-			http_response_code(403);
-			die('{"error":"ForbiddenOperationException","errorMessage":"Invalid token."}');
-		}
-		
-		//登出
-		if(isset($_SERVER['PATH_INFO']) && $_SERVER['PATH_INFO'] == '/authserver/signout')
-		{
-			if(isset($this->data['username']) && isset($this->data['password']))
-			{
-				$uuid  = self::constructOfflinePlayerUuid($this->data['username']);
-				$token = mc::data_token($uuid);
-				if($token)
-				{
-					if(isset($token['password']) && isset($this->data['password']))
-					{
-						if($token['password'] == $this->data['password'])
-						{
-							unset($token['accessToken']);
-							unset($token['clientToken']);
-							mc::data_token($uuid,$token);
-						}
-					}
-				}
-			}
-			
-			http_response_code(204);
-			die();
-		}
-		
-		//查询角色属性
+		//查询角色
 		if(isset($_SERVER['PATH_INFO']) && preg_match('!^/sessionserver/session/minecraft/profile/([0-9a-zA-Z]+)$!',$_SERVER['PATH_INFO'],$uuid))
 		{
 			if(isset($uuid[1]) && $user = mc::data_user($uuid[1]))
@@ -345,10 +204,33 @@
 		//查询材质
 		if(isset($_SERVER['PATH_INFO']) && preg_match('!^/texture/([0-9a-zA-Z]+)$!',$_SERVER['PATH_INFO'],$hash))
 		{
-			if(isset($hash[1]) && file_exists("{$this->userdir}/user_textures/{$hash[1]}.png"))
+			if(isset($hash[1]))
 			{
-				header('Content-Type: image/png');
-				die(file_get_contents("{$this->userdir}/user_textures/{$hash[1]}.png"));
+				if(file_exists($texture = "{$this->userdir}/user_textures/{$hash[1]}.png"))
+				{
+					header('Content-Type: image/png');
+					die(file_get_contents($texture));
+				}
+				else
+				{
+					try
+					{
+						if($data = file_get_contents("https://littleskin.cn/textures/{$hash[1]}"))
+						{
+							file_put_contents($texture,$data);
+							header('Content-Type: image/png');
+							die($data);
+						}
+						
+						http_response_code(404);
+						die();
+					}
+					catch(error $error)
+					{
+						http_response_code(404);
+						die();
+					}
+				}
 			}
 			else
 			{
@@ -367,7 +249,7 @@
 		$response['meta']['feature.non_email_login'] = false;
 		
 		$response['skinDomains']        = $this->skinDomains;
-		$response['signaturePublickey'] = include("{$this->userdir}/rsa_public.php");
+		$response['signaturePublickey'] = config('rsa_public.php');
 		
 		
 		header('content-type: application/json');
