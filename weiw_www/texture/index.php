@@ -81,8 +81,8 @@
 		</div>
 		<script src="skinview3d.bundle.js"></script>
 		<script>
-			var Skin       = "{echo:[mc_user.SKIN.url]}";
-			var Cape       = "{echo:[mc_user.CAPE.url]}";
+			var Skin       = "/weiw/index_auth.php/texture/{echo:[mc_user.SKIN.hash]}";
+			var Cape       = "/weiw/index_auth.php/texture/{echo:[mc_user.CAPE.hash]}";
 			var Capeelytra = { backEquipment: "elytra" }; //鞘翅
 			var Capecape   = { backEquipment: "cape"   }; //披风
 			var Capestate  = false;
@@ -107,19 +107,19 @@
 				}
 				
 				
-				if(Skin == "")
+				if(Skin == "/weiw/index_auth.php/texture/")
 				{
 					skinViewer.loadSkin("img/Steve.png");
 				}
 				else
 				{
-					skinViewer.loadSkin(Skin.replace(/https?:\/\/[A-Za-z0-9:.]+/,""));
+					skinViewer.loadSkin(Skin,{model: 'auto-detect'});
 				}
 				
 				
-				if(Cape != "")
+				if(Cape != "/weiw/index_auth.php/texture/")
 				{
-					skinViewer.loadCape(Cape.replace(/https?:\/\/[A-Za-z0-9:.]+/,""), Capecape);
+					skinViewer.loadCape(Cape,Capecape);
 				}
 				
 				orbitControl = skinview3d.createOrbitControls(skinViewer);
@@ -136,7 +136,7 @@
 					rotateAnimation.speed  = 1; //设置动画速度
 				
 				
-				skinViewer.loadPanorama("img/2022-08-02_15.12.25.png"); //设置背景
+				skinViewer.loadPanorama("img/2022-08-02_15.14.31.png"); //设置背景
 			}
 			
 			
