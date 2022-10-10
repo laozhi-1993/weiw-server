@@ -198,7 +198,7 @@
 			function skin(id)
 			{
 				$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_setskin","id":id},function (result){
-					if(result.error == "使用成功")
+					if(result.error == "ok")
 					{
 						window.parent.zhedie_anniu();
 						window.parent.document.getElementById('texture').contentWindow.location.reload();
