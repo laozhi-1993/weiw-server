@@ -55,9 +55,9 @@
 		$textures['profileName'] = $user['name'];
 		
 		
-		if(isset($user['CAPE']['hash'])) $textures['textures']['CAPE']['url'] = "{$config['Yggdrasil']}/texture/{$user['CAPE']['hash']}";
-		if(isset($user['SKIN']['hash'])) $textures['textures']['SKIN']['url'] = "{$config['Yggdrasil']}/texture/{$user['SKIN']['hash']}";
-		if(isset($user['SKIN']['hash'])) $textures['textures']['SKIN']['metadata']['model'] = 'default';
+		if(isset($user['CAPE']['hash']))  $textures['textures']['CAPE']['url'] = "{$config['Yggdrasil']}/texture/{$user['CAPE']['hash']}";
+		if(isset($user['SKIN']['hash']))  $textures['textures']['SKIN']['url'] = "{$config['Yggdrasil']}/texture/{$user['SKIN']['hash']}";
+		if(isset($user['SKIN']['model'])) $textures['textures']['SKIN']['metadata']['model'] = $user['SKIN']['model'];
 		
 		
 			$Arr = Array();

@@ -119,7 +119,7 @@
 	}
 	
 	
-	static function CAPE($uuid,$hash) //设置披风
+	static function cape($uuid,$hash) //设置披风
 	{
 		if($user = self::data_user($uuid))
 		{
@@ -130,11 +130,21 @@
 	}
 	
 	
-	static function SKIN($uuid,$hash) //设置皮肤
+	static function skin($uuid,$hash,$model=false) //设置皮肤
 	{
 		if($user = self::data_user($uuid))
 		{
-			$user['SKIN']['hash'] = $hash;
+			if($model == false)
+			{
+				$user['SKIN']['hash']  = $hash;
+				$user['SKIN']['model'] = 'default';
+			}
+			else			
+			{
+				$user['SKIN']['hash']  = $hash;
+				$user['SKIN']['model'] = 'slim';
+			}
+			
 			self::data_user($uuid,$user);
 		}
 		else throw new Exception('用户不存在');
