@@ -270,7 +270,7 @@
 			
 			if(isset($_GET['hash']))
 			{
-				if(file_exists($texture = __MKHDIR__."/user_textures/{$_GET['hash']}.png"))
+				if(file_exists($texture = "{$this->userdir}/user_textures/{$_GET['hash']}.png"))
 				{
 					$output = file_get_contents($texture);
 				}
