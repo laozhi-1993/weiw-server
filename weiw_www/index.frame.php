@@ -427,7 +427,7 @@
 				border: 1px solid #2F4F4F;
 				color: #FFFFFF;
 			}
-			.main .neirong .header .margin .test {
+			.main .neirong .header .margin .avatar {
 				cursor: pointer;
 				user-select: none;
 				vertical-align: top;
@@ -439,7 +439,7 @@
 				border: 1px solid #FFFFFF;
 				border-radius: 5px;
 			}
-			.main .neirong .header .margin .test img {
+			.main .neirong .header .margin .avatar img {
 				width:  100%;
 				height: 100%;
 			}
@@ -510,10 +510,6 @@
 			@font-face {
 				font-family: "fantasy1";
 				src: url("font/TheCircous-4.ttf");
-			}
-			@font-face {
-				font-family: "Freon";
-				src: url("font/Freon.ttf");
 			}
 			@font-face {
 				font-family: "UnidreamLED";
@@ -596,7 +592,7 @@
 						</div>
 						<div class="domain">{echo:[config.domain]}</div>
 						<div if( [mc_user.client]): class="currency">{include:"icons/bi.svg"} <span class="money">{echo:[mc_user.bi]}</span></span></div>
-						<div if( [mc_user.client]): class="test"><span><img src="/weiw/index_auth.php/avatar?size=48&hash={echo:[mc_user.SKIN.hash]}" /></div>
+						<div if( [mc_user.client]): class="avatar"><img src="/weiw/index_auth.php/avatar?size=48&hash={echo:[mc_user.SKIN.hash]}" /></div>
 						<div if( [mc_user.client]): class="start" id="start" username="{echo:[mc_user.name]}" uuid="{echo:[mc_user.id]}" token="{echo:[mc_user.token]}"><span>dadada</span></div>
 						<div if(![mc_user.client]): class="currency">{include:"icons/bi.svg"} <span class="money">{echo:[mc_user.bi]}</span></div>
 						<div if(![mc_user.client]): class="download"><a href="{echo:[config.download]}" target="_blank">{include:"icons/download.svg"} <span>下载客户端</span></a></div>
