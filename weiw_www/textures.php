@@ -37,7 +37,7 @@
 			}
 			.textures .skin .margin .paiban {
 				display: inline-block;
-				width: 14.2%;
+				width: 12.5%;
 			}
 			.textures .skin .margin .paiban .kapian {
 				background-color: #fff0f5;
@@ -46,50 +46,51 @@
 				overflow: hidden;
 				margin: 10px;
 			}
+			.textures .skin .margin .paiban .kapian .information {
+				padding: 5px;
+			}
+			.textures .skin .margin .paiban .kapian .information span {
+				padding: 0 10px;
+				line-height: 20px;
+				height: 22px;
+				max-width: calc(100% - 80px);
+				color: #437070;
+				font-size: 10px;
+				display: inline-block;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				border-radius: 11px;
+				background-color: #FFFFFF;
+			}
 			.textures .skin .margin .paiban .kapian .preview {
 				position: relative;
 				top: 0;
-				margin: 20px;
-				padding-top: 100%;
+				margin: 5%;
+				padding-top: 101%;
 			}
 			.textures .skin .margin .paiban .kapian .preview img 
 			{
 				position: absolute;
 				top: 0;
 				width: 100%;
+				height: 100%;
 			}
 			.textures .skin .margin .paiban .kapian .attribute {
 				background-color: #e6e9ec;
-				height: 60px;
+				height: 30px;
 				position: relative;
 				top: 0;
-				padding: 5px;
-			}
-			.textures .skin .margin .paiban .kapian .attribute .name {
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-				width: 100%;
-			}
-			.textures .skin .margin .paiban .kapian .attribute .type {
-				padding: 5px 10px;
-				position: absolute;
-				right: 5px;
-				color: #437070;
-				bottom: 5px;
-				border-radius: 5px;
-				background-color: #FFFFFF;
 			}
 			.textures .skin .margin .paiban .kapian .attribute button {
 				background-color: #0C9CFF;
-				border-radius: 5px;
+				border-radius: 0 0 5px 5px;
 				border: none;
 				cursor: pointer;
 				color: #FFFFFF;
-				padding: 5px 10px;
-				position: absolute;
-				bottom: 5px;
-				left: 5px;
+				text-align: center;
+				height: 100%;
+				width: 100%;
 			}
 			
 			.page {
@@ -119,55 +120,22 @@
 				background-color: #ff00ff;
 				border-radius: 0 5px 5px 0;
 			}
-			@media screen and (max-width: 2200px) {
-				.textures .skin .margin .paiban {
-					width: 16.6%;
-				}
-			}
-			@media screen and (max-width: 900px) {
+			@media screen and (max-width: 1600px) {
 				.textures .skin .margin .paiban {
 					width: 20%;
 				}
 			}
-			@media screen and (max-width: 1600px) {
+			@media screen and (max-width: 1000px) {
 				.textures .skin .margin .paiban {
 					width: 25%;
 				}
 			}
-			@media screen and (max-width: 1300px) {
-				.textures .skin .margin .paiban {
-					width: 33.32%;
-				}
-			}
-			@media screen and (max-width: 1000px) {
+			@media screen and (max-width: 500px) {
 				.textures .skin .margin .paiban {
 					width: 50%;
 				}
-			}
-			@media screen and (max-width: 500px) {
-				.textures .skin .margin .paiban {
-					width: 100%;
-				}
-			}
-			@media screen and (max-width: 500px) {
-				.zuiwai {
-					margin: 0 10px;
-				}
-				.texture {
-					height: calc(100% - 50px);
-					margin-top: 10px;
-				}
-				.textures {
-					height: calc(100% - 90px);
-					margin-top: 0px;
-				}
-				.textures .skin .margin {
-					margin: 0 5px;
-					padding: 5px 0;
-					font-size: 0;
-				}
-				.textures .skin .margin .paiban {
-					width: 100%;
+				.textures .skin .margin .paiban .kapian {
+					margin: 3px;
 				}
 			}
 		</style>
@@ -178,11 +146,15 @@
 				<div class="margin">
 					<div foreach([mc_textures.data],[value]): class="paiban">
 						<div class="kapian">
-							<div class="preview"><img src="https://littleskin.cn/preview/{echo:[value.tid]}?height=150" /></div>
+							<div class="information">
+								<span title="{echo:[value.type]}">{echo:[value.type]}</span>
+								<span title="{echo:[value.name]}">{echo:[value.name]}</span>
+							</div>
+							<div class="preview">
+								<img src="https://littleskin.cn/preview/{echo:[value.tid]}?height=150" />
+							</div>
 							<div class="attribute">
-								<div class="name">{echo:[value.name]}</div>
-								<div class="type">{echo:[value.type]}</div>
-								<button onclick="skin('{echo:[value.tid]}')">使用此皮肤</button>
+								<button onclick="skin('{echo:[value.tid]}')">使用</button>
 							</div>
 						</div>
 					</div>
@@ -197,7 +169,7 @@
 		<script>
 			function skin(id)
 			{
-				$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_setskin","id":id},function (result){
+				$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_set_texture","id":id},function (result){
 					if(result.error == "ok")
 					{
 						window.parent.zhedie_anniu();

@@ -250,17 +250,20 @@
 				background-color: #2f4f4f;
 				border-top: 1px solid #3b6363;
 				border-bottom: 1px solid #3b6363;
-				height: 30px;
-				padding: 12.5px;
+				height: 35px;
+				padding: 10px;
 			}
-			.main .daohang .tou svg {
+			.main .daohang .tou .touxiang {
+				display: inline-block;
 				vertical-align: bottom;
-				margin: 0 5px;
-				width:  30px;
-				height: 30px;
+				overflow: hidden;
+				width:  35px;
+				height: 35px;
+				border-radius: 5px;
 			}
-			.main .daohang .tou svg path {
-				fill: #afeeee;
+			.main .daohang .tou .touxiang img {
+				width:  100%;
+				height: 100%;
 			}
 			.main .daohang .tou .name {
 				display: inline-block;
@@ -268,7 +271,7 @@
 				text-overflow: ellipsis;
 				white-space: nowrap;
 				width: 180px;
-				line-height: 30px;
+				line-height: 35px;
 				vertical-align: bottom;
 				color: #afeeee;
 			}
@@ -360,6 +363,10 @@
 				border: 1px solid #FFFFFF;
 				border-radius: 5px;
 			}
+			.main .neirong .header .margin .menu:active {
+				background-color: #2f4f4f;
+				border: 1px solid #2F4F4F;
+			}
 			.main .neirong .header .margin .menu div {
 				margin: 3px auto;
 				width: 15px;
@@ -401,16 +408,17 @@
 				fill: #FFFFFF;
 			}
 			.main .neirong .header .margin .start {
-				display: inline-block;
-				user-select: none;
-				width: 130px;
-				height: 33px;
-				line-height: 33px;
 				text-align: center;
 				cursor: pointer;
+				user-select: none;
 				color: #FFFFFF;
 				font-size: large;
 				font-family: fantasy;
+				vertical-align: top;
+				display: inline-block;
+				width: 130px;
+				height: 33px;
+				line-height: 33px;
 				border: 1px solid #FFFFFF;
 				border-radius: 5px;
 			}
@@ -418,6 +426,22 @@
 				background-color: #2f4f4f;
 				border: 1px solid #2F4F4F;
 				color: #FFFFFF;
+			}
+			.main .neirong .header .margin .test {
+				cursor: pointer;
+				user-select: none;
+				vertical-align: top;
+				overflow: hidden;
+				display: inline-block;
+				width:  33px;
+				height: 33px;
+				line-height: 33px;
+				border: 1px solid #FFFFFF;
+				border-radius: 5px;
+			}
+			.main .neirong .header .margin .test img {
+				width:  100%;
+				height: 100%;
 			}
 			.main .neirong .header .margin .download {
 				display: inline-block;
@@ -530,7 +554,7 @@
 		<div class="main">
 			<div class="daohang">
 				<div class="tou">
-					<span class="touxiang">{include:"icons/name.svg"}</span>
+					<span class="touxiang"><img src="/weiw/index_auth.php/avatar?size=48&hash={echo:[mc_user.SKIN.hash]}" /></span>
 					<span class="name" title="{echo:[mc_user.email]}">{echo:[mc_user.name]}</span>
 				</div>
 				<div class="wei">
@@ -571,10 +595,11 @@
 							<div></div>
 						</div>
 						<div class="domain">{echo:[config.domain]}</div>
-						<div class="currency">{include:"icons/bi.svg"} <span class="money">{echo:[mc_user.bi]}</span></div>
-						<div if([mc_user.client]): class="start" id="start" username="{echo:[mc_user.name]}" uuid="{echo:[mc_user.id]}" token="{echo:[mc_user.token]}"><span></span></div>
-						<!--else-->
-						<div if(true): class="download"><a href="{echo:[config.download]}" target="_blank">{include:"icons/download.svg"} <span>下载客户端</span></a></div>
+						<div if( [mc_user.client]): class="currency">{include:"icons/bi.svg"} <span class="money">{echo:[mc_user.bi]}</span></span></div>
+						<div if( [mc_user.client]): class="test"><span><img src="/weiw/index_auth.php/avatar?size=48&hash={echo:[mc_user.SKIN.hash]}" /></div>
+						<div if( [mc_user.client]): class="start" id="start" username="{echo:[mc_user.name]}" uuid="{echo:[mc_user.id]}" token="{echo:[mc_user.token]}"><span>dadada</span></div>
+						<div if(![mc_user.client]): class="currency">{include:"icons/bi.svg"} <span class="money">{echo:[mc_user.bi]}</span></div>
+						<div if(![mc_user.client]): class="download"><a href="{echo:[config.download]}" target="_blank">{include:"icons/download.svg"} <span>下载客户端</span></a></div>
 					</div>
 				</div>
 				<div class="body"><!--body--></div>
