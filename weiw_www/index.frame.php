@@ -505,6 +505,7 @@
 					animation-duration: 0.3s;
 					animation-timing-function: ease-in;
 					margin-left: 0;
+					width: 100vw;
 				}
 			}
 			@font-face {

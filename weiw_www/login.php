@@ -219,7 +219,7 @@
 		<title>登录 - {echo:[config.serverName]}</title>
 	</head>
 	<body>
-		<div class="background"><iframe src="texture/Fireworks.php" allowtransparency="true" allowfullscreen="true" frameborder="0"></iframe></div>
+		<div class="background"><iframe src="Fireworks.php" allowtransparency="true" allowfullscreen="true" frameborder="0"></iframe></div>
 		<div class="biankuang"></div>
 		<main>
 			<div class="kuang">

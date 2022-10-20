@@ -172,8 +172,21 @@
 				$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_set_texture","id":id},function (result){
 					if(result.error == "ok")
 					{
-						window.parent.zhedie_anniu();
-						window.parent.document.getElementById('texture').contentWindow.location.reload();
+						if(result.type == "steve")
+						{
+							window.parent.zhedie_anniu();
+							window.parent.skin(result.hash);
+						}
+						if(result.type == "alex")
+						{
+							window.parent.zhedie_anniu();
+							window.parent.skin(result.hash);
+						}
+						if(result.type == "cape")
+						{
+							window.parent.zhedie_anniu();
+							window.parent.cape(result.hash);
+						}
 					}
 					else
 					{
