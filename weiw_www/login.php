@@ -281,7 +281,6 @@
 							</button>
 						</div>
 					</div>
-					<h5><a if([mc_user.email]): href="home.php">{echo:[mc_user.email]}</a></h5>
 				</div>
 				<div class="Footer">Copyright© 2022 laozhi 版权所有</div>
 			</div>
