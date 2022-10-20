@@ -220,7 +220,7 @@
 	</head>
 	<body>
 		<div class="button_texture" onclick="set_texture(3)">
-			<span>更换皮肤</span>
+			<span>更换材质</span>
 		</div>
 		<div class="set_texture">
 			<div class="position">
