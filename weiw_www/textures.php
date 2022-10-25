@@ -154,7 +154,7 @@
 								<img src="https://littleskin.cn/preview/{echo:[value.tid]}?height=150" />
 							</div>
 							<div class="attribute">
-								<button onclick="skin('{echo:[value.tid]}')">使用</button>
+								<button onclick="set_texture('{echo:[value.tid]}')">使用</button>
 							</div>
 						</div>
 					</div>
@@ -167,7 +167,7 @@
 		</div>
 		<script src="/weiw/jquery.min.js"></script>
 		<script>
-			function skin(id)
+			function set_texture(id)
 			{
 				$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_set_texture","id":id},function (result){
 					if(result.error == "ok")

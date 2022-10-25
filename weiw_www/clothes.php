@@ -228,7 +228,7 @@
 					<div class="name">更换材质</div>
 					<div class="content">
 						<p>输入材质的TID：</p>
-						<input type="number" min="1" value="1" id="tid"/>
+						<input type="number" min="1" placeholder="TID" id="tid"/>
 						<p class="hint">材质的TID需要到 <a href="https://littleskin.cn" target="_blank">LittleSkin皮肤站</a> 获取。</p>
 						<p class="error">{include:"icons/error.svg"} <span></span></p>
 					</div>
@@ -244,33 +244,42 @@
 			<div class="action">
 				<button onclick="action(1)">漫步</button>
 				<button onclick="action(2)">跑步</button>				
-				<div class="icons" onclick="cape_type()">{include:"icons/elytra.svg"}</div>
+				<div class="icons" onclick="action(5)">{include:"icons/elytra.svg"}</div>
 				<button onclick="action(3)">飞行</button>
 				<button onclick="action(4)">旋转</button>
 			</div>
 		</div>
 		<div class="textures">
-			<div class="anniu" onclick="zhedie_anniu()">☞点此打开或关闭皮肤库☜</div>
+			<div class="anniu" onclick="anniu()">☞点此打开或关闭皮肤库☜</div>
 			<div class="overflow"><iframe id="textures" src="textures.php" allowtransparency="true" allowfullscreen="true" frameborder="0"></iframe></div>
 		</div>
-		<script src="texture/skinview3d.bundle.js"></script>
+		<script src="js/skinview3d.bundle.js"></script><!--https://unpkg.com/skinview3d@3.0.0-alpha.1/bundles/skinview3d.bundle.js-->
 		<script>
-			var Capeurl    = "";
 			var Capeelytra = { backEquipment: "elytra" }; //鞘翅
 			var Capecape   = { backEquipment: "cape"   }; //披风
 			var Capestate  = false;
 			var zhedie     = false;
-			
+			var Rotate     = false;
+			Capeurl = "/weiw/index_auth.php/texture/{echo:[mc_user.CAPE.hash]}";
 			
 			function initializeViewer() {
-				skinViewer = new skinview3d.FXAASkinViewer({
+				skinViewer = new skinview3d.SkinViewer({
 					canvas: document.getElementById("skin_container")
 				});
-
-				skinViewer.fov  = 70;   //背景大小
+				
+				
+				skin("{echo:[mc_user.SKIN.hash]}");
+				cape("{echo:[mc_user.CAPE.hash]}");
+				action(1);
+				action(4);
+				
+				
+				skinViewer.fov  = 80;   //背景大小
 				skinViewer.zoom = 0.60; //人物大小
 				skinViewer.globalLight.intensity = 0.60; //亮度
 				skinViewer.cameraLight.intensity = 0.40; //亮度
+				skinViewer.loadPanorama("img/2022-08-02_15.14.31.png"); //设置背景
+				skinViewer.nameTag = "{echo:[mc_user.name]}";
 				
 				
 				skinViewer.width  = document.getElementById("canvas").offsetWidth;
@@ -279,34 +288,19 @@
 					skinViewer.width  = document.getElementById("canvas").offsetWidth;
 					skinViewer.height = document.getElementById("canvas").offsetHeight;
 				}
-				
-				
-				orbitControl = skinview3d.createOrbitControls(skinViewer);
-				orbitControl.enableRotate = true;  //设置是否允许鼠标改变人物角度
-				orbitControl.enableZoom   = true;  //设置是否允许缩放人物
-				orbitControl.enablePan    = false; //设置是否允许移动人物
-				
-				
-					//primaryAnimation.paused = true; //暂停动作
-					//primaryAnimation.resetAndRemove(); //停止动作
-					primaryAnimation = skinViewer.animations.add(skinview3d.WalkingAnimation);  //设置人物动作
-					primaryAnimation.speed = 1; //设置动画速度
-					rotateAnimation  = skinViewer.animations.add(skinview3d.RotatingAnimation); //设置人物动作
-					rotateAnimation.speed  = 1; //设置动画速度
-				
-				
-				skinViewer.loadPanorama("img/2022-08-02_15.14.31.png"); //设置背景
 			}
 			
 			function skin(hash)
 			{
 				if(hash == "")
 				{
-					skinViewer.loadSkin("img/Steve.png");
+					Skinurl = "img/Steve.png";
+					skinViewer.loadSkin(Skinurl);
 				}
 				else
 				{
-					skinViewer.loadSkin("/weiw/index_auth.php/texture/"+hash,{model: 'auto-detect'});
+					Skinurl = "/weiw/index_auth.php/texture/"+hash;
+					skinViewer.loadSkin(Skinurl);
 				}
 			}
 			
@@ -314,99 +308,65 @@
 			{
 				if(hash != "")
 				{
-					skinViewer.loadCape("/weiw/index_auth.php/texture/"+hash,Capecape);
 					Capeurl = "/weiw/index_auth.php/texture/"+hash;
-				}
-			}
-			
-			function cape_type()
-			{
-				if(Capestate)
-				{
 					skinViewer.loadCape(Capeurl, Capecape);
-					Capestate = false;
-				}
-				else
-				{
-					skinViewer.loadCape(Capeurl, Capeelytra);
-					Capestate = true;
 				}
 			}
 			
 			function action(type)
 			{
-					//skinview3d.IdleAnimation     动胳膊
-					//skinview3d.WalkingAnimation  走步
-					//skinview3d.RunningAnimation  跑步
-					//skinview3d.FlyingAnimation   飞行
-					//skinview3d.RotatingAnimation 旋转
+					//IdleAnimation     动胳膊
+					//WalkingAnimation  走步
+					//RunningAnimation  跑步
+					//FlyingAnimation   飞行
+					//RotatingAnimation 旋转
 					
 				if(type === 0)
 				{
-					rotateAnimation.resetAndRemove();
-					primaryAnimation.resetAndRemove();
-					primaryAnimation = skinViewer.animations.add(skinview3d.IdleAnimation);
-					primaryAnimation.speed = 1;
+					skinViewer.animation = new skinview3d.IdleAnimation();
+					skinViewer.animation.speed = 1;
 				}
 				else if(type === 1)
 				{
-					rotateAnimation.resetAndRemove();
-					primaryAnimation.resetAndRemove();
-					primaryAnimation = skinViewer.animations.add(skinview3d.WalkingAnimation);
-					primaryAnimation.speed = 1;
+					skinViewer.animation = new skinview3d.WalkingAnimation();
+					skinViewer.animation.speed = 1;
 				}
 				else if(type === 2)
 				{
-					rotateAnimation.resetAndRemove();
-					primaryAnimation.resetAndRemove();
-					primaryAnimation = skinViewer.animations.add(skinview3d.RunningAnimation);
-					primaryAnimation.speed = 0.5;
+					skinViewer.animation = new skinview3d.RunningAnimation();
+					skinViewer.animation.speed = 0.5;
 				}
 				else if(type === 3)
 				{
-					rotateAnimation.resetAndRemove();
-					primaryAnimation.resetAndRemove();
-					primaryAnimation = skinViewer.animations.add(skinview3d.FlyingAnimation);
-					primaryAnimation.speed = 1;
+					skinViewer.animation = new skinview3d.FlyingAnimation();
+					skinViewer.animation.speed = 1;
 				}
 				else if(type === 4)
 				{
-					rotateAnimation.resetAndRemove();
-					rotateAnimation = skinViewer.animations.add(skinview3d.RotatingAnimation);
-					rotateAnimation.speed = 1;
-					primaryAnimation.resetAndRemove();
-					primaryAnimation = skinViewer.animations.add(skinview3d.WalkingAnimation);
-					primaryAnimation.speed = 1;
+					Rotate ? Rotate = false: Rotate = true;
+					skinViewer.autoRotate = Rotate;
+				}
+				else if(type === 5)
+				{
+					if(Capestate)
+					{
+						skinViewer.loadCape(Capeurl, Capecape);
+						Capestate = false;
+					}
+					else
+					{
+						skinViewer.loadCape(Capeurl, Capeelytra);
+						Capestate = true;
+					}
 				}
 			}
 			
-			
-			function zhedie_anniu()
-			{
-				if(zhedie)
-				{
-					$(".textures").animate({marginTop:'-30px'},200,'swing');
-					$(".textures").animate({top:'100%'},200,'swing',function (){
-						$(".texture").show();
-						$(".overflow").hide();
-					});
-					zhedie = false;
-				}
-				else
-				{
-					$(".texture").hide();
-					$(".textures").animate({top:'0'},200,'swing');
-					$(".textures").animate({marginTop:'10px'},200,'swing',function (){
-						$(".overflow").show();
-					});
-					zhedie = true;
-				}
-			}
 			function set_texture(type)
 			{
 				if(type == 1)
 				{
 					var id = $("#tid").val();
+					$(".set_texture .error").hide();
 					$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_set_texture","id":id},function (result){
 						if(result.error == "ok")
 						{
@@ -441,16 +401,37 @@
 				if(type == 3)
 				{
 					$(".set_texture .error").hide();
-					$(".set_texture #tid").val(1);
+					$(".set_texture #tid").val("");
 					$(".set_texture").fadeIn();
 					$(".set_texture .position").animate({"top":"230px"},200);
 				}
 			}
 			
 			
+			function anniu()
+			{
+				if(zhedie)
+				{
+					$(".textures").animate({marginTop:'-30px'},200,'swing');
+					$(".textures").animate({top:'100%'},200,'swing',function (){
+						$(".texture").show();
+						$(".overflow").hide();
+					});
+					zhedie = false;
+				}
+				else
+				{
+					$(".texture").hide();
+					$(".textures").animate({top:'0'},200,'swing');
+					$(".textures").animate({marginTop:'5px'},200,'swing',function (){
+						$(".overflow").show();
+					});
+					zhedie = true;
+				}
+			}
+			
+			
 			initializeViewer();
-			skin("{echo:[mc_user.SKIN.hash]}");
-			cape("{echo:[mc_user.CAPE.hash]}");
 		</script>
 	</body>
 </html>

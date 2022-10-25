@@ -9,7 +9,7 @@
 <html lang="zh-cmn-Hans">
 	<head>
 		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<meta name="theme-color" content="#21242B" />
+		<meta name="theme-color" content="#30a3bc" />
 		<meta name="author" content="laozhi" />
 		<meta charset="utf-8" />
 		<script src="/weiw/jquery.min.js"></script>
@@ -515,6 +515,10 @@
 			@font-face {
 				font-family: "UnidreamLED";
 				src: url("font/UnidreamLED.ttf");
+			}
+			@font-face {
+				font-family: 'Minecraft';
+				src: url('font/minecraft.woff2') format('woff2');
 			}
 			@media screen and (max-width: 800px){
 				.main .neirong .header .margin .download {
