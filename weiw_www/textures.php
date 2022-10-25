@@ -174,17 +174,17 @@
 					{
 						if(result.type == "steve")
 						{
-							window.parent.zhedie_anniu();
+							window.parent.anniu();
 							window.parent.skin(result.hash);
 						}
 						if(result.type == "alex")
 						{
-							window.parent.zhedie_anniu();
+							window.parent.anniu();
 							window.parent.skin(result.hash);
 						}
 						if(result.type == "cape")
 						{
-							window.parent.zhedie_anniu();
+							window.parent.anniu();
 							window.parent.cape(result.hash);
 						}
 					}
