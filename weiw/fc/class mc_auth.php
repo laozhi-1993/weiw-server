@@ -11,9 +11,8 @@
 	public $uploadableTextures;
     public function __construct()
 	{
-		$this->data    = json_decode(file_get_contents('php://input'),true);
-		$this->userdir = __MKHDIR__;
-		
+		$this->data                  = json_decode(file_get_contents('php://input'),true);
+		$this->userdir               = __MKHDIR__;
 		$this->skinDomains           = Array();
 		$this->implementationName    = 'weiw auth server';
 		$this->implementationVersion = '1.1.0';
@@ -259,7 +258,7 @@
 			$output = base64_decode($output);
 			
 			
-			if(isset($_GET['size']) && $_GET['size'] >= 1 && $_GET['size'] <= 255)
+			if(isset($_GET['size']) && $_GET['size'] >= 1 && $_GET['size'] <= 512)
 			{
 				$size = $_GET['size'];	
 			}
@@ -287,17 +286,19 @@
 				}
 			}
 
+			$ss = getimagesizefromstring($output);
 			$im = imagecreatefromstring($output);
 			$av = imagecreatetruecolor($size, $size);
 
-			imagecopyresized($av, $im, 0, 0, 8, 8, $size, $size, 8, 8);
-			imagecolortransparent($im, imagecolorat($im, 63, 0));
-			imagecopyresized($av, $im, 0, 0, 8 + 32, 8, $size, $size, 8, 8);
+			imagefill($av, 0 ,0 ,imagecolorallocatealpha($av, 0, 0, 0, 127));
+			imagesavealpha($av, true);
+			imagecopyresized($av, $im, ($size/16), ($size/16), ($ss[0]/8.0), ($ss[0]/8), ($size-$size/8), ($size-$size/8), ($ss[0]/8), ($ss[0]/8));
+			imagecopyresized($av, $im, (0)       , (0)       , ($ss[0]/1.6), ($ss[0]/8), ($size)        , ($size)        , ($ss[0]/8), ($ss[0]/8));
 
 			header('Content-type: image/png');
 			imagepng($av);
-			imagedestroy($im);
 			imagedestroy($av);
+			imagedestroy($im);
 			die();
 		}
 		
