@@ -555,7 +555,7 @@
 		<div class="main">
 			<div class="daohang">
 				<div class="tou">
-					<span class="touxiang"><img src="/weiw/index_auth.php/avatar?size=48&hash={echo:[mc_user.SKIN.hash]}" /></span>
+					<span class="touxiang"><img name="avatar" src="/weiw/index_auth.php/avatar?size=48&hash={echo:[mc_user.SKIN.hash]}" /></span>
 					<span class="name" title="{echo:[mc_user.email]}">{echo:[mc_user.name]}</span>
 				</div>
 				<div class="wei">
@@ -597,8 +597,8 @@
 						</div>
 						<div class="domain">{echo:[config.domain]}</div>
 						<div if( [mc_user.client]): class="currency">{include:"icons/bi.svg"} <span class="money">{echo:[mc_user.bi]}</span></span></div>
-						<div if( [mc_user.client]): class="avatar"><img src="/weiw/index_auth.php/avatar?size=48&hash={echo:[mc_user.SKIN.hash]}" /></div>
-						<div if( [mc_user.client]): class="start" id="start" username="{echo:[mc_user.name]}" uuid="{echo:[mc_user.id]}" token="{echo:[mc_user.token]}"><span>dadada</span></div>
+						<div if( [mc_user.client]): class="avatar"><img name="avatar" src="/weiw/index_auth.php/avatar?size=48&hash={echo:[mc_user.SKIN.hash]}" /></div>
+						<div if( [mc_user.client]): class="start" id="start" username="{echo:[mc_user.name]}" uuid="{echo:[mc_user.id]}" token="{echo:[mc_user.token]}"><span></span></div>
 						<div if(![mc_user.client]): class="currency">{include:"icons/bi.svg"} <span class="money">{echo:[mc_user.bi]}</span></div>
 						<div if(![mc_user.client]): class="download"><a href="{echo:[config.download]}" target="_blank">{include:"icons/download.svg"} <span>下载客户端</span></a></div>
 					</div>

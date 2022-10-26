@@ -239,7 +239,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="texture">
+		<div class="texture" onresize="">
 			<div id="canvas"><canvas id="skin_container"></canvas></div>
 			<div class="action">
 				<button onclick="action(1)">漫步</button>
@@ -260,9 +260,10 @@
 			var Capestate  = false;
 			var zhedie     = false;
 			var Rotate     = false;
-			Capeurl = "/weiw/index_auth.php/texture/{echo:[mc_user.CAPE.hash]}";
 			
-			function initializeViewer() {
+			
+			function initializeViewer()
+			{
 				skinViewer = new skinview3d.SkinViewer({
 					canvas: document.getElementById("skin_container")
 				});
@@ -290,6 +291,7 @@
 				}
 			}
 			
+			
 			function skin(hash)
 			{
 				if(hash == "")
@@ -299,7 +301,13 @@
 				}
 				else
 				{
-					Skinurl = "/weiw/index_auth.php/texture/"+hash;
+					avatar = document.getElementsByName("avatar");
+					for(i in avatar)
+					{
+						avatar[i].src = `/weiw/index_auth.php/avatar?size=48&hash=${hash}`;
+					}
+					
+					Skinurl = `/weiw/index_auth.php/texture/${hash}`;
 					skinViewer.loadSkin(Skinurl);
 				}
 			}
@@ -308,7 +316,7 @@
 			{
 				if(hash != "")
 				{
-					Capeurl = "/weiw/index_auth.php/texture/"+hash;
+					Capeurl = `/weiw/index_auth.php/texture/${hash}`;
 					skinViewer.loadCape(Capeurl, Capecape);
 				}
 			}
