@@ -290,6 +290,7 @@
 			$im = imagecreatefromstring($output);
 			$av = imagecreatetruecolor($size, $size);
 
+			imagecolortransparent($im, imagecolorat($im, $ss[0]-1, 0));
 			imagefill($av, 0 ,0 ,imagecolorallocatealpha($av, 0, 0, 0, 127));
 			imagesavealpha($av, true);
 			imagecopyresized($av, $im, ($size/16), ($size/16), ($ss[0]/8.0), ($ss[0]/8), ($size-$size/8), ($size-$size/8), ($ss[0]/8), ($ss[0]/8));
