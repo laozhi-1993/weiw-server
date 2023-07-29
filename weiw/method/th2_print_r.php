@@ -1,0 +1,1 @@
+<?php return function($_MKH){ return "<pre><?php print_r({$_MKH[0]}) ?></pre>"; };

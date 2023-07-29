@@ -1,0 +1,1 @@
+<?php return function($_MKH,$html){ return "<?php if(isset(\$GLOBALS['_only'][{$_MKH[0]}]) == false): ?>{$html}<?php endif; \$GLOBALS['_only'][{$_MKH[0]}] = {$_MKH[0]}; ?>"; };

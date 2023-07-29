@@ -1,0 +1,1 @@
+<?php return function($_MKH,$html){ return "<?php while({$_MKH[0]}): ?>{$html}<?php endwhile; ?>"; };
