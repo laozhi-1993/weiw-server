@@ -4,7 +4,7 @@
 		{
 			if(isset($_GET['id']) && $user = mc::user())
 			{
-				$texture = json_decode(http::open("https://littleskin.cn/texture/{$_GET['id']}"),true);
+				$texture = json_decode(http::open("https://mcskin.cn/texture/{$_GET['id']}"),true);
 				if(isset($texture['hash']) && isset($texture['type']))
 				{
 					if($texture['type'] == 'steve')
