@@ -307,9 +307,9 @@
 			</div>
 			<div if( [mc_user.id]): class="login_auto">
 				<div class="avatar">
-					<img src="/weiw/index_auth.php/avatar?size=240&hash={Print:mc_user:SKIN:hash}" />
+					<img src="/weiw/index_auth.php/avatar?size=240&hash={echo:[mc_user.SKIN.hash]}" />
 				</div>
-				<div class="name">{Print:mc_user:name}</div>
+				<div class="name">{echo:[mc_user.name]}</div>
 				<div class="button" onclick="window.index()">登陆</div>
 			</div>
 		</main>

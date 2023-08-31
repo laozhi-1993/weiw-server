@@ -39,7 +39,7 @@
 				padding: 10px;
 				margin-bottom: 5px;
 				border-radius: 5px;
-				background: radial-gradient(#666,#555);
+				background-color: #666;
 			}
 			.textures {
 				margin-right: -10px;
@@ -51,7 +51,7 @@
 				width: 25%;
 			}
 			.textures .paiban .kapian {
-				background: radial-gradient(#666,#555);
+				background-color: #666;
 				border-radius: 5px;
 				font-size: medium;
 				overflow: hidden;
@@ -185,7 +185,7 @@
 			</data>
 		</div>
 		<div class="other">
-			<span>材质来源于<a href="javascript:window.parent.OpenAPI('https://littleskin.cn/')">LittleSkin 皮肤站</a>。</span>
+			<span>材质来源于<a href="javascript:window.parent.OpenAPI('https://mcskin.cn/')">红石皮肤站</a>。</span>
 		</div>
 		<div class="textures">
 			<div foreach([mc_textures.data],[value]): class="paiban">
@@ -195,7 +195,7 @@
 						<span title="{Print:value:name}">{Print:value:name}</span>
 					</div>
 					<div class="preview">
-						<img src="https://littleskin.cn/preview/{Print:value:tid}?height=150" />
+						<img src="https://mcskin.cn/preview/{Print:value:tid}?height=150" />
 					</div>
 					<div class="attribute">
 						<button onclick="set_texture('{Print:value:tid}')">使用</button>
