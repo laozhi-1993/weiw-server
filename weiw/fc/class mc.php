@@ -56,9 +56,8 @@
 	{
 		try
 		{
-			$config = config::ini('admin');
-			$user   = self::user();
-			$admin  = explode(' ',$config['email']);
+			$admin = config::ini('admin');
+			$user  = self::user();
 			if(isset($user['email']) && isset($admin) && in_array($user['email'],$admin))
 			{
 				return true;
