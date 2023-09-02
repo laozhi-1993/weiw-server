@@ -1,1 +1,1 @@
-<?php return Array('email' => 'laozhi_1993@163.com','password' => '123456');
+<?php return Array('laozhi_1993@163.com');
