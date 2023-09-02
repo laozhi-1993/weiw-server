@@ -6,31 +6,24 @@
 			
 			if(isset($_GET['type']) && $_GET['type'] == 'code')
 			{
-				if(isset($_SESSION['verification']))
+				isset($_SESSION['verification']) or throw new Exception('验证码为空请重新获取验证码');
+				isset($_GET['val']) or throw new Exception('没有输入验证码');
+				
+				if(strtoupper($_GET['val']) != $_SESSION['verification']['code']) throw new Exception('验证码错误');
+				if(time() >= $_SESSION['verification']['time']) throw new Exception('验证码已过期请重新获取');
+
+
+
+				if(mc::data_token(mc_auth::constructOfflinePlayerUuid($_SESSION['verification']['email'])))
 				{
-					$config = config::ini('admin');
-					
-					
-					if(isset($_GET['val']) && strlen($_GET['val']) >= 6 && ($_SESSION['verification']['code'] == strtoupper($_GET['val']) or $config['password'] == $_GET['val']))
-					{
-						if(time() <= ($_SESSION['verification']['time'] + 300))
-						{
-							if(mc::data_token(mc_auth::constructOfflinePlayerUuid($_SESSION['verification']['email'])))
-							{
-								$login = new mc_login( $_SESSION['verification']['email'] );
-								$login ->verification();
-							}
-							else
-							{
-								$_SESSION['register'] = true;
-								throw new Exception('register');
-							}
-						}
-						else throw new Exception('验证码已过期请重新获取');
-					}
-					else throw new Exception('验证码错误');
+					$login = new mc_login( $_SESSION['verification']['email'] );
+					$login ->verification();
 				}
-				else throw new Exception('验证码为空请重新获取验证码');
+				else
+				{
+					$_SESSION['register'] = true;
+					throw new Exception('register');
+				}
 			}
 			
 			
@@ -49,23 +42,49 @@
 			{
 				if(preg_match('!^[0-9a-zA-Z_-]+@([0-9a-zA-Z]+[.])+[a-zA-Z]{2,4}$!',$_GET['val']))
 				{
-					$smtp       = config::ini('smtp'); //导入smtp配置文件
-					$server     = $smtp['server'];     //SMTP服务器
-					$serverport = $smtp['serverport']; //SMTP服务器端口
-					$usermail   = $smtp['usermail'];   //SMTP服务器的用户邮箱
-					$user       = $smtp['user'];       //SMTP服务器的用户帐号
-					$password   = $smtp['password'];   //SMTP服务器的用户密码		
+					$smtp   = config::ini('smtp');
+					$config = config::ini('config');
 					
 					
-					$_SESSION['verification']['email']     = strtolower($_GET['val']);
-					$_SESSION['verification']['code']      = substr(str_shuffle('QWERTYUIOPASDFGHJKLZXCVBNM0123456789'),0,6);
-					$_SESSION['verification']['time']      = time();
-					$_SESSION['verification']['frequency'] = 0;
+					if($smtp['server'] !== '')
+					{
+						include __MKHDIR__.'/PHPMailer/Exception.php';
+						include __MKHDIR__.'/PHPMailer/PHPMailer.php';
+						include __MKHDIR__.'/PHPMailer/SMTP.php';
+
+						$_SESSION['verification']['email']     = strtolower($_GET['val']);
+						$_SESSION['verification']['code']      = substr(str_shuffle('QWERTYUIOPASDFGHJKLZXCVBNM0123456789'),0,6);
+						$_SESSION['verification']['time']      = time() + 300;
+						$_SESSION['verification']['frequency'] = 0;
+						
+						
+						$mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+						$mail->isSMTP();
+						$mail->Host       = $smtp['server'];     // SMTP 服务器地址
+						$mail->Port       = $smtp['serverport']; // SMTP 端口
+						$mail->Username   = $smtp['user'];       // SMTP 用户名
+						$mail->Password   = $smtp['password'];   // SMTP 密码
+						$mail->SMTPAuth   = true;
+
+
+						$mail->setFrom($smtp['usermail'], $config['serverName']); // 发件人地址和名称
+						$mail->addAddress($_SESSION['verification']['email']);    // 收件人地址和名称
+
+
+						$mail->isHTML(false);
+						$mail->Subject = '验证码';                          // 邮件主题
+						$mail->Body    = $_SESSION['verification']['code']; // 邮件内容
+						$mail->send();
+					}
+					else
+					{
+						$_SESSION['verification']['email']     = strtolower($_GET['val']);
+						$_SESSION['verification']['code']      = '123456';
+						$_SESSION['verification']['time']      = time() + 300;
+						$_SESSION['verification']['frequency'] = 0;
+					}
 					
 					
-					$smtp = new Smtp($server,$serverport,true,$user,$password);  //这里面的一个true是表示使用身份验证,否则不使用身份验证.
-					$smtp ->debug = false; //是否显示发送的调试信息
-					$smtp ->sendmail($_SESSION['verification']['email'], $usermail, '验证码', $_SESSION['verification']['code'], 'TXT');
 					throw new Exception('code');
 				}
 				else throw new Exception('邮箱格式不正确');
@@ -91,9 +110,5 @@
 			
 			
 			return Array('error' => $Exception->getMessage());
-		}
-		catch(error $error)
-		{
-			return Array('error' => 'code');
 		}
 	};
