@@ -276,7 +276,7 @@
 				$size = 48;
 			}
 			
-			if(isset($_GET['hash']))
+			if(isset($_GET['hash']) && $_GET['hash'] != '')
 			{
 				$config = config::ini('config');
 				$dir = str_ireplace('{dir}',$this->userdir,$config['textures_dir']);
