@@ -35,31 +35,15 @@
 					
 					if(value !== "")
 					{
-						if(value.startsWith("usermoney "))
-						{
-							var bi = value.split(' ');
-							$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_user_money","name":bi[1],"bi":bi[2]},function (result){
-								if(result.error !== '\u0000\u0000')
-								{
-									$(".rcon .output pre").append("<div class='return'>"+result.error+"</div>");
-									$(".rcon .output").scrollTop($(".rcon .output").prop("scrollHeight"));
-								}
-								
-								open();
-							});
-						}
-						else
-						{
-							$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_rcon","command":value},function (result){
-								if(result.error !== '\u0000\u0000')
-								{
-									$(".rcon .output pre").append("<div class='return'>"+result.error+"</div>");
-									$(".rcon .output").scrollTop($(".rcon .output").prop("scrollHeight"));
-								}
-								
-								open();
-							});
-						}
+						$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_rcon","command":value},function (result){
+							if(result.error !== '\u0000\u0000')
+							{
+								$(".rcon .output pre").append("<div class='return'>"+result.error+"</div>");
+								$(".rcon .output").scrollTop($(".rcon .output").prop("scrollHeight"));
+							}
+							
+							open();
+						});
 						
 						
 						$("#command").val("");
