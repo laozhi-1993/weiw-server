@@ -35,7 +35,7 @@
 					
 					if(value !== "")
 					{
-						$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_rcon","command":value},function (result){
+						$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_console","command":value},function (result){
 							if(result.error !== '\u0000\u0000')
 							{
 								$(".rcon .output pre").append("<div class='return'>"+result.error+"</div>");
