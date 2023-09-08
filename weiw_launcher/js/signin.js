@@ -44,7 +44,8 @@
 					{
 						time = result.time-1;
 						$(".signIn .money").html(result.bi);
-						$(".signIn .button").css('background-color','#7B68EE');
+						$(".signIn .button").html("00:00:00");
+						$(".signIn .button").css('background-color','#2f4f4f');
 					}
 				});
 			}
