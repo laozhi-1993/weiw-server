@@ -2,7 +2,7 @@
 
 class http
 {
-	static function cache($offset)
+	public static function cache($offset)
 	{
 		$offset = gmdate("D, d M Y H:i:s", time() + $offset);
 		

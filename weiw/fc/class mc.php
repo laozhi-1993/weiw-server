@@ -1,6 +1,6 @@
 <?php class mc
 {
-	static function data_user($uuid,$Arr=false)
+	public static function data_user($uuid,$Arr=false)
 	{
 		$config = config::ini('config');
 		$dir = str_ireplace('{dir}',__MKHDIR__,$config['user_dir']);
@@ -26,7 +26,7 @@
 	}
 	
 	
-	static function data_token($uuid,$Arr=false)
+	public static function data_token($uuid,$Arr=false)
 	{
 		$config = config::ini('config');
 		$dir = str_ireplace('{dir}',__MKHDIR__,$config['user_dir']);
@@ -52,7 +52,7 @@
 	}
 	
 	
-	static function admin($code = true)
+	public static function admin($code = true)
 	{
 		try
 		{
@@ -90,7 +90,7 @@
 	}
 	
 	
-    static function user()
+    public static function user()
 	{
 		if(isset($_COOKIE['login_token']))
 		{
@@ -121,25 +121,27 @@
     }
 	
 	
-    static function user_exit()
+    public static function user_exit()
 	{
 		setcookie('login_token','',0,'/');
-		throw new Exception('退出完成');
+		throw new Exception('ok');
     }
 	
 	
-	static function money($uuid,$money) //设置金钱
+	public static function money($uuid,$money) //设置金钱
 	{
 		if($user = self::data_user($uuid))
 		{
-			$user['bi'] = $money;
+			$user['bi'] = $user['bi'] + $money;
 			self::data_user($uuid,$user);
+			
+			return $user['bi'];
 		}
 		else throw new Exception('用户不存在');
 	}
 	
 	
-	static function cape($uuid,$hash) //设置披风
+	public static function cape($uuid,$hash) //设置披风
 	{
 		if($user = self::data_user($uuid))
 		{
@@ -150,7 +152,7 @@
 	}
 	
 	
-	static function skin($uuid,$hash,$model=false) //设置皮肤
+	public static function skin($uuid,$hash,$model=false) //设置皮肤
 	{
 		if($user = self::data_user($uuid))
 		{

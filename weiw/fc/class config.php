@@ -29,7 +29,7 @@
 		}
 	}
 	
-    static function ini($name)
+    public static function ini($name)
 	{
         return include(__MKHDIR__."/config/{$name}.php");
     }

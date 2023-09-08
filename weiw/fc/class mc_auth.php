@@ -20,7 +20,7 @@
     }
 
 
-    static function constructOfflinePlayerUuid($username)
+    public static function constructOfflinePlayerUuid($username)
 	{
         $data = hex2bin(md5("OfflinePlayer:" . strtolower($username)));
         $data[6] = chr(ord($data[6]) & 0x0f | 0x30);
@@ -29,13 +29,13 @@
     }
 	
 	
-	static function random()
+	public static function random()
 	{
 		return md5(time().str_shuffle('QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890'));
 	}
 	
 	
-	static function user($user) //用户信息序列化
+	public static function user($user) //用户信息序列化
 	{
 		$Arr = Array();
 		$Arr['id'] = $user['id'];
@@ -45,7 +45,7 @@
 	}
 	
 	
-	static function Profile($user,$unsigned,$uploadableTextures) //角色信息的序列化
+	public static function Profile($user,$unsigned,$uploadableTextures) //角色信息的序列化
 	{
 		$config = config::ini('config');
 		$textures = Array();

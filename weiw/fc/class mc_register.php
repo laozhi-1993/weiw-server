@@ -66,7 +66,6 @@
 			mc::data_user ($uuid ,$user);
 			mc::data_token($email,$token);
 			setcookie('login_token',$token['login_token'],time()+1296000,'/');
-			throw new Exception('注册完成');
 		}
 		else throw new Exception('缺少属性');
 	}

@@ -2,7 +2,7 @@
 
 class mkh_csrf
 {
-	static function domain()
+	public static function domain()
 	{
 		if(defined('__MKHAPI__') && __MKHAPI__)
 		{
@@ -21,7 +21,7 @@ class mkh_csrf
 	}
 	
 	
-	static function token()
+	public static function token()
 	{
 		if(defined('__MKHAPI__') && __MKHAPI__)
 		{

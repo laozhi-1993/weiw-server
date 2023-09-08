@@ -9,7 +9,7 @@
 			$this->line    = $getLine;
 			//error_log("{$this->message} {$this->file} {$this->line}",3,__MKHDIR__.'/log.txt');
 		}
-		static function view($error_code,$error_message,$error_file,$error_line)
+		public static function view($error_code,$error_message,$error_file,$error_line)
 		{
 			echo "<p><b>错误信息：</b><span>{$error_message}</span></p>";
 			echo "<p><b>错误文件：</b><span>{$error_file}</span></p>";

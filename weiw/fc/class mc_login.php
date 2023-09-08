@@ -40,7 +40,6 @@
 			mc::data_user ($token['uuid'][0],$user);
 			mc::data_token($email,$token);
 			setcookie('login_token',$token['login_token'],time()+1296000,'/');
-			throw new Exception('登录完成');
 		}
 		else throw new Exception('缺少属性');
 	}
