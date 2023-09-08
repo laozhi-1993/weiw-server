@@ -126,11 +126,11 @@
 				}
 			}
 			
-			function set_texture(type)
+			function texture(type)
 			{
 				if(type === 1)
 				{
-					$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_set_texture","id":$('.settexture input').val()},function (result){
+					$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_texture","id":$('.settexture input').val()},function (result){
 						if(result.error == "ok")
 						{
 							if(result.type == 'steve' || result.type == 'alex')
@@ -330,7 +330,7 @@
 			<div class="content">
 				<div class="tid">
 					<input type="number" min="1" placeholder="TID"/>
-					<span onclick="set_texture(1)">确定</span>
+					<span onclick="texture(1)">确定</span>
 				</div>
 				<div class="close" onclick="set_texture(2)">
 					<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1701"><path d="M0 0h1024v1024H0z" fill="#FF0033" fill-opacity="0" p-id="1702"></path><path d="M240.448 168l2.346667 2.154667 289.92 289.941333 279.253333-279.253333a42.666667 42.666667 0 0 1 62.506667 58.026666l-2.133334 2.346667-279.296 279.210667 279.274667 279.253333a42.666667 42.666667 0 0 1-58.005333 62.528l-2.346667-2.176-279.253333-279.253333-289.92 289.962666a42.666667 42.666667 0 0 1-62.506667-58.005333l2.154667-2.346667 289.941333-289.962666-289.92-289.92a42.666667 42.666667 0 0 1 57.984-62.506667z" fill="#111111" p-id="1703"></path></svg>
@@ -347,7 +347,7 @@
 				<div onclick="action(2)"><span>跑步</span></div>				
 				<div onclick="action(3)"><span>飞行</span></div>
 				<div onclick="action(5)"><span>鞘翅</span></div>
-				<div onclick="set_texture(3)"><span>设置</span></div>
+				<div onclick="texture(3)"><span>设置</span></div>
 			</div>
 		</div>
 	</body>

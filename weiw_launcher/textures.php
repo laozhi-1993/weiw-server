@@ -12,9 +12,9 @@
 		<script src="js/jquery.min.js"></script>
 		<script src="js/tips.js"></script>
 		<script>
-			function set_texture(id)
+			function texture(id)
 			{
-				$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_set_texture","id":id},function (result){
+				$.getJSON("/weiw/index.php?{echo:token}",{"mods":"mc_texture","id":id},function (result){
 					if(result.error == "ok")
 					{
 						$(window.parent.document).find('#avatar img').attr('src',`/weiw/index_auth.php/avatar?size=48&hash=${result.hash}`);
@@ -198,7 +198,7 @@
 						<img src="https://mcskin.cn/preview/{Print:value:tid}?height=150" />
 					</div>
 					<div class="attribute">
-						<button onclick="set_texture('{Print:value:tid}')">使用</button>
+						<button onclick="texture('{Print:value:tid}')">使用</button>
 					</div>
 				</div>
 			</div>
