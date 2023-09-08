@@ -5,7 +5,7 @@
 			if(isset($_GET['id']))
 			{
 				$user = mc::user();
-				$texture = json_decode(http::open("https://mcskin.cn/texture/{$_GET['id']}"),true);
+				$texture = json_decode(http::open("https://mcskin.mahua-a.top/texture/{$_GET['id']}"),true);
 				
 				isset($texture['hash']) or throw new Exception('缺少参数hash');
 				isset($texture['type']) or throw new Exception('缺少参数type');

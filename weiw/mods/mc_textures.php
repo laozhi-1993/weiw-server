@@ -12,7 +12,7 @@
 			}
 			
 			
-			return json_decode(http::open("https://mcskin.cn/skinlib/list?filter=skin&sort=time&page={$page}"),true);
+			return json_decode(http::open("https://mcskin.mahua-a.top/skinlib/list?filter=skin&sort=time&page={$page}"),true);
 		}
 		catch(Exception $Exception)
 		{
