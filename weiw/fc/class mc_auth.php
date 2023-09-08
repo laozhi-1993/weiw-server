@@ -223,7 +223,7 @@
 				{
 					try
 					{
-						if($data = file_get_contents("https://mcskin.cn/textures/{$hash[1]}"))
+						if($data = file_get_contents("https://mcskin.mahua-a.top/textures/{$hash[1]}"))
 						{
 							file_put_contents($texture,$data);
 							header('Content-Type: image/png');
@@ -295,7 +295,7 @@
 				{
 					try
 					{
-						if($output = file_get_contents("https://mcskin.cn/textures/{$_GET['hash']}"))
+						if($output = file_get_contents("https://mcskin.mahua-a.top/textures/{$_GET['hash']}"))
 						{
 							file_put_contents($texture,$output);
 						}
