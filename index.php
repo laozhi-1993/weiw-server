@@ -280,7 +280,7 @@
 			</div>
 			<div class="introduce">
 				<div class="image">
-					<img src="https://i.imgtg.com/2023/01/31/0Oi06.jpg" />
+					<img src="0Oi06.jpg" />
 				</div>
 			</div>
 		</main>
