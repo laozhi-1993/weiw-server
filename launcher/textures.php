@@ -1,7 +1,7 @@
 <?php include_once("$_SERVER[DOCUMENT_ROOT]/weiw/index.php");
 
 
-    $MKH = new mkh();
+	$MKH = new mkh();
 	$MKH ->mods('mc_launcher');
 	$MKH ->mods('mc_textures');
 ?>
