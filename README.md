@@ -88,4 +88,5 @@
 
 ## 相关项目
 
-- [weiw-launcher](https://github.com/laozhi-1993/weiw-launcher)：`weiw-launcher` 是与 `weiw-server` 协同工作的客户端组件，提供用户登录、皮肤更换等功能。
+- [weiw-launcher](https://github.com/laozhi-1993/weiw-launcher): `weiw-launcher` 是 `weiw-server` 项目的客户端组件，提供用户登录和 Minecraft 启动功能。
+- [authlib-injector](https://github.com/yushijinhun/authlib-injector): 一个用于 Minecraft 登录认证的库，`weiw-launcher` 使用该库来实现与原版 Minecraft 相同的登录认证体验。
