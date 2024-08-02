@@ -48,8 +48,7 @@
     - 方法二: `wwwroot/weiw/config/admin.php`
   - **内容示例**:
     ```php
-    <?php
-    return array('admin1', 'admin2');
+    <?php return array('admin1', 'admin2');
     ```
     - 每个元素代表一个管理员用户名。可以添加多个管理员用户名，每个用户名作为数组中的一个元素。
 
