@@ -1,7 +1,6 @@
 # weiw-server
 
-## 项目介绍
-
+## 项目简介
 `weiw-server` 是 [weiw-launcher](https://github.com/laozhi-1993/weiw-launcher) 项目的服务端组件。它与 [weiw-launcher](https://github.com/laozhi-1993/weiw-launcher) 客户端协同工作，提供用户认证和游戏相关的服务器功能。
 
 ## 功能特性
