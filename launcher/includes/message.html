@@ -1,0 +1,41 @@
+	<script src="js/message.js"></script>
+	<div class="result">
+		<style>
+			.result {
+				position: relative;
+				top: 0;
+				left: 0;
+				z-index: 1;
+				width: 100%;
+			}
+			.result data {
+				display: none;
+			}
+			.result div {
+				margin-bottom: 10px;
+				position: relative;
+				padding: 10px;
+				padding-right: 30px;
+				background-color: #FFFFFF;
+				border-radius: 5px;
+			}
+			.result div span:first-child {
+				color: #52808C;
+			}
+			.result div span:last-child {
+				position: absolute;
+				top: 0;
+				right: 5px;
+				display: inline-block;
+				cursor: pointer;
+				padding: 10px;
+				color: #52808C;
+			}
+		</style>
+		<data>
+			<div id="{id}">
+				<span>{error}</span>
+				<span title="关闭" onclick="removeMessage({id})">X</span>
+			</div>
+		</data>
+	</div>
