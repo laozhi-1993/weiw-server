@@ -11,10 +11,8 @@
 		});
 		
 		
-		setSkinHash(document.getElementById("skinContainer").getAttribute("skinHash"));
-		setCapeHash(document.getElementById("skinContainer").getAttribute("capeHash"));
+		loadTexture();
 		action(1);
-//		action(4);
 		
 		
 		skinViewer.fov  = 80;   //背景大小
@@ -28,22 +26,6 @@
 		window.onresize = function (){
 			skinViewer.width  = document.getElementById("canvas").offsetWidth;
 			skinViewer.height = document.getElementById("canvas").offsetHeight;
-		}
-	}
-	
-	
-	function setSkinHash(hash)
-	{
-		Skinurl = `/weiw/index_auth.php/texture/${hash}`;
-		skinViewer.loadSkin(Skinurl);
-	}
-	
-	function setCapeHash(hash)
-	{
-		if(hash != "")
-		{
-			Capeurl = `/weiw/index_auth.php/texture/${hash}`;
-			skinViewer.loadCape(Capeurl, Capecape);
 		}
 	}
 	
@@ -95,23 +77,78 @@
 		}
 	}
 	
+	function loadTexture()
+	{
+		fetch('/weiw/index.php?mods=mc_user')
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok ' + response.statusText);
+				}
+				return response.json();
+			})
+			.then(data => {
+				if(data.CAPE.hash != "")
+				{
+					skinViewer.loadCape(`/weiw/index_auth.php/texture/${data.CAPE.hash}`);
+				}
+				else
+				{
+					skinViewer.loadCape(null);
+				}
+
+				if(data.SKIN.hash)
+				{
+					skinViewer.loadSkin(`/weiw/index_auth.php/texture/${data.SKIN.hash}`);
+					$(window.parent.document).find('#avatar img').attr('src',`/weiw/index_auth.php/avatar/${data.SKIN.hash}/48`);
+				}
+			})
+			.catch(error => {
+				console.error(error);
+			});
+	}
+	
 	function texture(type)
 	{
+		if(type === 0)
+		{
+			fetch("/weiw/index.php?mods=mc_texture_resetting")
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok ' + response.statusText);
+					}
+					return response.json();
+				})
+				.then(data => {
+					if(data.error == "ok")
+					{
+						loadTexture();
+					}
+					else showMessage(data.error);
+				})
+				.catch(error => {
+					console.error(error);
+				});
+		}
+		
 		if(type === 1)
 		{
-			$.getJSON("/weiw/index.php",{"mods":"mc_texture","id":$('.settexture input').val()},function (result){
-				if(result.error == "ok")
-				{
-					if(result.type == 'steve' || result.type == 'alex')
-					{
-						$(window.parent.document).find('#avatar img').attr('src',`/weiw/index_auth.php/avatar/${result.hash}/48`);
-						setSkinHash(result.hash);
+			fetch("/weiw/index.php?mods=mc_texture&id="+$('.settexture input').val())
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok ' + response.statusText);
 					}
-					
-					if(result.type == 'cape') setCapeHash(result.hash);
-				}
-				else showMessage(result.error);
-			});
+					return response.json();
+				})
+				.then(data => {
+					if(data.error == "ok")
+					{
+						loadTexture();
+					}
+					else showMessage(data.error);
+				})
+				.catch(error => {
+					console.error(error);
+				});
 			
 			$('.settexture input').val("");
 			$('.settexture').fadeOut();

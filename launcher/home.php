@@ -165,7 +165,7 @@
 		</div>
 		<div class="texture">
 			<div id="canvas">
-				<canvas id="skinContainer" skinHash="{echo:var.mc_user.SKIN.hash}" capeHash="{echo:var.mc_user.CAPE.hash}"></canvas>
+				<canvas id="skinContainer"></canvas>
 			</div>
 			<div class="action">
 				<div onclick="action(4)"><span>旋转</span></div>
@@ -174,6 +174,7 @@
 				<div onclick="action(3)"><span>飞行</span></div>
 				<div onclick="action(5)"><span>鞘翅</span></div>
 				<div onclick="texture(3)"><span>使用材质</span></div>
+				<div onclick="texture(0)"><span>重置材质</span></div>
 			</div>
 		</div>
 	</body>
