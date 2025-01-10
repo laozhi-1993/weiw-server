@@ -55,11 +55,11 @@
 ## authlib-injector 配置说明
 
 1. **下载 authlib-injector**：
-   - 从 [authlib-injector 项目](https://github.com/authlib-injector/authlib-injector) 页面下载最新版本的 authlib-injector。
+   - 从 [authlib-injector 项目](https://github.com/yushijinhun/authlib-injector) 页面下载最新版本的 authlib-injector。
 
 2. **配置 authlib-injector**：
    - 将下载的 `authlib-injector.jar` 文件放置到 Minecraft 服务器目录下。
-   - 根据 [authlib-injector 文档](https://github.com/authlib-injector/authlib-injector#readme) 进行必要的配置，确保它可以与 `weiw-server` 进行正常的通信和用户认证。
+   - 根据 [authlib-injector 文档](https://github.com/yushijinhun/authlib-injector) 进行必要的配置，确保它可以与 `weiw-server` 进行正常的通信和用户认证。
 
 ## Minecraft 服务器配置说明
 
