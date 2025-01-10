@@ -1,8 +1,8 @@
 <?php return array (
-  'serverName' => 'laozhi',
-  'domain' => 'laozhi.cc',
+  'serverName' => 'example',
+  'domain' => 'example.com',
   'download' => '',
-  'authUrl' => 'https://server.laozhi.cc:1000/weiw/index_auth.php',
+  'authUrl' => 'http://127.0.0.1/weiw/index_auth.php',
   'checkinMoney' => '1000',
   'defaultMoney' => '1000',
 ) ?>
