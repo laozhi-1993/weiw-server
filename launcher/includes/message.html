@@ -1,37 +1,82 @@
-	<script src="js/message.js"></script>
+	<script>
+		function showMessage(text) {
+			const messageId = Date.now();  // 使用 Date.now() 获取当前时间戳作为唯一 ID
+			let messageHtml = document.querySelector(".result data").innerHTML;
+			
+			// 使用正则替换占位符
+			messageHtml = messageHtml.replace(/{id}/g, messageId);
+			messageHtml = messageHtml.replace(/{error}/g, text);
+			
+			// 滚动到页面顶部
+			document.documentElement.scrollTop = 0;
+			document.body.scrollTop = 0;
+			document.querySelector(".result").insertAdjacentHTML('beforeend', messageHtml);
+
+			// 延时3秒后移除消息
+			setTimeout(function() {
+				removeMessage(messageId);
+			}, 3000);
+		}
+		
+		function removeMessage(id) {
+			const messageElement = document.getElementById(id);
+			if (messageElement) {
+				messageElement.classList.add('remove');
+
+				// 动画结束后移除元素
+				setTimeout(function() {
+					messageElement.remove();
+				}, 500);
+			}
+		}
+	</script>
+	<style>
+        @keyframes remove {
+            0% {
+                transform: scale(1);
+				opacity: 1;
+            }
+            100% {
+                transform: scale(0);
+				opacity: 0;
+            }
+        }
+		
+		.result {
+			position: relative;
+			top: 0;
+			left: 0;
+			z-index: 1;
+		}
+		.result .remove {
+			animation: remove 0.51s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+		.result data {
+			display: none;
+		}
+		.result div {
+			margin-bottom: 8px;
+			position: relative;
+			padding: 10px;
+			padding-right: 30px;
+			background-color: #f4d03f;
+			border-radius: 5px;
+		}
+		.result div span:first-child {
+			color: #000;
+			font-size: 14px;
+		}
+		.result div span:last-child {
+			position: absolute;
+			top: 0;
+			right: 5px;
+			display: inline-block;
+			cursor: pointer;
+			padding: 10px;
+			color: #ff0000;
+		}
+	</style>
 	<div class="result">
-		<style>
-			.result {
-				position: relative;
-				top: 0;
-				left: 0;
-				z-index: 1;
-				width: 100%;
-			}
-			.result data {
-				display: none;
-			}
-			.result div {
-				margin-bottom: 10px;
-				position: relative;
-				padding: 10px;
-				padding-right: 30px;
-				background-color: #FFFFFF;
-				border-radius: 5px;
-			}
-			.result div span:first-child {
-				color: #52808C;
-			}
-			.result div span:last-child {
-				position: absolute;
-				top: 0;
-				right: 5px;
-				display: inline-block;
-				cursor: pointer;
-				padding: 10px;
-				color: #52808C;
-			}
-		</style>
 		<data>
 			<div id="{id}">
 				<span>{error}</span>

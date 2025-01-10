@@ -1,0 +1,105 @@
+	<script>
+		function customConfirm(message, callback) {
+			const modal          = document.getElementById('custom-confirm');
+			const messageElement = document.getElementById('confirm-message');
+			const yesButton      = document.getElementById('confirm-yes');
+			const noButton       = document.getElementById('confirm-no');
+
+			
+			messageElement.innerHTML = message;
+            modal.classList.toggle('show');
+			
+			
+			yesButton.onclick = function() {
+				modal.classList.toggle('show');
+				callback(true);
+			};
+			
+			noButton.onclick = function() {
+				modal.classList.toggle('show');
+				callback(false);
+			};
+		}
+	</script>
+	<style>
+        @keyframes scaleUp {
+            0% {
+                transform: scale(0); /* 开始时小 */
+				opacity: 0;
+            }
+            40% {
+                transform: scale(1.2); /* 放大到 1.2x */
+            }
+            60% {
+                transform: scale(0.9); /* 略微缩小 */
+            }
+            100% {
+                transform: scale(1); /* 最终恢复到原始大小 */
+				opacity: 1;
+            }
+        }
+		
+		.confirm {
+			position: fixed;
+			top:   0;
+			right: 0;
+			z-index: 99;
+			user-select: none;
+			width: 	100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.5);
+			visibility: hidden;
+		}
+		.confirm.show {
+			visibility: visible;
+		}
+		.confirm.show .margin {
+			animation: scaleUp 0.5s ease-in-out forwards;
+        }
+		.confirm .margin {
+			background-color: #fff;
+			border-radius: 10px;
+			position: relative;
+			top: 50%;
+			x-index: 1;
+			text-align: center;
+			overflow: hidden;
+			margin: -150px auto 0 auto;
+			max-width: 500px;
+		}
+		.confirm .margin .message {
+			padding: 50px 10px;
+		}
+		.confirm .margin .button {
+			font-size: 0;
+			height: 40px;
+			line-height: 40px;
+		}
+		.confirm .margin .button span {
+			background-color: #494A5F;
+			box-sizing: border-box;
+			width: 50%;
+			display: inline-block;
+			font-size: 16px;
+			color: #FFFFFF;
+			cursor: pointer;
+		}
+		.confirm .margin .button span:hover {
+			color: #86d688;
+		}
+		.confirm .margin .button span:first-child {
+			border-right: 1px solid #7b817b;
+		}
+		.confirm .margin .button span:last-child {
+			border-left: 1px solid #7b817b;
+		}
+	</style>
+	<div class="confirm fade" id="custom-confirm">
+		<div class="margin">
+			<div class="message" id="confirm-message"></div>
+			<div class="button">
+				<span id="confirm-yes">确定</span>
+				<span id="confirm-no">取消</span>
+			</div>
+		</div>
+	</div>

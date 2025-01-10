@@ -7,8 +7,6 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 	<head>
-		<script src="js/jquery.min.js"></script>
-		<script src="js/command.js"></script>
 		<style>
 			body {
 				padding: 0;
@@ -53,7 +51,7 @@
 				font-size: 0;
 			}
 			.rcon .operate input {
-				width: calc(100% - 315px);
+				width: calc(100% - 210px);
 				height: 35px;
 				padding: 5px 10px;
 				margin: 5px 0;
@@ -88,18 +86,49 @@
 		</style>
 	</head>
 	<body>
-		<includes-message><?php include('includes/message.html') ?></includes-message>
 		<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
+		
 		<div class="rcon">
 			<div class="output">
 				<pre></pre>
 			</div>
 			<div class="operate">
-				<input type="text" placeholder="Ctrl+V 粘贴" id="command" />
-				<button onclick="command()" id="button">发送命令</button>
-				<button onclick="command('broadcast')">发送公告</button>
-				<button onclick="$('#command').val('changepassword [旧密码] [新密码] [确认新密码]')">更改密码</button>
+				<form action="/weiw/index.php?mods=mc_console" method="GET">
+					<input type="text" name="command" placeholder="Ctrl+V 粘贴" required />
+					<button>发送命令</button>
+					<button type="button" onclick="changepassword()">更改密码</button>
+				</form>
 			</div>
 		</div>
+		
+		
+		<script src="js/main.js"></script>
+		<script>
+			const output = document.querySelector('.output');
+			const pre = document.querySelector('.output pre');
+			
+			handleFormSubmit("form", function(fetch, form) {
+				const input = form.querySelector('input');
+				
+				pre.insertAdjacentHTML("beforeend", "<div class='send'>发送了命令："+input.value+"</div>");
+				output.scrollTop = output.scrollHeight;
+				input.value = '';
+				
+				fetch.then((data) => {
+					if(data.error !== '\u0000\u0000')
+					{
+						pre.insertAdjacentHTML("beforeend", "<div class='return'>"+data.error+"</div>");
+						output.scrollTop = output.scrollHeight;
+					}
+				}).catch((error) => {
+					pre.insertAdjacentHTML("beforeend", "<div class='return'>"+error+"</div>");
+					output.scrollTop = output.scrollHeight;
+				});
+			});
+			
+			function changepassword() {
+				document.querySelector('input').value = "changepassword [旧密码] [新密码] [确认新密码]";
+			}
+		</script>
 	</body>
 </html>

@@ -9,118 +9,247 @@
 <html lang="zh-cmn-Hans">
 	<head>
 		<style>
-			.users {
+			::-webkit-scrollbar {width: 10px}
+			::-webkit-scrollbar {height: 10px}
+			::-webkit-scrollbar-track {border-radius: 5px}
+			::-webkit-scrollbar-track {background-color: #606060}
+			::-webkit-scrollbar-thumb {border-radius: 5px}
+			::-webkit-scrollbar-thumb {background-color: #9393ff}
+			
+			body {
+				padding-top: 30px;
 				margin: 0;
-				color: #fff;
+				height: 100vh;
+				box-sizing: border-box;
+				background-color: #2e2e2e;
 			}
-			.users .list {
-				padding: 50px;
-				padding-bottom: 50px;
+			section {
+				margin: 0 10px;
+				padding: 25px;
+				overflow: auto;
+				height: calc(100% - 10px);
+				box-sizing: border-box;
+			}
+			main {
+				max-width: 1200px;
+				margin: 0 auto;
+			}
+			
+			.container {
+				color: white;
+				padding: 30px;
+				background-color: #333;
+				border-radius: 10px;
+				animation: fadeIn 1s ease-out;
+			}
+
+			.header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 20px;
+			}
+
+			.header button {
+				padding: 10px 20px;
+				background-color: #FF6F61;
+				color: white;
+				border: none;
 				border-radius: 5px;
-				background: radial-gradient(#666,#555);
+				cursor: pointer;
+				transition: background-color 0.3s;
 			}
-			.users .list .number {
-				position: relative;
-				height: 50px;
-				font-size: large;
+
+			.header button:hover {
+				background-color: #FF4B3A;
 			}
-			.users .list .number-user {
-				position: absolute;
-				top:  0;
-				left: 0;
+
+			.total {
+				font-size: 18px;
 			}
-			.users .list .number-page {
-				position: absolute;
-				top:   0;
-				right: 0;
+
+			.user-list {
+				margin-top: 20px;
+				animation: slideUp 0.8s ease-out;
 			}
-			.users .list table {
+
+			table {
 				width: 100%;
 				border-collapse: collapse;
-			}
-			.users .list table td {
-				white-space: nowrap;
+				border-radius: 8px;
 				overflow: hidden;
-				text-overflow: ellipsis;
-				padding: 0 20px;
-				height: 60px;
+				animation: fadeInTable 1s ease-out;
 			}
-			.users .list table td:nth-child(4) {
+
+			table th, table td {
+				padding: 15px;
+				text-align: left;
+				border-bottom: 1px solid #444;
+			}
+
+			table th {
+				background-color: #444;
+			}
+
+			table th:last-child {
 				text-align: right;
 			}
-			.users .list table thead {
-				color: #ddd;
-				background-color: #666;
+
+			table td:last-child {
+				text-align: right;
 			}
-			.users .list table tbody {
-				color: #ddd;
-				border-bottom: 1px solid #666;
+
+			table td {
+				background-color: #555;
 			}
-			.users .list table tbody:hover {
-				color: #ddd;
-				background-color: #666;
+
+			table tr {
+				opacity: 0;
+				transform: translateY(30px);
+				animation: fadeInUp 0.5s forwards;
 			}
-			.page {
-				margin: 20px auto;
-				text-align: center;
-				font-size: 0;
+
+			table tr:nth-child(odd) {
+				animation-delay: 0.2s;
 			}
-			.page a {
-				display: inline-block;
+
+			table tr:nth-child(even) {
+				animation-delay: 0.4s;
+			}
+
+			.pagination {
+				display: flex;
+				justify-content: space-between;
+				margin-top: 20px;
+				font-size: 16px;
+			}
+
+			.pagination .page-info {
+				color: #bbb;
+			}
+
+			.load-more {
+				width: 100%;
+				display: block;
+				margin: 30px auto;
 				padding: 10px 20px;
-				font-size: medium;
+				background-color: #FF6F61;
+				color: white;
+				border: none;
+				border-radius: 5px;
 				cursor: pointer;
-				color: #f7f7ff;
-				text-decoration-line: none;
+				text-align: center;
+				transition: background-color 0.3s;
 			}
-			.page a:hover {
-				animation-name: anniu;
-				animation-duration: 0.3s;
-				animation-timing-function: ease-in;
-				background-color: #cc00cc;
+
+			.load-more:hover {
+				background-color: #FF4B3A;
 			}
-			.page .s {
-				background-color: #ff00ff;
-				border-radius: 5px 0 0 5px;
+
+			.load-more:focus {
+				outline: none;
 			}
-			.page .x {
-				background-color: #ff00ff;
-				border-radius: 0 5px 5px 0;
+
+			@keyframes fadeIn {
+				0% {
+					opacity: 0;
+					transform: translateY(-20px);
+				}
+				100% {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			@keyframes slideUp {
+				0% {
+					transform: translateY(30px);
+					opacity: 0;
+				}
+				100% {
+					transform: translateY(0);
+					opacity: 1;
+				}
+			}
+
+			@keyframes fadeInTable {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+
+			@keyframes fadeInUp {
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
 			}
 		</style>
 	</head>
 	<body>
-		<includes-message><?php include('includes/message.html') ?></includes-message>
-		<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
-		<div class="users">
-			<div class="list">
-				<div class="number">
-					<div class="number-user">共 {echo:var.mc_users.number} 个用户</div>
-					<div class="number-page">第 {echo:var.mc_users.page.total}/{echo:var.mc_users.page.current} 页</div>
+		<section>
+			<main>
+				<includes-header><?php include('includes/window-header.html') ?></includes-header>
+				<includes-message><?php include('includes/message.html') ?></includes-message>
+				
+				<div class="container">
+					<div class="header">
+						<button onclick="window.location.href='index.php'">返回首页</button>
+						<div class="total">总共 {echo:var.mc_users.number} 个用户</div>
+					</div>
+
+
+					<loading-container>
+						<div id="userList" class="user-list">
+							<table>
+								<thead>
+									<tr>
+										<th>用户名</th>
+										<th>金币数</th>
+										<th>登陆时间</th>
+										<th>注册时间</th>
+									</tr>
+								</thead>
+								
+								
+								<tbody>
+									<tr foreach(var.mc_users.users,var.key,var.value)>
+										<td>{echo:var.value.name}</td>
+										<td>{echo:var.value.money}</td>
+										<td>{echo:var.value.loginTime}</td>
+										<td>{echo:var.value.registerTime}</td>
+									</tr>
+								</tbody>
+							</table>
+
+
+							<div class="pagination">
+								<div class="page-info">第 {echo:var.mc_users.page.current} 页 / 共 {echo:var.mc_users.page.total} 页</div>
+							</div>
+						</div>
+					</loading-container>
+
+
+					<button class="load-more" onclick="loadingContainer()">加载更多</button>
 				</div>
-				<table>
-					<thead>
-						<tr>
-							<td>名称</td>
-							<td>金币</td>
-							<td>登陆时间</td>
-							<td>注册时间</td>
-						</tr>
-					</thead>
-					<tbody foreach(var.mc_users.users,var.key,var.value)>
-						<tr>
-							<td>{echo:var.value.name}</td>
-							<td>{echo:var.value.money}</td>
-							<td>{echo:var.value.loginTime}</td>
-							<td>{echo:var.value.registerTime}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="page">
-				<a href="{echo:var.index}?{echo:var.mc_users.page.s}" class="s">&lt;上一页</a>
-				<a href="{echo:var.index}?{echo:var.mc_users.page.x}" class="x">下一页&gt;</a>
-			</div>
-		</div>
+			</main>
+		</section>
+
+		<script src="js/main.js"></script>
+		<script>
+			let count = 2;
+			
+			
+			function message(message) {
+				showMessage(message);
+				document.querySelector('section').scrollTop = 0;
+			}
+			function loadingContainer() {
+				fetchAndAppendHtml(`users.php?findId=userList&current=${count}`, "loading-container", () => { count++ });
+			}
+		</script>
 	</body>
 </html>

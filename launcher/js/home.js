@@ -99,7 +99,7 @@
 				if(data.SKIN.hash)
 				{
 					skinViewer.loadSkin(`/weiw/index_auth.php/texture/${data.SKIN.hash}`);
-					$(window.parent.document).find('#avatar img').attr('src',`/weiw/index_auth.php/avatar/${data.SKIN.hash}/48`);
+					window.parent.document.querySelector('#avatar img').src = `/weiw/index_auth.php/avatar/${data.SKIN.hash}/48`;
 				}
 			})
 			.catch(error => {
@@ -132,7 +132,7 @@
 		
 		if(type === 1)
 		{
-			fetch("/weiw/index.php?mods=mc_texture&id="+$('.settexture input').val())
+			fetch("/weiw/index.php?mods=mc_texture&id="+document.querySelector('.settexture input').value)
 				.then(response => {
 					if (!response.ok) {
 						throw new Error('Network response was not ok ' + response.statusText);
@@ -150,12 +150,12 @@
 					console.error(error);
 				});
 			
-			$('.settexture input').val("");
-			$('.settexture').fadeOut();
+			document.querySelector('.settexture input').value = '';
+			document.querySelector('.settexture').classList.remove('show');
 		}
 		
-		if(type === 2) $('.settexture').fadeOut();
-		if(type === 3) $('.settexture').slideToggle(150);
+		if(type === 2) document.querySelector('.settexture').classList.remove('show');
+		if(type === 3) document.querySelector('.settexture').classList.add('show');
 	}
 	
 	window.addEventListener('DOMContentLoaded', initializeViewer);

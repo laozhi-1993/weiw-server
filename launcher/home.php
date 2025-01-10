@@ -9,12 +9,11 @@
 <html lang="zh-cmn-Hans">
 	<head>
 		<script src="js/skinview3d.bundle.js"></script>
-		<script src="js/jquery.min.js"></script>
 		<script src="js/home.js"></script>
 		<style>
 			body {
 				padding: 0;
-				overflow: hidden !important;
+				margin: 0;
 				height: 100vh;
 			}
 			includes-message {
@@ -29,9 +28,19 @@
 				top: 0;
 				left: 0;
 				z-index: 1;
-				display: none;
+				box-sizing: border-box;
 				user-select: none;
 				width: 100%;
+				opacity: 0;
+				visibility: hidden;
+				transform: scale(0.8);
+				transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s 0.5s;
+			}
+			.settexture.show {
+				opacity: 1;
+				visibility: visible;
+				transform: scale(1);
+				transition: opacity 0.5s ease, transform 0.5s ease;
 			}
 			.settexture .content {
 				font-size: 0;
@@ -117,6 +126,7 @@
 				overflow: hidden;
 				border-radius: 5px;
 				height: 100%;
+				background-color: rgba(255, 255, 255, 0.1);
 			}
 			.texture .action {
 				margin-top: 5px;
@@ -151,22 +161,25 @@
 	</head>
 	<body>
 		<includes-message><?php include('includes/message.html') ?></includes-message>
-		<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
+		
 		<div class="settexture">
 			<div class="content">
 				<div class="tid">
 					<input type="number" min="1" placeholder="TID"/>
 					<span onclick="texture(1)">确定</span>
 				</div>
+				
 				<div class="close" onclick="texture(2)">
-					<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1701"><path d="M0 0h1024v1024H0z" fill="#FF0033" fill-opacity="0" p-id="1702"></path><path d="M240.448 168l2.346667 2.154667 289.92 289.941333 279.253333-279.253333a42.666667 42.666667 0 0 1 62.506667 58.026666l-2.133334 2.346667-279.296 279.210667 279.274667 279.253333a42.666667 42.666667 0 0 1-58.005333 62.528l-2.346667-2.176-279.253333-279.253333-289.92 289.962666a42.666667 42.666667 0 0 1-62.506667-58.005333l2.154667-2.346667 289.941333-289.962666-289.92-289.92a42.666667 42.666667 0 0 1 57.984-62.506667z" fill="#111111" p-id="1703"></path></svg>
+					<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h1024v1024H0z" fill="#FF0033" fill-opacity="0"></path><path d="M240.448 168l2.346667 2.154667 289.92 289.941333 279.253333-279.253333a42.666667 42.666667 0 0 1 62.506667 58.026666l-2.133334 2.346667-279.296 279.210667 279.274667 279.253333a42.666667 42.666667 0 0 1-58.005333 62.528l-2.346667-2.176-279.253333-279.253333-289.92 289.962666a42.666667 42.666667 0 0 1-62.506667-58.005333l2.154667-2.346667 289.941333-289.962666-289.92-289.92a42.666667 42.666667 0 0 1 57.984-62.506667z" fill="#111111"></path></svg>
 				</div>
 			</div>
 		</div>
+		
 		<div class="texture">
 			<div id="canvas">
 				<canvas id="skinContainer"></canvas>
 			</div>
+			
 			<div class="action">
 				<div onclick="action(4)"><span>旋转</span></div>
 				<div onclick="action(1)"><span>漫步</span></div>

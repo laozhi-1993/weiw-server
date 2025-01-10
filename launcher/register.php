@@ -3,7 +3,6 @@
 
 	$MKH = new mkh();
 	$MKH ->mods('mc_launcher');
-	$MKH ->mods('mc_user');
 ?>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
@@ -100,67 +99,37 @@
 				display: grid;
 				align-items: center;
 			}
-			.user {
-				padding-top: 10px;
-				text-align: center;
-			}
-			.user .name {
-				color: #303030;
-				font-size: 20px;
-			}
-			.user img {
-				width: 240px;
-				height: 240px;
-				border-radius: 15px;
-				background-color: #FFFFFF;
-			}
-			.user .button {
-				transition: background 0.3s ease;
-				background-color: #0568C1;
-				border-radius: 5px;
-				font-size: 12px;
-				color: #FFFFFF;
-				cursor: pointer;
-				margin:  5px;
-				width: 240px;
-				height: 40px;
-				line-height: 40px;
-				display: inline-block;
-			}
-			.user .button:hover {
-				background-color: #FDC500;
-			}
 		</style>
+		<title>注册</title>
 	</head>
 	<body>
 		<includes-header><?php include('includes/window-header.html') ?></includes-header>
+		
 		<section>
 			<header id="error"></header>
+			
 			<main>
 				<div class="left-div">
 					<h2>注册账号</h2>
+					
 					<form action="javascript:register(0)" method="get">
 						<input onfocus="error()" id="name" type="text" placeholder="名称" title="请输入您的名称" required="" autofocus />
 						<input onfocus="error()" id="password" type="password" title="请输入密码" placeholder="密码" required="" autofocus />
 						<input onfocus="error()" id="confirmPassword" type="password" title="请输入确认密码" placeholder="确认密码" required="" autofocus />
 						<button class="btn" type="submit">注册</button>
 					</form>
+					
 					<span>已有账号？那就<a href="login.php">登录</a>吧。</span>
 				</div>
+				
 				<div class="right-div">
-					<img if(var.mc_user,==,false) src="/images/1.png" />
-					<!--else-->
-					<div if() class="user">
-						<div class="avatar">
-							<img src="/weiw/index_auth.php/avatar/{echo:var.mc_user.SKIN.hash}/240" />
-						</div>
-						<div class="name">{echo:var.mc_user.name}</div>
-						<div class="button" onclick="window.location.replace('index.php')">登陆</div>
-					</div>
+					<img src="/images/1.png" />
 				</div>
 			</main>
+			
 			<footer>Copyright © {echo:var.config.serverName} 2023</footer>
 		</section>
+		
 		<script>
 			function error(text)
 			{
