@@ -11,18 +11,7 @@
 				$page = 1;
 			}
 			
-			
-			if(isset($_GET['filter']) && $_GET['filter'] == 'cape')
-			{
-				$filter = 'cape';
-			}
-			else
-			{
-				$filter = 'skin';
-			}
-			
-			
-			return json_decode(http::open("https://mcskin.com.cn/skinlib/list?filter={$filter}&sort=time&page={$page}"),true);
+			return json_decode(http::open("https://mcskin.com.cn/skinlib/list?filter=skin&sort=time&page={$page}"),true);
 		}
 		catch(Exception $Exception)
 		{

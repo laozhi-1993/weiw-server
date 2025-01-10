@@ -15,17 +15,11 @@
 			
 			
 			$texture = json_decode(http::open("https://mcskin.com.cn/texture/{$_GET['id']}"),true);
-			if($texture['size'] > 100)
-			{
-				throw new Exception('材质大小超过100k无法使用');
-			}
-			
 			
 			switch ($texture['type'])
 			{
 				case 'steve':
 				case 'alex':
-				case 'cape':
 					$userManager = new mc_user_manager();
 					$user->setTexture($texture['hash'], $texture['type']);
 					$user->saveToJson($userManager->getUserDir());

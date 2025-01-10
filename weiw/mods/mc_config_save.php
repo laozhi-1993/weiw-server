@@ -10,6 +10,36 @@
 				throw new Exception("缺少参数 type");
 			}
 			
+			if($_GET['type'] == 'client')
+			{
+				$requiredParams = [
+					'version',
+					'authModule',
+					'jvm',
+					'quickPlayAddress',
+					'extensionType',
+					'extensionValue'
+				];
+				
+				foreach ($requiredParams as $param) {
+					if (!isset($_GET[$param])) {
+						throw new Exception("缺少参数 $param");
+					}
+				}
+				
+				$client = new config('client');
+				$client ->setValue('version',          $_GET['version']);
+				$client ->setValue('authModule',       $_GET['authModule']);
+				$client ->setValue('jvm',              $_GET['jvm']);
+				$client ->setValue('quickPlayAddress', $_GET['quickPlayAddress']);
+				$client ->setValue('extensionType',    $_GET['extensionType']);
+				$client ->setValue('extensionValue',   $_GET['extensionValue']);
+				
+				
+				throw new Exception('保存完成');
+			}
+			
+			
 			if($_GET['type'] == 'config')
 			{
 				$requiredParams = [
@@ -31,7 +61,7 @@
 				$config ->setValue('serverName',   $_GET['serverName']);
 				$config ->setValue('domain',       $_GET['domain']);
 				$config ->setValue('download',     $_GET['download']);
-				$config ->setValue('authUrl',    $_GET['authUrl']);
+				$config ->setValue('authUrl',      $_GET['authUrl']);
 				$config ->setValue('checkinMoney', $_GET['checkinMoney']);
 				$config ->setValue('defaultMoney', $_GET['defaultMoney']);
 				
@@ -56,10 +86,10 @@
 				}
 				
 				$config = new config('rcon');
-				$config ->setValue('host', $_GET['host']);
-				$config ->setValue('post', $_GET['post']);
+				$config ->setValue('host',     $_GET['host']);
+				$config ->setValue('post',     $_GET['post']);
 				$config ->setValue('password', $_GET['password']);
-				$config ->setValue('time', $_GET['time']);
+				$config ->setValue('time',     $_GET['time']);
 
 
 				throw new Exception('保存完成');

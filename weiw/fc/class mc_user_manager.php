@@ -8,6 +8,11 @@
 	{
 		$this->users = Array();
 		$this->userDir = __MKHDIR__.'/users/';
+		
+		if (!is_dir($this->userDir))
+		{
+			mkdir($this->userDir, 0777, true);
+		}
 	}
 	
 	

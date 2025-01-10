@@ -2,7 +2,8 @@
 {
     private $pathInfo;
     private $data;
-	private $userdir;
+	private $rootDir;
+	private $texturesDir;
 	private $implementationName;
 	private $implementationVersion;
 	private $skinDomains;
@@ -25,7 +26,8 @@
 		$rsa    = config::loadConfig('rsa');
 		
 		$this->data                  = json_decode(file_get_contents('php://input'), true);
-		$this->userdir               = __MKHDIR__;
+		$this->rootDir               = __MKHDIR__;
+		$this->texturesDir           = __MKHDIR__.'/user_textures/';
 		$this->implementationName    = 'weiw auth server';
 		$this->implementationVersion = '1.1.1';
 		$this->skinDomains[]         = parse_url($config['authUrl'], PHP_URL_HOST);
@@ -33,6 +35,12 @@
 		$this->authUrl               = $config['authUrl'];
 		$this->publicKey             = $rsa['public'];
 		$this->privateKey            = $rsa['private'];
+		
+		
+		if (!is_dir($this->texturesDir))
+		{
+			mkdir($this->texturesDir, 0777, true);
+		}
     }
 	
 	
@@ -112,7 +120,7 @@
 				
 				if(preg_match('!^-?[A-Za-z0-9]+$!',$this->data['serverId']) && $user->accessToken == $this->data['accessToken'])
 				{
-					file_put_contents("{$this->userdir}/data/serverid_{$this->data['selectedProfile']}.php","<?php return '{$this->data['serverId']}';");
+					file_put_contents("{$this->rootDir}/data/serverid_{$this->data['selectedProfile']}.php","<?php return '{$this->data['serverId']}';");
 				}
 			}
 			
@@ -131,7 +139,7 @@
 			if(isset($_GET['username']) && isset($_GET['serverId']))
 			{
 				$uuid = mc_user::PlayerUUID($_GET['username']);
-				$serveridPath = "{$this->userdir}/data/serverid_{$uuid}.php";
+				$serveridPath = "{$this->rootDir}/data/serverid_{$uuid}.php";
 				
 				
 				if(file_exists($serveridPath))
@@ -232,7 +240,7 @@
 			}
 			else
 			{
-				if(file_exists($texture = "{$this->userdir}/user_textures/{$hash[1]}.png"))
+				if(file_exists($texture = "{$this->texturesDir}{$hash[1]}.png"))
 				{
 					header('Content-Type: image/png');
 					die(file_get_contents($texture));
@@ -300,7 +308,7 @@
 			}
 			else
 			{
-				if(file_exists($texture = "{$this->userdir}/user_textures/{$hash[1]}.png"))
+				if(file_exists($texture = "{$this->texturesDir}{$hash[1]}.png"))
 				{
 					$output = file_get_contents($texture);
 				}

@@ -1,7 +1,7 @@
 <?php return '{
     "移速加10，持续时间60秒":{"price":"100","command":"effect give \'{name}\' minecraft:speed 60 10"}
     ,
-    "力量加10，持续时间60秒":{"price":"100","command":"effect give \'{name}\' minecraft:strength 120 10"}
+    "力量加10，持续时间120秒":{"price":"100","command":"effect give \'{name}\' minecraft:strength 120 10"}
     ,
     "跳跃加10，持续时间60秒":{"price":"100","command":"effect give \'{name}\' minecraft:jump_boost 60 10"}
     ,

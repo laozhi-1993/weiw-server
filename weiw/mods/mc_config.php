@@ -11,7 +11,8 @@
 				'config' => config::loadConfig('config'),
 				'rcon' => config::loadConfig('rcon'),
 				'rsa' => config::loadConfig('rsa'),
-				'items' => config::loadConfig('items')
+				'items' => config::loadConfig('items'),
+				'client' => config::loadConfig('client')
 			];
 		}
 		catch(Exception $Exception)

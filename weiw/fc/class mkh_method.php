@@ -88,4 +88,12 @@
 			return "<?php echo {$parameter[0]} ?>";
 		}
 	}
+	
+	public static function th2_jsonEncode($parameter,$target)
+	{
+		if($target->toUnified($parameter[0]))
+		{
+			return "<?php echo json_encode({$parameter[0]}) ?>";
+		}
+	}
 }

@@ -11,7 +11,7 @@
 	}
 	
 	
-	static function open($url, $post=null, $header=null, $time=null)
+	public static function open($url, $post=null, $header=null, $time=null)
 	{
 		is_array($post)   && $options['http']['method']  = 'POST';
 		is_array($post)   && $header[]                   = 'Content-type: application/x-www-form-urlencoded';
@@ -28,5 +28,28 @@
 		$options['http']['content'] = http_build_query($post);
 		$options['http']['timeout'] = round($time);
 		return file_get_contents($url, false, stream_context_create($options));
+	}
+	
+	
+	public static function get_current_url($path = '') {
+		// 检查是否为 HTTPS 协议
+		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+		
+		// 获取域名
+		$domain = $_SERVER['HTTP_HOST'];
+		
+		// 获取端口号
+		$port = $_SERVER['SERVER_PORT'];
+		
+		// 只有当端口不是默认的 80 或 443 时，才加上端口号
+		if (($protocol === "http://" && $port != 80) || ($protocol === "https://" && $port != 443)) {
+			// 解决端口重复的问题，判断 HTTP_HOST 是否已经包含端口
+			if (strpos($domain, ":") === false) {
+				$domain .= ":" . $port;
+			}
+		}
+		
+		// 返回完整的 URL
+		return $protocol . $domain . '/'. $path;
 	}
 }

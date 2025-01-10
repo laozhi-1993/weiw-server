@@ -7,9 +7,9 @@
 				throw new Exception("没有登陆");
 			}
 			
-			if(!isset($_GET['command']))
+			if(!isset($_GET['command']) || $_GET['command'] === '')
 			{
-				throw new Exception('缺少参数 command');
+				throw new Exception('发送的指令为空');
 			}
 			
 			$commandParser = new mc_command_parser($_GET['command']);
