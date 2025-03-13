@@ -7,128 +7,184 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 	<head>
+		<title>终端</title>
 		<style>
+			:root {
+				--terminal-bg: #1a1a1a;
+				--text-color: #00ff9d;
+				--accent-color: #00cc77;
+				--border-color: #2d2d2d;
+			}
+
 			body {
-				padding: 0;
-				overflow: hidden !important;
 				height: 100vh;
-			}
-			.rcon {
-				position: relative;
-				height: 100%;
-			}
-			.rcon .output {
-				height: calc(100% - 50px);
-				overflow-y: scroll;
-			}
-			.rcon .output pre {
-				background: radial-gradient(#666,#555);
-				border-radius: 5px;
-				box-sizing: border-box;
 				margin: 0;
-				margin-right: 5px;
-				min-height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-family: 'Fira Code', 'Courier New', monospace;
+				color: var(--text-color);
+			}
+
+			.terminal-container {
+				background: var(--terminal-bg);
+				width: 100%;
+				height: 100%;
+				box-sizing: border-box;
+				border-radius: 8px;
+				box-shadow: 0 0 20px rgba(0, 255, 100, 0.1);
+				border: 1px solid var(--border-color);
+				overflow: hidden;
+			}
+
+			.terminal-header {
+				background: #232323;
 				padding: 10px;
 			}
-			.rcon .output pre div {
-				margin: 0;
-				margin-top: 5px;
-				margin-bottom: 5px;
+
+			.history {
+				height: calc(100% - 143px);
+				padding: 20px;
+				overflow-y: auto;
+				scrollbar-width: thin;
+				scrollbar-color: var(--accent-color) var(--terminal-bg);
 			}
-			.rcon .output pre .send {
-				color: #bde619;
-				font-size: 18px;
+
+			.history::-webkit-scrollbar {
+				width: 6px;
 			}
-			.rcon .output pre .return {
-				border-radius: 5px;
-				background-color: #343541;
-				padding: 15px;
-				color: #a9e5ed;
-				font-size: 16px;
+
+			.history::-webkit-scrollbar-track {
+				background: var(--terminal-bg);
 			}
-			.rcon .operate {
-				position: relative;
-				font-size: 0;
+
+			.history::-webkit-scrollbar-thumb {
+				background-color: var(--accent-color);
+				border-radius: 3px;
 			}
-			.rcon .operate input {
-				width: calc(100% - 210px);
-				height: 35px;
-				padding: 5px 10px;
-				margin: 5px 0;
-				color: #fff;
-				font-size: 16px;
-				box-sizing: border-box;
-				border: 2px solid #666;
-				border-radius: 5px;
-				background-color: #555;
+
+			.input-container {
+				display: flex;
+				align-items: center;
+				padding: 15px 20px;
+				background: #212121;
+				border-top: 1px solid var(--border-color);
 			}
-			.rcon .operate input::placeholder {
-				color: #bbb;
+
+			.prompt {
+				color: var(--accent-color);
+				margin-right: 10px;
 			}
-			.rcon .operate button {
-				padding: 15px;
-				padding-top: 5px;
-				padding-bottom: 5px;
-				margin-left: 5px;
-				width: 100px;
-				height: 35px;
-				cursor: pointer;
-				color: #fff;
-				font-size: 12px;
-				box-sizing: border-box;
+
+			input {
+				flex: 1;
+				background: transparent;
 				border: none;
-				border-radius: 5px;
-				background: radial-gradient(#666,#555);
+				color: var(--text-color);
+				font-family: inherit;
+				font-size: 1em;
+				outline: none;
+				caret-color: var(--accent-color);
 			}
-			.rcon .operate button:hover {
-				color: #ff8033;
+
+			button {
+				background: var(--accent-color);
+				border: none;
+				color: #1a1a1a;
+				padding: 8px 15px;
+				border-radius: 4px;
+				margin-left: 10px;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+
+			button:hover {
+				background: #00ff9d;
+				transform: translateY(-1px);
+			}
+
+			.command {
+				margin: 8px 0;
+				padding: 5px;
+				border-left: 2px solid var(--accent-color);
+			}
+
+			.response {
+				color: #8a8a8a;
+				margin-bottom: 15px;
+				padding-left: 20px;
+			}
+
+			@keyframes cursor-blink {
+				0% { opacity: 0; }
+				50% { opacity: 1; }
+				100% { opacity: 0; }
+			}
+
+			.cursor {
+				display: inline-block;
+				width: 8px;
+				height: 1em;
+				background: var(--accent-color);
+				vertical-align: middle;
+				margin-left: 2px;
+				animation: cursor-blink 1s infinite;
 			}
 		</style>
 	</head>
 	<body>
-		<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
-		
-		<div class="rcon">
-			<div class="output">
-				<pre></pre>
+		<div class="terminal-container">
+			<div class="terminal-header">
+				<center>༺࿈终端࿈༻</center>
 			</div>
-			<div class="operate">
-				<form action="/weiw/index.php?mods=mc_console" method="GET">
-					<input type="text" name="command" placeholder="Ctrl+V 粘贴" required />
-					<button>发送命令</button>
-					<button type="button" onclick="changepassword()">更改密码</button>
-				</form>
+			<div class="history">
+
 			</div>
+			<form class="input-container" action="/weiw/index.php?mods=mc_console" method="GET">
+				<span class="prompt">></span>
+				<input type="text" name="command" placeholder="Ctrl+V 粘贴" required />
+				<div class="cursor"></div>
+				<button>
+					<span>发送</span>
+				</button>
+				<button type="button" onClick="changepassword()">
+					<span>更改密码</span>
+				</button>
+			</form>
 		</div>
-		
-		
+
 		<script src="js/main.js"></script>
 		<script>
-			const output = document.querySelector('.output');
-			const pre = document.querySelector('.output pre');
+			const history = document.querySelector('.history');
+			const input = document.querySelector('input');
 			
 			handleFormSubmit("form", function(fetch, form) {
 				const input = form.querySelector('input');
 				
-				pre.insertAdjacentHTML("beforeend", "<div class='send'>发送了命令："+input.value+"</div>");
-				output.scrollTop = output.scrollHeight;
+				history.insertAdjacentHTML("beforeend", "<div class='command'><span class='prompt'>></span><span>"+input.value+"</span></div>");
+				history.scrollTop = history.scrollHeight;
 				input.value = '';
 				
 				fetch.then((data) => {
 					if(data.error !== '\u0000\u0000')
 					{
-						pre.insertAdjacentHTML("beforeend", "<div class='return'>"+data.error+"</div>");
-						output.scrollTop = output.scrollHeight;
+						history.insertAdjacentHTML("beforeend", "<div class='response'>"+data.error+"</div>");
+						history.scrollTop = history.scrollHeight;
 					}
 				}).catch((error) => {
-					pre.insertAdjacentHTML("beforeend", "<div class='return'>"+error+"</div>");
-					output.scrollTop = output.scrollHeight;
+					history.insertAdjacentHTML("beforeend", "<div class='response'>"+error+"</div>");
+					history.scrollTop = history.scrollHeight;
 				});
 			});
 			
 			function changepassword() {
 				document.querySelector('input').value = "changepassword [旧密码] [新密码] [确认新密码]";
 			}
+			
+			document.addEventListener('click', () => input.focus());
 		</script>
 	</body>
 </html>
