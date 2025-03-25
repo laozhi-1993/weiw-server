@@ -1,1 +1,1 @@
-<?php return Array('laozhi');
+<?php return Array('admin');
