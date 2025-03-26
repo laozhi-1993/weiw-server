@@ -80,7 +80,7 @@
      set MINECRAFT_PATH=minecraft_server.jar
      set JAVA_OPTS=-Xmx2G -Xms1G
 
-     java %JAVA_OPTS% -javaagent:%AUTHLIB_PATH%=http://127.0.0.1/weiw/index_auth.php -jar %MINECRAFT_PATH%
+     java %JAVA_OPTS% -javaagent:%AUTHLIB_PATH%=http://127.0.0.1/weiw/index_auth.php -jar %MINECRAFT_PATH% nogui
      pause
      ```
    - **注意**：在上面的脚本中，`127.0.0.1` 是本地回环地址。如果 `weiw-server` 运行在不同的主机上，请将 `127.0.0.1` 替换为 `weiw-server` 的实际地址或 IP。
