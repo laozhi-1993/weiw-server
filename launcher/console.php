@@ -171,7 +171,7 @@
 				fetch.then((data) => {
 					if(data.error !== '\u0000\u0000')
 					{
-						history.insertAdjacentHTML("beforeend", "<div class='response'>"+data.error+"</div>");
+						history.insertAdjacentHTML("beforeend", "<pre class='response'>"+data.error+"</pre>");
 						history.scrollTop = history.scrollHeight;
 					}
 				}).catch((error) => {

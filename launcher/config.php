@@ -256,7 +256,7 @@
 						<div class="form-inline">
 							<div class="form-group">
 								<label>认证地址</label>
-								<input type="text" name="authUrl" value="{echo:var.mc_config.config.authUrl}" placeholder="请输入认证地址">
+								<input type="text" name="authUrl" value="{echo:var.mc_config.config.authUrl}" placeholder="留空将自动获取">
 							</div>
 
 							<div class="form-group">
