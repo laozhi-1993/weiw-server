@@ -13,6 +13,9 @@
 	private $privateKey;
     public function __construct()
 	{
+		$config = config::loadConfig('config');
+		$rsa    = config::loadConfig('rsa');
+		
 		if(isset($_SERVER['PATH_INFO']))
 		{
 			$this->pathInfo = $_SERVER['PATH_INFO'];
@@ -22,19 +25,25 @@
 			$this->pathInfo = Null;
 		}
 		
-		$config = config::loadConfig('config');
-		$rsa    = config::loadConfig('rsa');
+		if ($config['authUrl'])
+		{
+			$this->authUrl = $config['authUrl'];
+		}
+		else
+		{
+			$this->authUrl = $this->resolveAuthUrl();
+		}
 		
 		$this->data                  = json_decode(file_get_contents('php://input'), true);
 		$this->rootDir               = __MKHDIR__;
 		$this->texturesDir           = __MKHDIR__.'/user_textures/';
 		$this->implementationName    = 'weiw auth server';
-		$this->implementationVersion = '1.1.1';
-		$this->skinDomains[]         = parse_url($config['authUrl'], PHP_URL_HOST);
-		$this->serverName            = $config['serverName'];
-		$this->authUrl               = $config['authUrl'];
+		$this->implementationVersion = '1.1.2';
 		$this->publicKey             = $rsa['public'];
 		$this->privateKey            = $rsa['private'];
+		
+		$this->serverName = $config['serverName'];
+		$this->skinDomains[] = parse_url($this->authUrl, PHP_URL_HOST);
 		
 		
 		if (!is_dir($this->texturesDir))
@@ -42,6 +51,14 @@
 			mkdir($this->texturesDir, 0777, true);
 		}
     }
+	
+	
+	public function resolveAuthUrl()
+	{
+		$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+		$host = $_SERVER['HTTP_HOST'];
+		return "{$protocol}://{$host}/weiw/index_auth.php";
+	}
 	
 	
 	public function encodeTextures($user)
