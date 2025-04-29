@@ -9,7 +9,7 @@
 			
 			
 			$userManager = new mc_user_manager();
-			$user->setTexture('', 'steve');
+			$user->setTexture('', 'cape');
 			$user->saveToJson($userManager->getUserDir());
 			
 			throw new Exception('ok');

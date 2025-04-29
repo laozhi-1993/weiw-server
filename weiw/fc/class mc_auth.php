@@ -4,6 +4,7 @@
     private $data;
 	private $rootDir;
 	private $texturesDir;
+	private $texturesTempDir;
 	private $implementationName;
 	private $implementationVersion;
 	private $skinDomains;
@@ -37,6 +38,7 @@
 		$this->data                  = json_decode(file_get_contents('php://input'), true);
 		$this->rootDir               = __MKHDIR__;
 		$this->texturesDir           = __MKHDIR__.'/user_textures/';
+		$this->texturesTempDir       = __MKHDIR__.'/data/textures/';
 		$this->implementationName    = 'weiw auth server';
 		$this->implementationVersion = '1.1.2';
 		$this->publicKey             = $rsa['public'];
@@ -46,9 +48,9 @@
 		$this->skinDomains[] = parse_url($this->authUrl, PHP_URL_HOST);
 		
 		
-		if (!is_dir($this->texturesDir))
+		if (!is_dir($this->texturesTempDir))
 		{
-			mkdir($this->texturesDir, 0777, true);
+			mkdir($this->texturesTempDir, 0777, true);
 		}
     }
 	
@@ -262,6 +264,12 @@
 					header('Content-Type: image/png');
 					die(file_get_contents($texture));
 				}
+				
+				if(file_exists($texture = "{$this->texturesTempDir}{$hash[1]}.png"))
+				{
+					header('Content-Type: image/png');
+					die(file_get_contents($texture));
+				}
 				else
 				{
 					try
@@ -289,7 +297,7 @@
 		// 查询头像
 		if(preg_match('!^/avatar/([0-9a-zA-Z]+)/([0-9]+)$!',$this->pathInfo,$hash))
 		{
-			if($hash[2] >= 1 && $hash[2] <= 512)
+			if($hash[2] >= 10 && $hash[2] <= 512)
 			{
 				$size = $hash[2];
 			}
@@ -325,7 +333,7 @@
 			}
 			else
 			{
-				if(file_exists($texture = "{$this->texturesDir}{$hash[1]}.png"))
+				if(file_exists($texture = "{$this->texturesTempDir}{$hash[1]}.png"))
 				{
 					$output = file_get_contents($texture);
 				}
@@ -353,8 +361,8 @@
 			imagecolortransparent($im, imagecolorat($im, $ss[0]-1, 0));
 			imagefill($av, 0 ,0 ,imagecolorallocatealpha($av, 0, 0, 0, 127));
 			imagesavealpha($av, true);
-			imagecopyresized($av, $im, ($size/16), ($size/16), ($ss[0]/8.0), ($ss[0]/8), ($size-$size/8), ($size-$size/8), ($ss[0]/8), ($ss[0]/8));
-			imagecopyresized($av, $im, (0)       , (0)       , ($ss[0]/1.6), ($ss[0]/8), ($size)        , ($size)        , ($ss[0]/8), ($ss[0]/8));
+			imagecopyresized($av, $im, intval($size/16), intval($size/16), intval($ss[0]/8.0), intval($ss[0]/8), intval($size-$size/8), intval($size-$size/8), intval($ss[0]/8), intval($ss[0]/8));
+			imagecopyresized($av, $im, 0, 0, intval($ss[0]/1.6), intval($ss[0]/8), intval($size), intval($size), intval($ss[0]/8), intval($ss[0]/8));
 			
 			header('Content-type: image/png');
 			imagepng($av);

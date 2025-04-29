@@ -1,11 +1,19 @@
 <?php class mc_command_parser
 {
+    private $user;
     private $name;
     private $params;
 	
 	
     public function __construct($command)
 	{
+		$this->user = mc_user_authentication::getUser();
+		
+		if(!$this->user)
+		{
+			throw new Exception("没有登陆");
+		}
+		
 		$parse = self::parse($command);
 		
 		if($parse)
@@ -45,19 +53,44 @@
 	
 	
 	// 指令
+	private function command_texture($id=10000)
+	{
+		try
+		{
+			$texture = json_decode(http::open("https://mcskin.com.cn/texture/{$id}"),true);
+			
+			switch ($texture['type'])
+			{
+				case 'steve':
+				case 'alex':
+					$userManager = new mc_user_manager();
+					$this->user->setTexture($texture['hash'], $texture['type']);
+					$this->user->saveToJson($userManager->getUserDir());
+					
+					throw new Exception('使用完成');
+					
+				default:
+					throw new Exception('不支持的材质类型');
+			}
+		}
+		catch(error $error)
+		{
+			throw new Exception('无法获取材质信息');
+		}
+		catch(Exception $Exception)
+		{
+			throw new Exception($Exception->getMessage());
+		}
+	}
+	
     private function command_changepassword($old=false, $new=false, $confirm=false)
     {
-		if(!$user = mc_user_authentication::getUser())
-		{
-			throw new Exception("没有登陆");
-		}
-		
-		if(!$user->verifyPassword($old))
+		if(!$this->user->verifyPassword($old))
 		{
 			throw new Exception('旧密码错误');
 		}
 		
-		if(!$user->validatePassword($new))
+		if(!$this->user->validatePassword($new))
 		{
 			throw new Exception('新密码长度需在 8 到 30 个字符之间，并且包含至少一个小写字母、一个大写字母、一个数字和一个特殊字符');
 		}
@@ -69,8 +102,8 @@
 		
 		
 		$userManager = new mc_user_manager();
-		$user->setPassword($confirm);
-		$user->saveToJson($userManager->getUserDir());
+		$this->user->setPassword($confirm);
+		$this->user->saveToJson($userManager->getUserDir());
 		
 		
 		throw new Exception('更改完成');
@@ -78,12 +111,7 @@
 	
     private function command_usermoney($name=false, $money=false)
     {
-		if(!$user = mc_user_authentication::getUser())
-		{
-			throw new Exception("没有登陆");
-		}
-		
-		if(!$user->isAdmin())
+		if(!$this->user->isAdmin())
 		{
 			throw new Exception('没有权限');
 		}

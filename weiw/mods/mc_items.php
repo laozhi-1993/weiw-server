@@ -3,12 +3,11 @@
 		try
 		{
 			$Arr = Array();
-			foreach(json_decode(config::loadConfig('items'),true) as $key => $value)
+			$items = json_decode(config::loadConfig('items'),true);
+			
+			foreach($items as $key => $value)
 			{
-				$Arr[] = Array(
-					'name' => $key,
-					'price' => $value['price']
-				);
+				$Arr[] = array_merge(Array('name'=>$key),$value);
 			}
 			
 			return $Arr;
