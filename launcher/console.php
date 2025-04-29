@@ -27,14 +27,13 @@
 			}
 
 			.terminal-container {
-				background: var(--terminal-bg);
+				overflow: hidden;
 				width: 100%;
 				height: 100%;
 				box-sizing: border-box;
 				border-radius: 8px;
-				box-shadow: 0 0 20px rgba(0, 255, 100, 0.1);
 				border: 1px solid var(--border-color);
-				overflow: hidden;
+				background: var(--terminal-bg);
 			}
 
 			.terminal-header {

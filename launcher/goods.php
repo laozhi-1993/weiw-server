@@ -4,122 +4,216 @@
 	$MKH = new mkh();
 	$MKH ->mods('mc_launcher');
 	$MKH ->mods('mc_items');
+	$MKH ->mods('mc_user');
 ?>
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans">
+<html lang="zh-CN">
 	<head>
 		<style>
-			main {
+			body {
+				margin: 0;
+				padding: 0;
+				font-family: 'Segoe UI', system-ui, sans-serif;
+			}
+
+			section {
 				margin: 0 auto;
 				padding: 10px;
-				color: white;
-			}
-			button {
-				user-select: none;
-			}
-			
-			.container {
-				padding: 20px;
-				border-radius: 10px;
-				background: rgba(255, 255, 255, 0.1);
-				box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-				animation: fadeIn 1s ease-out;
 			}
 
-			h1 {
-				text-align: center;
-				font-size: 2em;
+			header {
+				padding-bottom: 20px;
 				margin-bottom: 30px;
-				text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+				position: relative;
+			}
+			header::after {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 80%;
+				height: 2px;
+				background: linear-gradient(90deg, transparent 0%, #6C5CE7 50%, transparent 100%);
 			}
 
-			.item {
+			.gold-info {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				background: rgba(255, 255, 255, 0.2);
-				margin: 15px 0;
-				padding: 15px;
-				border-radius: 8px;
-				opacity: 0;
-				animation: fadeInUp 0.5s forwards;
-				transition: transform 0.3s ease, background-color 0.3s ease;
+				padding: 15px 25px;
+				border-radius: 12px;
+				border: 1px solid #404040;
+				box-shadow: 0 0 10px rgba(0, 150, 255, 0.2);
+				background: 
+					linear-gradient(90deg, #3d3d3d 0%, #3d3d3d 100%), 
+					radial-gradient(at top, rgba(255, 255, 255, 0.50) 0%, rgba(0, 0, 0, 0.55) 100%), 
+					radial-gradient(at top, rgba(255, 255, 255, 0.50) 0%, rgba(0, 0, 0, 0.08) 63%);
+				background-blend-mode: multiply, screen;
+				animation: float 4s ease-in-out infinite;
 			}
 
-			@keyframes fadeIn {
-				from { opacity: 0; }
-				to { opacity: 1; }
+			.gold-info h1 {
+				color: #7f5af0;
+				font-size: 1.8em;
+				letter-spacing: 2px;
+				text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
 			}
 
-			@keyframes fadeInUp {
-				from { opacity: 0; transform: translateY(20px); }
-				to { opacity: 1; transform: translateY(0); }
+			.current-gold {
+				display: flex;
+				align-items: center;
+				color: #ffd700;
+				font-weight: bold;
+				font-size: 1.3em;
 			}
 
-			.item:nth-child(even) {
-				animation-delay: 0.2s;
+			.current-gold::before {
+				content: '🪙';
 			}
 
-			.item:nth-child(odd) {
-				animation-delay: 0.4s;
+			.items-container {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+				gap: 20px;
+				margin: 40px 0;
 			}
 
-			/* 鼠标经过时的动画 */
-			.item:hover {
-				background: rgba(255, 255, 255, 0.3);
-				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-				transform: translateY(-5px);
+			.item-card {
+				display: grid;
+				overflow: hidden;
+				padding: 20px;
+				position: relative;
+				background: linear-gradient(145deg, #444 0%, #1f1f1f 100%);
+				border-radius: 10px;
+				border: 1px solid #3d3d3d;
+				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			}
+
+			h4 {
+				color: #e0e0e0;
+			}
+
+			.item-card:hover {
+				transform: translateY(-8px);
+				box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+			}
+
+			.item-icon {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 200px;
+				background: #4d4d4d;
+				border-radius: 10px;
+				margin-bottom: 15px;
+				overflow: hidden;
+			}
+
+			.item-icon img {
+				object-fit: cover;
+				transition: transform 0.3s ease;
 			}
 
 			.item-name {
-				font-size: 1em;
-				font-weight: 100;
-				flex-grow: 1; /* 让名称部分占据剩余空间 */
+				color: #fff;
+				font-size: 1.3em;
+				margin: 10px 0;
+				font-weight: 600;
+			}
+
+			.item-description {
+				color: #b0b0b0;
+				font-size: 0.95em;
+				line-height: 1.5;
+				min-height: 60px;
+			}
+
+			.item-footer {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-top: auto;
+				padding-top: 15px;
+				border-top: 1px solid #555;
 			}
 
 			.item-price {
-				font-size: 1em;
-				margin-right: 20px;
-				text-align: right; /* 确保价格在右边 */
+				color: #ffd700;
+				font-weight: bold;
+				display: flex;
+				align-items: center;
+				gap: 6px;
 			}
 
-			.buy-btn {
-				background: #ff5722;
-				color: white;
-				padding: 10px 20px;
+			.buy-button {
+				background: linear-gradient(135deg, #7f5af0 0%, #6c42de 100%);
 				border: none;
 				border-radius: 5px;
+				color: white;
 				cursor: pointer;
-				transition: background 0.3s ease, transform 0.3s ease;
+				padding: 10px 25px;
+				font-weight: 500;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				transition: all 0.3s ease;
 			}
 
-			.buy-btn:hover {
-				background: #ff7043;
-				transform: scale(1.2);
+			.buy-button:hover {
+				box-shadow: 0 4px 15px rgba(127, 90, 240, 0.3);
 			}
 
-			.item-price, .buy-btn {
-				margin-left: 10px;
+			.buy-button:active {
+				transform: translateY(0);
+				filter: brightness(0.9);
+			}
+
+			footer {
+				text-align: center;
+				padding: 20px;
+				color: #888;
+				margin-top: 40px;
+				border-top: 1px solid #707070;
+			}
+
+			@keyframes float {
+				0%, 100% { transform: translateY(0); }
+				50% { transform: translateY(-5px); }
 			}
 		</style>
 	</head>
 	<body>
-		<main>
-			<includes-message><?php include('includes/message.html') ?></includes-message>
-			<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
-			
-			<div class="container">
-				<h1>道具列表</h1>
+		<includes-message><?php include('includes/message.html') ?></includes-message>
+		<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
 
-				<div foreach(var.mc_items,var.key,var.value) id="{echo:var.value.name}" class="item">
-					<div class="item-name">{echo:var.value.name}</div>
-					<div class="item-price">¥{echo:var.value.price}</div>
-					<button class="buy-btn" onclick="determine('{echo:var.value.name}','{echo:var.value.name}','{echo:var.value.price}')">购买</button>
+		<section>
+			<header>
+				<div class="gold-info">
+					<h1>村民商店</h1>
+					<div class="current-gold">{echo:var.mc_user.money}</div>
 				</div>
-			</div>
-		</main>
-		
-		
+			</header>
+
+			<main class="items-container">
+				<div foreach(var.mc_items,var.key,var.value) id="{echo:var.value.name}" class="item-card">
+					<div class="item-icon">
+						<img src="{echo:var.value.icon}" />
+					</div>
+					<h4>{echo:var.value.name}</h4>
+					
+					<div class="item-footer">
+						<span class="item-price">价格: {echo:var.value.price}</span>
+						<button class="buy-button" onclick="determine('{echo:var.value.name}','{echo:var.value.name}','{echo:var.value.price}')">购买</button>
+					</div>
+				</div>
+			</main>
+
+			<footer>
+				<p>村民商店 - 禁忌的知识需要代价</p>
+			</footer>
+		</section>
+
+
 		<script>
 			function determine(id,name,price)
 			{
@@ -130,8 +224,8 @@
 						})
 						.then(response => response.json())
 						.then(data => {
-							window.parent.setMoney(data.money);
 							showMessage(data.error);
+							if (data.money) document.querySelector(".current-gold").innerHTML = data.money;
 						})
 						.catch(error => {
 							showMessage(error);

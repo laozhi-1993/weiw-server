@@ -10,13 +10,6 @@
 	<head>
 		<title>设置</title>
 		<style>
-			::-webkit-scrollbar {width: 10px}
-			::-webkit-scrollbar {height: 10px}
-			::-webkit-scrollbar-track {border-radius: 5px}
-			::-webkit-scrollbar-track {background-color: #606060}
-			::-webkit-scrollbar-thumb {border-radius: 5px}
-			::-webkit-scrollbar-thumb {background-color: #9393ff}
-			
 			body {
 				padding-top: 30px;
 				margin: 0;
@@ -177,6 +170,7 @@
 		<section>
 			<main>
 				<includes-header><?php include('includes/window-header.html') ?></includes-header>
+				<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
 				<includes-message><?php include('includes/message.html') ?></includes-message>
 
 				<div class="menu">

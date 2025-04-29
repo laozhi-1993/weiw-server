@@ -6,179 +6,149 @@
 	$MKH ->mods('mc_textures');
 ?>
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans">
+<html lang="zh-CN">
 	<head>
 		<style>
-			main {
-				max-width: 1200px;
-				margin: 0 auto;
-				padding: 10px;
-				color: white;
-				text-align: center;
-			}
-			button {
-				user-select: none;
-			}
-			
-			/* 页头信息容器 */
-			.header-info {
-				background-color: rgba(255, 255, 255, 0.1);
-				padding: 20px;
-				border-radius: 10px;
-				margin-bottom: 30px;
-				cursor: pointer;
-				opacity: 0;
-				animation: fadeIn 1s forwards;
-			}
-
-			.header-info p {
-				font-size: 18px;
+			body {
 				margin: 0;
-				color: #ddd;
+				padding: 0;
 			}
-
-			/* 皮肤库标题样式 */
-			h1 {
-				font-size: 36px;
-				margin-bottom: 40px;
-				text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-				opacity: 0;
-				animation: fadeIn 1s forwards;
+			section {
+				border-radius: 10px;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+				background-color: #1a1a1a;
+				overflow: hidden;
+				color: #e0e0e0;
+				font-family: 'Arial', sans-serif;
+				margin: 10px;
 			}
-
-			/* 容器样式 */
-			.card-container {
-				display: grid;
-				grid-template-columns: repeat(4, 1fr);
-				gap: 20px;
+			header {
+				background-color: #2a2a2a;
 				padding: 20px;
-				margin-top: 20px;
-				background-color: rgba(255, 255, 255, 0.1);
-				border-radius: 10px;
-				box-sizing: border-box;
-				opacity: 0;
-				animation: fadeIn 1s forwards; /* 添加容器动画 */
+				text-align: center;
+				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 			}
-
-			/* 每个皮肤卡片样式 */
-			.card {
-				display: flex;
-				flex-direction: column;
+			header h1 {
+				margin: 0;
+				font-size: 2.5em;
+				color: #4CAF50;
+			}
+			main {
+				padding: 20px;
+			}
+			.search-bar {
+				margin: 20px auto;
+				max-width: 600px;
+			}
+			.search-bar input {
+				width: calc(100% - 20px);
+				padding: 10px;
+				border: none;
+				border-radius: 5px;
+				background-color: #333;
+				color: #e0e0e0;
+				font-size: 1em;
+			}
+			.search-bar input::placeholder {
+				color: #888;
+			}
+			.skin-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 				gap: 20px;
-				background-color: rgba(255, 255, 255, 0.2);
+				max-width: 2200px;
+				margin: 20px auto;
+			}
+			.skin-card {
+				background-color: #2a2a2a;
 				border-radius: 10px;
-				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-				padding: 15px;
-				opacity: 0;
-				animation: fadeInCard 0.5s ease-out forwards; /* 给每个卡片添加动画 */
-				transition: transform 0.3s ease, box-shadow 0.3s ease; /* 添加鼠标经过时的动画 */
+				overflow: hidden;
+				transition: transform 0.3s, box-shadow 0.3s;
+				cursor: pointer;
 			}
-
-			.card:hover {
-				transform: scale(1.05); /* 鼠标悬停时轻微放大 */
-				box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* 增加阴影效果 */
+			.skin-card:hover {
+				transform: translateY(-5px);
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
 			}
-
-			.card img {
+			.skin-card img {
 				width: 100%;
-				object-fit: cover;
-				border-radius: 10px;
+				height: 280px;
+				object-fit: contain;
+				background-color: #333;
 			}
-
-			.card .use-skin-btn {
-				margin-top: auto;
-				padding: 10px 20px;
+			.skin-card button {
+				display: block;
+				width: calc(100% - 20px);
+				margin: 10px auto;
+				padding: 8px;
 				background-color: #4CAF50;
-				color: white;
+				color: #fff;
 				border: none;
 				border-radius: 5px;
 				cursor: pointer;
+				font-size: 0.9em;
 				transition: background-color 0.3s;
-				width: 100%; /* 按钮宽度 100% */
 			}
-
-			.card .use-skin-btn:hover {
+			.skin-card button:hover {
 				background-color: #45a049;
 			}
-
-			.load-more-btn {
-				width: 100%;
-				padding: 12px 25px;
-				background-color: #007BFF;
-				color: white;
+			.load-more {
+				display: block;
+				width: 300px;
+				margin: 20px auto;
+				padding: 10px 20px;
+				background-color: #4CAF50;
+				color: #fff;
 				border: none;
 				border-radius: 5px;
-				font-size: 18px;
+				cursor: pointer;
+				font-size: 1em;
+				transition: background-color 0.3s;
+			}
+			.load-more:hover {
+				background-color: #45a049;
+			}
+			.load-more.hidden {
+				display: none;
+			}
+			footer {
+				background-color: #2a2a2a;
+				text-align: center;
+				padding: 10px;
+				color: #888;
 				cursor: pointer;
 				margin-top: 20px;
-				transition: background-color 0.3s;
-				opacity: 0; /* 初始透明 */
-				animation: fadeInLoadMore 1s forwards; /* 添加加载更多按钮动画 */
-			}
-
-			.load-more-btn:hover {
-				background-color: #0056b3;
-			}
-
-			/* 动画效果 */
-			@keyframes fadeIn {
-				from {
-					opacity: 0;
-				}
-				to {
-					opacity: 1;
-				}
-			}
-
-			@keyframes fadeInCard {
-				from {
-					opacity: 0;
-					transform: translateY(30px); /* 卡片从下方渐显 */
-				}
-				to {
-					opacity: 1;
-					transform: translateY(0); /* 卡片最终位置 */
-				}
-			}
-
-			@keyframes fadeInLoadMore {
-				from {
-					opacity: 0;
-					transform: translateY(30px); /* 按钮从下方渐显 */
-				}
-				to {
-					opacity: 1;
-					transform: translateY(0); /* 按钮最终位置 */
-				}
 			}
 		</style>
 	</head>
 	<body>
-		<main>
-			<includes-message><?php include('includes/message.html') ?></includes-message>
-			<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
+		<includes-message><?php include('includes/message.html') ?></includes-message>
+		<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
+		
+		<section>
+			<header>
+				<h1>Minecraft 皮肤库</h1>
+			</header>
 			
-			<!-- 页头信息容器 -->
-			<div class="header-info" onclick="window.parent.openApi('https://mcskin.com.cn/')">
-				<p>材质来源于我的世界红石皮肤站。</p>
-			</div>
-			
-			<!-- 皮肤库标题 -->
-			<h1>皮肤库</h1>
-
-			<!-- 皮肤卡片容器 -->
-			<loading-container>
-				<div id="cardContainer" class="card-container">
-					<div foreach(var.mc_textures.data,var.key,var.value) class="card">
-						<img src="https://mcskin.com.cn/preview/{echo:var.value.tid}?height=150">
-						<button class="use-skin-btn" onclick="settexture('{echo:var.value.tid}')">使用皮肤</button>
-					</div>
+			<main>
+				<div class="search-bar">
+					<input type="text" id="searchInput" placeholder="搜索皮肤...">
 				</div>
-			</loading-container>
-
-			<!-- 加载更多按钮 -->
-			<button class="load-more-btn" onclick="loadingContainer()">加载更多</button>
-		</main>
+				<loading-container>
+					<div class="skin-grid" id="cardContainer">
+						<div foreach(var.mc_textures.data,var.key,var.value) class="skin-card">
+							<img src="https://mcskin.com.cn/preview/{echo:var.value.tid}?height=150" />
+							<button onclick="settexture('{echo:var.value.tid}')">使用</button>
+						</div>
+					</div>
+				</loading-container>
+				<button class="load-more"  onclick="loadingContainer()">加载更多</button>
+			</main>
+			
+			<footer onclick="window.parent.openApi('https://mcskin.com.cn/')">
+				<p>声明：材质来源于我的世界红石皮肤站（mcskin），版权归原作者所有。</p>
+			</footer>
+		</section>
 		
 		
 		<script src="js/main.js"></script>
@@ -196,10 +166,6 @@
 				})
 				.then(response => response.json())
 				.then(data => {
-					if (data.type != "cape") {
-						window.parent.document.querySelector("#avatar img").src = `/weiw/index_auth.php/avatar/${data.hash}/48`;
-					}
-					
 					showMessage('使用成功');
 				})
 				.catch(error => {

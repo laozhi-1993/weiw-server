@@ -4,7 +4,6 @@
 	$MKH = new mkh();
 	$MKH ->mods('mc_launcher');
 	$MKH ->mods('mc_user');
-	$MKH ->mods('mc_client_data');
 ?>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
@@ -182,12 +181,12 @@
 				padding: 10px;
 				padding-top: 30px;
 				box-sizing: border-box;
-				background: radial-gradient(#666,#222);
+				background: radial-gradient(#333,#333);
 			}
 			main .content #tab {
 				border: none;
 				width:  100%;
-				height: calc(100% - 50px);
+				height: calc(100% - 0px);
 			}
 			main .content #tab-loading {
 				display: none;
@@ -247,6 +246,8 @@
 				src: url('fonts/7segment.ttf');
 			}
 		</style>
+		
+		
 		<title>我的世界启动器</title>
 	</head>
 	<body>
@@ -262,6 +263,9 @@
 						</li>
 						<li data-url="goods.php">
 							<svg viewBox="0 0 1152 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M294.656 925.312a68.032 68.032 0 1 0 136.064 0 68.032 68.032 0 1 0-136.064 0zM816 925.312a68.032 68.032 0 1 0 136.064 0 68.032 68.032 0 1 0-136.064 0zM248.128 166.016h872.768l-76.288 457.344a160 160 0 0 1-157.824 133.76H353.472a64 64 0 0 1-61.888-47.68l-148.48-562.176a12.8 12.8 0 0 0-12.416-9.536H12.992V40.96h192.512a12.8 12.8 0 0 1 12.416 9.536l30.208 115.52z m205.184 360.64H882.24a32 32 0 1 0 0-64H453.312a32 32 0 1 0 0 64z m0-136h317.376a32 32 0 0 0 0-64H453.312a32 32 0 1 0 0 64z"></path></svg>
+						</li>
+						<li data-url="capes.php">
+							<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 64a128 128 0 0 1 84.672 224h54.336a128 128 0 0 1 117.952 78.336L992 896l-162.88-46.528a128 128 0 0 0-112 20.672L588.8 966.4a128 128 0 0 1-153.6 0l-128.32-96.256a128 128 0 0 0-112-20.672L32 896l223.04-529.664A128 128 0 0 1 372.992 288h54.336A128 128 0 0 1 512 64z" fill="#040404"></path></svg>
 						</li>
 						<li data-url="textures.php">
 							<svg viewBox="0 0 1228 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M935.004926 0.00061h-70.225859a63.07815 63.07815 0 0 0-48.48556 22.397201c-35.973158 42.933181-138.856388 70.741996-203.670634 70.741996s-167.666195-27.808815-203.639353-70.741996a63.297117 63.297117 0 0 0-48.48556-22.397201h-70.382265a63.609927 63.609927 0 0 0-45.592067 19.237819L11.261162 256.489223a39.445349 39.445349 0 0 0 0 55.195336l142.32858 144.784139a37.850018 37.850018 0 0 0 54.272547 0l4.692151-4.692151a8.0705 8.0705 0 0 1 13.826204 5.802627V962.204372c0 32.845057 26.088359 59.433912 58.354718 59.433912h655.649898c32.266358 0 58.354718-26.588856 58.354717-59.433912V457.45405a8.054859 8.054859 0 0 1 13.841846-5.802627l4.692151 4.692151a37.850018 37.850018 0 0 0 54.272546 0l142.32858-144.768498a39.445349 39.445349 0 0 0 0-55.195336L980.659555 19.113305A64.126063 64.126063 0 0 0 935.004926 0.00061z"></path></svg>
@@ -295,24 +299,6 @@
 					</ul>
 				</div>
 				<div class="content">
-					<header>
-						<div class="operate">
-							<div class="user">
-								<span id="avatar"><img src="/weiw/index_auth.php/avatar/{echo:var.mc_user.SKIN.hash}/48" /></span>
-								<span id="name">{echo:var.mc_user.name}</span>
-							</div>
-							<div class="checkin">
-								<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M387.016962 261.154905l242.128573 0c74.925457 0 132.079154-162.481581 132.079154-162.481581 0-48.660256-4.871961-85.47472-88.069825-88.068801-83.172281-2.619664-103.098099 58.158584-162.871461 58.158584-61.266365 0-91.911316-47.780213-167.301354-58.158584-75.365478-10.426467-88.044242 39.408545-88.044242 88.068801C254.937808 98.674347 312.066947 261.154905 387.016962 261.154905zM642.362558 311.381843l-255.345596 0c-282.762015 0-352.203574 555.509956-352.203574 555.509956 0 72.966848 59.137889 146.252968 132.079154 146.252968l695.569876 0c72.942289 0 132.078131-73.28612 132.078131-146.252968C994.541573 866.892823 925.076478 311.381843 642.362558 311.381843zM671.344636 738.312352c17.036002 0 30.842449 13.829983 30.842449 30.867008 0 17.034978-13.805424 30.864962-30.842449 30.864962l-125.201513 0 0 80.97115c0 17.034978-13.805424 30.867008-30.816866 30.867008-17.036002 0-30.840402-13.83203-30.840402-30.867008L484.485855 800.044322l-126.009925 0c-17.034978 0-30.840402-13.829983-30.840402-30.864962 0-17.037025 13.805424-30.867008 30.840402-30.867008l126.009925 0 0-39.161928-126.009925 0c-17.034978 0-30.840402-13.806447-30.840402-30.842449 0-17.036002 13.805424-30.890544 30.840402-30.890544l85.181031 0-87.212294-154.989957c-8.518001-14.784728-3.451612-33.631982 11.283997-42.148959 14.759145-8.519024 33.607422-3.476171 42.125423 11.258415l105.007589 185.880501 5.310959 0 105.007589-185.880501c8.516977-14.734586 27.365254-19.778462 42.100864-11.258415 14.760169 8.516977 19.827581 27.364231 11.308557 42.148959l-87.212294 154.989957 79.967286 0c17.036002 0 30.842449 13.853519 30.842449 30.890544 0 17.034978-13.805424 30.842449-30.842449 30.842449l-125.201513 0 0 39.161928L671.344636 738.312352z" fill="#272636"></path></svg>
-								<span class="money">{echo:var.mc_user.money}</span>
-								<span class="button">签到</span>
-							</div>
-							<div class="start" onclick="starTminecraft()">
-								<span>启动游戏</span>
-								<span>关闭游戏</span>
-							</div>
-						</div>
-					</header>
-					
 					<iframe id="tab"></iframe>
 					<div id="tab-loading"><span class="loading"></span></div>
 				</div>
@@ -321,64 +307,6 @@
 		
 		
 		<script>
-			function maincheckin() {
-				let time = 0;
-				const button = document.querySelector(".checkin .button");
-				const moneyElement = document.querySelector(".checkin .money");
-				const originalHtml = button.innerHTML;
-
-				function countDown() {
-					if (time <= 0) {
-						button.innerHTML = originalHtml;
-						button.style.backgroundColor = '#7B68EE';
-					} else {
-						const date = new Date(time * 1000);
-						time--;
-
-						const hours = date.getUTCHours().toString().padStart(2, "0");
-						const minutes = date.getUTCMinutes().toString().padStart(2, "0");
-						const seconds = date.getUTCSeconds().toString().padStart(2, "0");
-
-						button.innerHTML = `${hours}:${minutes}:${seconds}`;
-						button.style.backgroundColor = '#2f4f4f';
-					}
-					
-					return countDown;
-				}
-
-				fetch("/weiw/index.php?mods=mc_checkin")
-					.then(response => response.json())
-					.then(result => {
-						time = result.count_down;
-						setInterval(countDown(), 1000);
-					});
-
-				return function () {
-					if (time <= 0) {
-						fetch("/weiw/index.php?mods=mc_checkin&checkin=1")
-							.then(response => response.json())
-							.then(result => {
-								if (result.error === "ok") {
-									time = result.time - 1;
-									moneyElement.innerHTML = result.money;
-									button.innerHTML = "00:00:00";
-									button.style.backgroundColor = '#2f4f4f';
-								}
-							});
-					}
-				};
-			}
-			
-			function setMoney(money) {
-				if (money) {
-					document.querySelector('.money').innerHTML = money;
-				}
-			}
-			
-			function starTminecraft() {
-				start({jsonEncode: var.mc_client_data});
-			}
-			
 			function logout() {
 				customConfirm('确定要退出吗？', (result) => {
 					if (result) {
@@ -388,7 +316,6 @@
 				});
 			}
 			
-			document.querySelector(".checkin .button").onclick = maincheckin();
 			document.querySelectorAll(".menu ul.iframe-nav li[data-url]").forEach(function(item) {
 				item.addEventListener("click", function() {
 					document.getElementById("tab-loading").style.display = "block";
@@ -406,15 +333,6 @@
 				document.getElementById("tab-loading").style.display = "none";
 				document.getElementById("tab").style.display = "block";
 			};
-			
-			window.addEventListener("start", () => {
-				document.querySelector(".start").querySelectorAll('span')[0].style.display = 'none';
-				document.querySelector(".start").querySelectorAll('span')[1].style.display = 'inline';
-			});
-			window.addEventListener("exit", () => {
-				document.querySelector(".start").querySelectorAll('span')[0].style.display = 'inline';
-				document.querySelector(".start").querySelectorAll('span')[1].style.display = 'none';
-			});
 		</script>
 	</body>
 </html>
