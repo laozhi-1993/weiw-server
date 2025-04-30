@@ -278,15 +278,11 @@
 			
 			if($hash[1] == 'cape')
 			{
-				$output = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB5klEQVRoge2Yv0';
-				$output .= 'sDMRTHvyfNryuWo4L/i4tDBycXNxcRF1dxUTd1q5OboIuDDm4iODn49yjOpZdLoQ5trk170EpfTJR+4Chpcu+9fPN';
-				$output .= '916NJv9+HD5Ikmblma2evTL6x2apcc3l8UBmIqu4kpADASIS354f5bhjybwSwWCF6xqDGmDPXMwbvr09OQKq6V0ii';
-				$output .= 'ENMzxhnXGHPahZJoBJinBVrbu+QiRCPAPEy2BklM8ogE1Bibehao+qqXXNE6YCQCdza/f3RB2gZRCVBj3BnLtA4AM';
-				$output .= 'IUGAKjhmDQnecQFsZtmXDjfm0JDpXXoboc0X1QCMC5gCu18AoOTz9bWAQBSpaQ5vbXAafvux7368niTMC6g0joaWb';
-				$output .= 'PcuFCu9c+v78meA1E5ABic9viGdbdTjqVKwYUkzefNAVLQ/GYLNeh7autbvDkg12b2ogoqTztrlvOFzpFrOhdE5wC';
-				$output .= 'pUjSGGy50PjXPhSRzFxDZewAA3LZPkkLn4EKCC4lC5+UFAM2M9o0wuhawjItgSZVcOO4k3gRYxKZZlkEKhlwbUrtX';
-				$output .= 'EV0LAMDV2WECoBTBXj7w5oCPz6+F7renP+4AHyJE6QBg4ILJk7eCULaFt/8E/wrROuC3WAoQuoDQLAUIXUBolgKEL';
-				$output .= 'iA0SwFCFxCabyn+l3tQJevhAAAAAElFTkSuQmCC';
+				$output = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgBAMAAABQs2O3AAAAIVBMVEUAAAB/j593iJptf5JneIpfb4BYZnVPXGpKVm';
+				$output .= 'NGUV1CTFgLTatUAAAAAXRSTlMAQObYZgAAAKFJREFUeNrtzbENwjAQBVArigTpuExAvEG4BQL2ABSYmiaMYG+AU1J';
+				$output .= 'y3sBMCRLQIOunoeQ3V9zT/+orjRCRQhE1F8mSMLiLXBFoniDNAYEgZwkYpBj2ACzzbfIQTCFcTgAsYvRuKL7Wr+PP';
+				$output .= 'zm0RGN146Itg9QFH26MGZ5h3qMFYZjhRszWEJmrDG40aqpaIEFCkuzIY3rejVkNQdUTqn1/nAThNI5j05ZvKAAAAA';
+				$output .= 'ElFTkSuQmCC';
 				$output = base64_decode($output);
 				
 				header('Content-Type: image/png');
