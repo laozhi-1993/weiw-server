@@ -122,12 +122,29 @@
 				return true;
 
 			case 'alex':
-				$this->SKIN['hash'] = $hash;
-				$this->SKIN['model'] = 'slim';
+				if($hash == '')
+				{
+					$this->SKIN['hash'] = 'alex';
+					$this->SKIN['model'] = 'slim';
+				}
+				else
+				{
+					$this->SKIN['hash'] = $hash;
+					$this->SKIN['model'] = 'slim';
+				}
+				
 				return true;
 
 			case 'cape':
-				$this->CAPE['hash'] = $hash;
+				if($hash == '')
+				{
+					$this->CAPE['hash'] = 'cape';
+				}
+				else
+				{
+					$this->CAPE['hash'] = $hash;
+				}
+				
 				return true;
 
 			default:
