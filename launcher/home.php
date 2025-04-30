@@ -461,16 +461,8 @@
 			const rotate = document.getElementById('rotate');
 			const elytra = document.getElementById('elytra');
 			
-			let skinUrl = "/weiw/index_auth.php/texture/{echo:var.mc_user.SKIN.hash}";
-			let capeUrl = "/weiw/index_auth.php/texture/{echo:var.mc_user.CAPE.hash}";
-			
-			if (skinUrl.length === 29) {
-				skinUrl = null;
-			}
-			
-			if (capeUrl.length === 29) {
-				capeUrl = null;
-			}
+			const skinUrl = "/weiw/index_auth.php/texture/{echo:var.mc_user.SKIN.hash}";
+			const capeUrl = "/weiw/index_auth.php/texture/{echo:var.mc_user.CAPE.hash}";
 			
 			const skinViewer = new skinview3d.SkinViewer({
 				canvas: skinContainer,

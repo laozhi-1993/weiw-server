@@ -39,6 +39,8 @@
 			.search-bar {
 				margin: 20px auto;
 				max-width: 600px;
+				display: flex;
+				gap: 10px;
 			}
 			.search-bar input {
 				width: calc(100% - 20px);
@@ -48,9 +50,23 @@
 				background-color: #333;
 				color: #e0e0e0;
 				font-size: 1em;
+				flex: 1;
 			}
 			.search-bar input::placeholder {
 				color: #888;
+			}
+			.search-bar button {
+				padding: 10px 20px;
+				border: none;
+				border-radius: 5px;
+				background-color: #333;
+				color: #e0e0e0;
+				font-size: 1em;
+				cursor: pointer;
+				transition: background-color 0.2s;
+			}
+			.search-bar button:hover {
+				background-color: #555;
 			}
 			.skin-grid {
 				display: grid;
@@ -64,17 +80,22 @@
 				border-radius: 10px;
 				overflow: hidden;
 				transition: transform 0.3s, box-shadow 0.3s;
-				cursor: pointer;
 			}
 			.skin-card:hover {
 				transform: translateY(-5px);
 				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
 			}
+			.skin-image {
+				display: flex;
+				cursor: pointer;
+				align-items: center;
+				justify-content: center;
+				overflow: hidden;
+				background-color: #333;
+				height: 280px;
+			}
 			.skin-card img {
 				width: 100%;
-				height: 280px;
-				object-fit: contain;
-				background-color: #333;
 			}
 			.skin-card button {
 				display: block;
@@ -131,13 +152,13 @@
 			</header>
 			
 			<main>
-				<div class="search-bar">
-					<input type="text" id="searchInput" placeholder="搜索皮肤...">
-				</div>
 				<loading-container>
 					<div class="skin-grid" id="cardContainer">
 						<div foreach(var.mc_textures.data,var.key,var.value) class="skin-card">
-							<img src="https://mcskin.com.cn/preview/{echo:var.value.tid}?height=150" />
+							<div class="skin-image">
+								<img src="https://mcskin.com.cn/preview/{echo:var.value.tid}?height=150" onerror="this.onerror=null; this.src='/images/placeholder.png';" />
+							</div>
+							
 							<button onclick="settexture('{echo:var.value.tid}')">使用</button>
 						</div>
 					</div>
