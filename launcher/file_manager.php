@@ -46,6 +46,7 @@
 				cursor: pointer;
 			}
 			section .svg-icon {
+				margin: 0 5px;
 				display: inline-block;
 				vertical-align: middle;
 				width: 25px;
