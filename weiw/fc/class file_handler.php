@@ -44,18 +44,30 @@
 		return false; // 如果路径既不是文件也不是目录，返回 false
 	}
 	
-	public static function getMinecraftDir() {
-		$minecraftDir = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'minecraft';
+	public static function getRootDir() {
+		$rootDir = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'files';
 		
-		if (!is_dir($minecraftDir)) {
-			mkdir($minecraftDir, 0777, true);
+		if (!is_dir($rootDir)) {
+			mkdir($rootDir, 0777, true);
 		}
 		
-		return realpath($minecraftDir);
+		return realpath($rootDir);
+	}
+	
+	public static function getVersionDir() {
+		$client = config::loadConfig('client');
+		$rootDir = self::getRootDir();
+		$versionDir = $rootDir.DIRECTORY_SEPARATOR.$client['version'];
+		
+		if (!is_dir($versionDir)) {
+			mkdir($versionDir, 0777, true);
+		}
+		
+		return realpath($versionDir);
 	}
 	
 	public static function getPath() {
-		$root = self::getMinecraftDir();
+		$rootDir = self::getRootDir();
 		
 		$splitPathToArray = function($fullPath)
 		{
@@ -79,22 +91,22 @@
 		};
 		
 		if (isset($_GET['p'])) {
-			$absolutePath = realpath($root.DIRECTORY_SEPARATOR.$_GET['p']);
+			$absolutePath = realpath($rootDir.DIRECTORY_SEPARATOR.$_GET['p']);
 		} else {
-			$absolutePath = $root;
+			$absolutePath = $rootDir;
 		}
 		
-		if (strpos($absolutePath, $root) === 0) {
-			$currentPath = str_replace('\\', '/', ltrim(substr($absolutePath, strlen($root)), DIRECTORY_SEPARATOR));
+		if (strpos($absolutePath, $rootDir) === 0) {
+			$currentPath = str_replace('\\', '/', ltrim(substr($absolutePath, strlen($rootDir)), DIRECTORY_SEPARATOR));
 		} else {
 			$currentPath = '';
-			$absolutePath = $root;
+			$absolutePath = $rootDir;
 		}
 
 		return [
 			'absolutePath' => $absolutePath,
 			'currentPath'  => $currentPath,
-			'root'         => $root,
+			'root'         => $rootDir,
 			'pathArray'    => $splitPathToArray($currentPath),
 			'parent'       => dirname($currentPath)
 		];
