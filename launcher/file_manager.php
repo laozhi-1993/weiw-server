@@ -16,7 +16,7 @@
 			::-webkit-scrollbar-track {background-color: #606060}
 			::-webkit-scrollbar-thumb {border-radius: 5px}
 			::-webkit-scrollbar-thumb {background-color: #9393ff}
-			
+
 			body {
 				padding-top: 30px;
 				margin: 0;
@@ -24,12 +24,12 @@
 				box-sizing: border-box;
 				background-color: #2e2e2e;
 			}
-			
+
 			h1 {
 				text-align: center;
 				color: #fff;
 			}
-			
+
 			section {
 				margin: 0 10px;
 				padding: 25px;
@@ -54,7 +54,7 @@
 			section .icon {
 				font-size: 25px;
 			}
-			
+
 			.upload-container {
 				background-color: #333;
 				border-radius: 10px;
@@ -64,7 +64,7 @@
 				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 				user-select: none;
 			}
-			
+
 			.upload-container progress {
 				width: 100%;
 			}
@@ -87,7 +87,7 @@
 				border: 2px dashed #fbff00;
 				color: #fbff00;
 			}
-			
+
 			.upload-area:hover {
 				background-color: #444;
 			}
@@ -96,7 +96,7 @@
 				border-color: #66bb6a;
 			}
 
-			.path-container {
+			.header-container {
 				background: 
 					linear-gradient(90deg, #666 0%, #666 100%), 
 					radial-gradient(at top, rgba(255, 255, 255, 0.50) 0%, rgba(0, 0, 0, 0.55) 100%), 
@@ -112,7 +112,12 @@
 				box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* 阴影 */
 			}
 
-			.path-container span {
+			.header-container .path {
+				display: flex;
+				align-items: center;
+			}
+
+			.header-container .path span {
 				color: #ddd;
 				font-size: 14px;
 				font-weight: bold;
@@ -122,13 +127,13 @@
 				white-space: nowrap;
 			}
 
-			.path-container .icon {
+			.header-container .path .icon {
 				color: #aaa;
 				font-size: 25px;
 				margin-right: 10px;
 			}
 
-			.path-container .back-home-btn {
+			.header-container .back-home-btn {
 				background-color: #444;
 				color: #fff;
 				padding: 10px 20px;
@@ -139,10 +144,10 @@
 				user-select: none;
 			}
 
-			.path-container .back-home-btn:hover {
+			.header-container .back-home-btn:hover {
 				background-color: #66bb6a;
 			}
-			
+
 			table {
 				width: 100%;
 				border-collapse: collapse;
@@ -167,7 +172,7 @@
 			th:last-child, td:last-child {
 				text-align: right;
 			}
-			
+
 			tr {
 				opacity: 0;
 				transform: translateY(30px);
@@ -222,12 +227,14 @@
 					<progress id="progress" value="0" max="0"></progress>
 				</div>
 				
-				<div class="path-container">
-					<div class="icon"><a href="{echo:var.index}">🏠</a></div>
-					<span foreach(var.file_list.pathArray,var.key,var.value)>
-						<span>/</span>
-						<a href="?p={echo:var.value.path}">{echo:var.value.name}</a>
-					</span>
+				<div class="header-container">
+					<div class="path">
+						<div class="icon"><a href="{echo:var.index}">🏠</a></div>
+						<span foreach(var.file_list.pathArray,var.key,var.value)>
+							<span>/</span>
+							<a href="?p={echo:var.value.path}">{echo:var.value.name}</a>
+						</span>
+					</div>
 					<button class="back-home-btn" onclick="window.location.href='index.php'">返回首页</button>
 				</div>
 				

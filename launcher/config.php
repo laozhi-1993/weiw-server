@@ -152,7 +152,58 @@
 			.form-inline .form-group {
 				flex: 1;
 			}
-
+			
+			/* 下拉容器样式 */
+			.dropdown-container {
+				position: relative;
+			}
+			
+			/* 输入框聚焦时箭头旋转 */
+			.dropdown-container input:focus ~ .dropdown-arrow::before {
+				transform: translateY(-40%) rotate(-135deg);
+			}
+			
+			/* 输入框聚焦时显示下拉列表 */
+			.dropdown-container input:focus + .dropdown-list {
+				opacity: 1;
+				visibility: visible;
+				transform: translateY(0);
+			}
+			
+			/* 下拉列表样式 */
+			.dropdown-list {
+				position: absolute;
+				top: calc(100% + 8px);
+				left: 0;
+				z-index: 1;
+				width: 100%;
+				background-color: #555;
+				border-radius: 5px;
+				opacity: 0;
+				visibility: hidden;
+				transform: translateY(10px);
+				transition: all 0.3s ease;
+			}
+			
+			.dropdown-scrollbar {
+				margin: 10px;
+				max-height: 200px;
+				overflow-y: auto;
+				scrollbar-width: thin;
+				scrollbar-color: #4CAF50 #555;
+			}
+			
+			/* 下拉列表项样式 */
+			.dropdown-scrollbar div {
+				padding: 5px 10px;
+				cursor: pointer;
+				transition: all 0.2s ease;
+			}
+			
+			.dropdown-scrollbar div:hover {
+				background-color: #444;
+			}
+			
 			/* 自适应布局 */
 			@media screen and (max-width: 768px) {
 				.form-inline {
@@ -190,8 +241,14 @@
 					<form action="/weiw/index.php?mods=mc_config_save&type=client" method="GET">
 						<div class="form-inline">
 							<div class="form-group">
-								<label>我的世界版本</label>
-								<input type="text" name="version" value="{echo:var.mc_config.client.version}" placeholder="请输入我的世界版本">
+								<div class="dropdown-container">
+									<label>我的世界版本</label>
+									<input type="text" value="{echo:var.mc_config.client.version}" name="version" id="version" placeholder="请输入我的世界版本" autocomplete="off" onfocus="versions()" />
+									<div class="dropdown-list">
+										<div class="dropdown-scrollbar" id="versions">
+										</div>
+									</div>
+								</div>
 							</div>
 							
 							<div class="form-group">
@@ -203,18 +260,29 @@
 
 						<div class="form-inline">
 							<div class="form-group">
-								<label>加载器类型</label>
-								<select name="extensionType" selected="{echo:var.mc_config.client.extensionType}">
-									<option value="none">none</option>
-									<option value="fabric">fabric</option>
-									<option value="forge">forge</option>
-									<option value="neoforge">neoforge</option>
-								</select>
+								<div class="dropdown-container">
+									<label>加载器类型</label>
+									<input type="text" value="{echo:var.mc_config.client.extensionType}" name="extensionType" id="extensionType" placeholder="请输入我的世界版本" autocomplete="off" readonly />
+									<div class="dropdown-list">
+										<div class="dropdown-scrollbar">
+											<div onclick="document.getElementById('extensionType').value = this.textContent">none</div>
+											<div onclick="document.getElementById('extensionType').value = this.textContent">fabric</div>
+											<div onclick="document.getElementById('extensionType').value = this.textContent">forge</div>
+											<div onclick="document.getElementById('extensionType').value = this.textContent">neoforge</div>
+										</div>
+									</div>
+								</div>
 							</div>
 
 							<div class="form-group">
-								<label>加载器版本或安装器下载地址</label>
-								<input type="text" name="extensionValue" value="{echo:var.mc_config.client.extensionValue}" placeholder="请输入加载器版本或安装器下载地址">
+								<div class="dropdown-container">
+									<label>加载器版本或安装器下载地址</label>
+									<input type="text" value="{echo:var.mc_config.client.extensionValue}" name="extensionValue" id="extensionValue" placeholder="请输入加载器版本或安装器下载地址" onfocus="extensions()" />
+									<div class="dropdown-list">
+										<div class="dropdown-scrollbar" id="extensions">
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 
@@ -342,8 +410,66 @@
 		
 		<script src="js/main.js"></script>
 		<script>
-			document.querySelector('select').value = document.querySelector('select').getAttribute("selected");
+			function versions()
+			{
+				const v = document.getElementById('version');
+				const list = document.getElementById('versions');
+				
+				fetch('https://launchermeta.mojang.com/mc/game/version_manifest.json')
+					.then(response => response.json())
+					.then(data => {
+						for(const version of data.versions) {
+							if (version.type === 'release') {
+								const newDiv = document.createElement('div');
+								newDiv.onclick = (event) => v.value = version.id;
+								newDiv.textContent = version.id;
+								list.appendChild(newDiv);
+							}
+						}
+					});
+					
+				list.innerHTML = '';
+			}
 			
+			function extensions()
+			{
+				const v = document.getElementById('version');
+				const list = document.getElementById('extensions');
+				const extensionType = document.getElementById('extensionType');
+				const extensionValue = document.getElementById('extensionValue');
+				
+				if (extensionType.value === 'fabric')
+				{
+					fetch('https://meta.fabricmc.net/v2/versions/loader/'+v.value)
+						.then(response => response.json())
+						.then(data => {
+							for(const version of data) {
+								const newDiv = document.createElement('div');
+								newDiv.onclick = (event) => extensionValue.value = version.loader.version;
+								newDiv.textContent = version.loader.version;
+								list.appendChild(newDiv);
+							}
+						});
+				}
+				
+				if (extensionType.value === 'neoforge')
+				{
+					fetch('https://maven.neoforged.net/api/maven/versions/releases/net/neoforged/neoforge')
+						.then(response => response.json())
+						.then(data => {
+							for(const version of data.versions.reverse()) {
+								if (version.startsWith(v.value.slice(2))) {
+									const newDiv = document.createElement('div');
+									newDiv.onclick = (event) => extensionValue.value = `https://maven.neoforged.net/releases/net/neoforged/neoforge/${version}/neoforge-${version}-installer.jar`;
+									newDiv.textContent = version;
+									list.appendChild(newDiv);
+								}
+							}
+						});
+				}
+				
+				list.innerHTML = '';
+			}
 			
 			
 			handleFormSubmit("form", (fetch) => {
