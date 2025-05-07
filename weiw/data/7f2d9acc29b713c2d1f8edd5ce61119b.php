@@ -1,1 +1,0 @@
-<?php defined('__MKHDIR__') or die(http_response_code(403)) ?><p><b>错误信息：</b><span>filemtime(): stat failed for config\epicfight-client.toml</span></p><p><b>错误文件：</b><span>D:\WebServer\wwwroot\weiw\mods\mc_client_data.php</span></p><p><b>错误行数：</b><span>37</span></p>
