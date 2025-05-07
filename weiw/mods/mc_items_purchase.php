@@ -8,13 +8,14 @@
 			}
 			
 			
+			$client = config::loadConfig('client');
+			$client = reset($client);
 			$items = json_decode(config::loadConfig('items'), true);
-			$config = config::loadConfig('rcon');
 			$Rcon = new Rcon (
-				$config['host'],
-				$config['post'],
-				$config['password'],
-				$config['time']
+				$client['rcon']['host'],
+				$client['rcon']['post'],
+				$client['rcon']['password'],
+				$client['rcon']['time']
 			);
 			
 			
