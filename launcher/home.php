@@ -594,7 +594,13 @@
 			
 			document.querySelector('.check-in').onclick = maincheckin();
 			document.querySelector(".start-game").onclick = function() {
-				window.parent.start({jsonEncode: var.mc_client_data});
+				const client = {json: var.mc_client_data};
+				
+				if (client) {
+					window.parent.start(client);
+				} else {
+					window.parent.customConfirm('没有客户端配置', () => {});
+				}
 			}
 			
 			window.parent.addEventListener("start", () => {
