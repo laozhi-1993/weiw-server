@@ -7,7 +7,9 @@
 				return ['error' => '没有权限'];
 			}
 			
+			
 			$paths = file_handler::getPath();
+			$rootDirName = basename($paths['root']);
 			$dirs  = [];
 			$files = [];
 			
@@ -28,7 +30,7 @@
 					$absolutePath = $paths['absolutePath'] . DIRECTORY_SEPARATOR . $fileName;
 					$modifiedTime = filemtime($absolutePath);
 					$date         = date("Y-m-d H:i", $modifiedTime + 28800);
-					$url          = http::get_current_url("minecraft/{$currentPath}");
+					$url          = http::get_current_url("{$rootDirName}/{$currentPath}");
 					
 					if (is_file($absolutePath))
 					{

@@ -5,4 +5,4 @@
   'authUrl' => '',
   'checkinMoney' => '1000',
   'defaultMoney' => '1000',
-) ?>
+); ?>

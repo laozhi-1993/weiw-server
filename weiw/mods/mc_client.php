@@ -7,11 +7,7 @@
 			}
 			
 			
-			return [
-				'config' => config::loadConfig('config'),
-				'rsa' => config::loadConfig('rsa'),
-				'items' => config::loadConfig('items')
-			];
+			return config::loadConfig('client');
 		}
 		catch(Exception $Exception)
 		{

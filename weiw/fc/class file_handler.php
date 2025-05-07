@@ -54,18 +54,6 @@
 		return realpath($rootDir);
 	}
 	
-	public static function getVersionDir() {
-		$client = config::loadConfig('client');
-		$rootDir = self::getRootDir();
-		$versionDir = $rootDir.DIRECTORY_SEPARATOR.$client['version'];
-		
-		if (!is_dir($versionDir)) {
-			mkdir($versionDir, 0777, true);
-		}
-		
-		return realpath($versionDir);
-	}
-	
 	public static function getPath() {
 		$rootDir = self::getRootDir();
 		

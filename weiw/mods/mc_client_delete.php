@@ -6,15 +6,16 @@
 				throw new Exception("没有权限");
 			}
 			
+			if (isset($_GET['id']))
+			{
+				$client = new config('client');
+				$client ->deleteValue($_GET['id']);
+			}
 			
-			return [
-				'config' => config::loadConfig('config'),
-				'rsa' => config::loadConfig('rsa'),
-				'items' => config::loadConfig('items')
-			];
+			return ['error' => 'ok'];
 		}
 		catch(Exception $Exception)
 		{
-			return Array('error' => $Exception->getMessage());
+			return ['error' => $Exception->getMessage()];
 		}
 	};

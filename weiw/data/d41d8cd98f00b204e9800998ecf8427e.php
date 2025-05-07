@@ -1,0 +1,1 @@
+<?php defined('__MKHDIR__') or die(http_response_code(403)) ?>

@@ -89,7 +89,7 @@
 		}
 	}
 	
-	public static function th2_jsonEncode($parameter,$target)
+	public static function th2_json($parameter,$target)
 	{
 		if($target->toUnified($parameter[0]))
 		{

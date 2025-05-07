@@ -3,11 +3,20 @@
 		try
 		{
 			$Arr = Array();
-			$items = json_decode(config::loadConfig('items'),true);
+			$client = config::loadConfig('client');
+			$client = reset($client);
 			
-			foreach($items as $key => $value)
+			if ($client)
 			{
-				$Arr[] = array_merge(Array('name'=>$key),$value);
+				$items = json_decode($client['items'],true);
+				
+				if (json_last_error() === JSON_ERROR_NONE)
+				{
+					foreach($items as $key => $value)
+					{
+						$Arr[] = array_merge(Array('name'=>$key),$value);
+					}
+				}
 			}
 			
 			return $Arr;

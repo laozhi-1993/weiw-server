@@ -18,26 +18,31 @@
 			
 			if($user->isAdmin())
 			{
-				$config = config::loadConfig('rcon');
-				$Rcon = new Rcon (
-					$config['host'],
-					$config['post'],
-					$config['password'],
-					$config['time']
-				);
+				$client = config::loadConfig('client');
+				$client = reset($client);
 				
-				
-				if(!$Rcon ->connect())
+				if ($client)
 				{
-					throw new Exception('无法连接到我的世界服务器');
-				}
-				else
-				{
-					$text = $Rcon->send($_GET['command']);
-					$text = preg_replace('!(§[0-9a-z]?)!i','',$text);					
+					$Rcon = new Rcon (
+						$client['rcon']['host'],
+						$client['rcon']['post'],
+						$client['rcon']['password'],
+						$client['rcon']['time']
+					);
 					
 					
-					throw new Exception($text);
+					if(!$Rcon ->connect())
+					{
+						throw new Exception('无法连接到我的世界服务器');
+					}
+					else
+					{
+						$text = $Rcon->send($_GET['command']);
+						$text = preg_replace('!(§[0-9a-z]?)!i','',$text);					
+						
+						
+						throw new Exception($text);
+					}
 				}
 			}
 			
