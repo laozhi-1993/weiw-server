@@ -90,3 +90,4 @@
 - [weiw-launcher](https://github.com/laozhi-1993/weiw-launcher): `weiw-launcher` 是 `weiw-server` 项目的客户端组件，提供用户登录和 Minecraft 启动功能。
 - [authlib-injector](https://github.com/yushijinhun/authlib-injector): 一个用于 Minecraft 登录认证的库，`weiw-launcher` 使用该库来实现与原版 Minecraft 相同的登录认证体验。
 - [skinview3d](https://github.com/bs-community/skinview3d): SkinView3D 是一个用于 Minecraft 皮肤（Skin）展示的 3D 可视化工具。
+- [Sortable](https://github.com/SortableJS/Sortable): Sortable 是一个轻量级、高性能的 JavaScript 拖拽排序库，主要用于实现列表、表格或其他元素的拖拽排序功能。
