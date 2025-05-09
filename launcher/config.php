@@ -185,13 +185,18 @@
 				font-size: 14px;
 			}
 
-			h1 {
+			.title {
 				margin: 10;
 				padding: 15px;
 				color: #fff;
 				text-align: center;
 				border-radius: 10px;
 				background-color: #444;
+			}
+
+			.title-drag {
+				text-align: center;
+				color: #24cf2c;
 			}
 
 			/* 输入框聚焦时显示下拉列表 */
@@ -376,6 +381,8 @@
 						<button type="submit" class="save-btn">添加配置</button>
 					</form>
 					
+					<h3 class="title-drag">将要启用的配置项拖动至最顶</h3>
+					
 					<reorder-container>
 						<details foreach(var.mc_client,var.key,var.value) id="{echo:var.value.id}">
 							<summary>
@@ -404,7 +411,7 @@
 									<textarea name="jvm" rows="3">{echo:var.value.jvm}</textarea>
 								</div>
 
-								<h1>rcon</h1>
+								<h1 class="title">rcon</h1>
 								<div class="form-inline">
 									<div class="form-group">
 										<label>地址</label>
@@ -429,12 +436,12 @@
 									</div>
 								</div>
 
-								<h1>文件下载列表</h1>
+								<h1 class="title">文件下载列表</h1>
 								<div class="form-group">
 									<textarea name="downloads" rows="15" placeholder="地址格式[<文件夹名>]<下载链接地址>，比如[mods]https...，换行进行分隔。">{echo:var.value.downloads}</textarea>
 								</div>
 
-								<h1>道具</h1>
+								<h1 class="title">道具</h1>
 								<div class="form-group">
 									<textarea name="items" rows="15">{echo:var.value.items}</textarea>
 								</div>
