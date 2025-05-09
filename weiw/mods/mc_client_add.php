@@ -19,8 +19,8 @@
 				}
 			}
 			
-			$rootDir = file_handler::getRootDir();
-			$clientDir = $rootDir . DIRECTORY_SEPARATOR . $_GET['name'];
+			
+			$clientDir = "{$_SERVER['DOCUMENT_ROOT']}/files/{$_GET['name']}";
 			
 			if (!file_exists($clientDir))
 			{
