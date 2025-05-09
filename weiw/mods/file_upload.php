@@ -1,38 +1,21 @@
 <?php return function ()
-{
-	try
 	{
-		ini_set('max_execution_time', 0);
-		ini_set('max_input_time', 0);
-
-		$user = mc_user_authentication::getUser();
-		if (!$user || !$user->isAdmin()) {
-			return ['error' => '没有权限'];
-		}
-		
-		$paths = file_handler::getPath();
-		$fullPath = "{$paths['absolutePath']}/{$_FILES['file']['full_path']}";
-
-		if ($_FILES['file']['error'] !== 0) {
-			return ['error' => "文件上传错误: {$_FILES['file']['error']}"];
-		}
-		
-		$dir = dirname($fullPath);
-		if (!is_dir($dir)) {
-			if (!mkdir($dir, 0777, true)) {
-				return ['error' => '无法创建目录'];
+		try
+		{
+			if((!$user = mc_user_authentication::getUser()) or (!$user->isAdmin())) {
+				throw new Exception("没有权限");
 			}
+			
+			$file_handler = new file_handler($_GET['p'] ?? '', "{$_SERVER['DOCUMENT_ROOT']}/files");
+			
+			if ($file_handler->upload()) {
+				return ['success' => '文件上传成功', 'file' => $_FILES['file']];
+			}
+			
+			throw new Exception("上传失败");
 		}
-		
-		if (!move_uploaded_file($_FILES['file']['tmp_name'], $fullPath)) {
-			return ['error' => '上传失败'];
+		catch (Exception $e)
+		{
+			return ['error' => $e->getMessage()];
 		}
-		
-		return ['success' => '文件上传成功', 'file' => $_FILES['file']];
-		
-	}
-	catch (Exception $e)
-	{
-		return ['error' => $e->getMessage()];
-	}
-};
+	};

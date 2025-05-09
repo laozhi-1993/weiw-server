@@ -1,28 +1,22 @@
 <?php return function ()
-{
-	try
 	{
-		$user = mc_user_authentication::getUser();
-		if (!$user || !$user->isAdmin()) {
-			return ['error' => '没有权限'];
-		}
-		
-		$paths = file_handler::getPath();
-		if ($paths['currentPath'] !== '')
+		try
 		{
-			if (file_handler::delete($paths['absolutePath'])) {
+			if((!$user = mc_user_authentication::getUser()) or (!$user->isAdmin())) {
+				throw new Exception("没有权限");
+			}
+			
+			$file_handler = new file_handler($_GET['p'] ?? '', "{$_SERVER['DOCUMENT_ROOT']}/files");
+			
+			if ($file_handler->isExists()) {
+				$file_handler->delete();
 				return ['success' => '删除成功'];
 			}
 			
-			return ['error' => '删除失败'];
+			throw new Exception("要删除的文件不存在");
 		}
-		else
+		catch (Exception $e)
 		{
-			return ['error' => '要删除的文件不存在'];
+			return ['error' => $e->getMessage()];
 		}
-	}
-	catch (Exception $e)
-	{
-		return ['error' => $e->getMessage()];
-	}
-};
+	};

@@ -20,11 +20,10 @@
 		$userData = $user->toArray();
 
 		// 定义目录路径
-		$rootDir = file_handler::getRootDir();
-		$clientDir = $rootDir . DIRECTORY_SEPARATOR . $client['name'];
+		$file_handler = new file_handler($client['name'], "{$_SERVER['DOCUMENT_ROOT']}/files");
 
-		if (!file_exists($clientDir)) {
-			mkdir($clientDir, 0777, true);
+		if (!$file_handler->isExists()) {
+			mkdir($file_handler->getFullPath(), 0777, true);
 		}
 
 		$fileDownloads                = Array();
@@ -63,16 +62,12 @@
 			}
 		}
 
-		foreach (file_handler::getFilesRecursively($clientDir, $clientDir) as $file)
+		foreach ($file_handler->getFilesRecursively() as $file)
 		{
-			$fileTime = filemtime($clientDir . DIRECTORY_SEPARATOR . $file);
-			$filePath = str_replace('\\', '/', $file);
-			$fileUrl  = http::get_current_url("files/{$client['name']}/{$filePath}");
-
-			$fileDownloads[$filePath] = [
-				'url'  => $fileUrl,
-				'path' => $filePath,
-				'time' => $fileTime,
+			$fileDownloads[$file[2]] = [
+				'url'  => $file[1],
+				'path' => $file[2],
+				'time' => $file[0],
 			];
 		}
 
