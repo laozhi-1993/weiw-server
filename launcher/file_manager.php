@@ -77,8 +77,12 @@
 			}
 
 			.upload-area {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				height: 150px;
 				border: 2px dashed #888;
-				padding: 40px;
 				font-size: 16px;
 				color: #ccc;
 				cursor: pointer;
@@ -304,106 +308,114 @@
 		<script>
 			const dropZone = document.getElementById("drop-zone");
 			const progressBar = document.getElementById("progress");
-
-			let total  = 0;
-			let loaded = 0;
 			
 			// 阻止默认的浏览器行为
 			["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
 				dropZone.addEventListener(eventName, e => e.preventDefault());
 			});
-
+			
 			// 当目录拖拽到区域时，添加样式
 			dropZone.addEventListener("dragenter", () => dropZone.classList.add("dragover"));
 			dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
 			dropZone.addEventListener("drop",      () => dropZone.classList.remove("dragover"));
-
+			
 			// 处理拖拽目录
-			dropZone.addEventListener("drop", event => {
-				const items = event.dataTransfer.items;
-				const files = []; // 用于存储所有文件
-				total  = 0;
-				loaded = 0;
-
-				for (const item of items) {
+			dropZone.addEventListener("drop", async (event) => {
+				event.preventDefault();
+				const processPromises = [];
+				
+				for (const item of event.dataTransfer.items)
+				{
 					const entry = item.webkitGetAsEntry();
+					
 					if (entry) {
-						traverseDirectory(entry, '', files); // 获取文件并存储在files数组中
+						processPromises.push(traverseDirectory(entry));
 					}
 				}
-
-				// 在所有文件读取完成后，调用上传函数
-				setTimeout(async () => {
-					for (const file of files) {
-						await uploadFile(file);
-					}
-					
-					location.reload();
-				}, 500);
+				
+				// 等待所有目录遍历完成
+				await Promise.all(processPromises);
+				
+				// 按顺序上传文件
+				for (const file of files) {
+					await uploadFile(file);
+				}
+				
+				location.reload();
 			});
-
-			// 递归遍历目录结构
-			function traverseDirectory(fileOrFolder, path, files) {
-				const fullPath = `${path}/${fileOrFolder.name}`;
-				
-				if (fileOrFolder.isDirectory) {
-					fileOrFolder.createReader().readEntries(entries => {
-						for (const entry of entries) {
-							traverseDirectory(entry, fullPath, files);
-						}
-					});
+			
+			
+			const size = {'total':0,'loaded':0}; //储存所用文件的总大小
+			const files = []; // 存储所有文件
+			
+			// 递归遍历目录方法
+			async function traverseDirectory(entry)
+			{
+				if (entry.isDirectory)
+				{
+					const reader = entry.createReader();
+					let entries;
 					
-					return;
+					// 循环读取直到没有更多条目
+					do {
+						entries = await new Promise((resolve, reject) => 
+							reader.readEntries(resolve, reject)
+						);
+						
+						for (const entry of entries) {
+							await traverseDirectory(entry);
+						}
+					} while (entries.length > 0);
 				}
-				
-				if (fileOrFolder.isFile) {
-					fileOrFolder.file(file => {
-						total += file.size;
-						files.push({ file, path: fullPath })
-					});
+
+				if (entry.isFile)
+				{
+					const file = await new Promise((resolve, reject) => 
+						entry.file(resolve, reject)
+					);
+					size.total += file.size;
+					files.push({ file, path: entry.fullPath });
 				}
 			}
 			
-			// 上传单个文件
-			function uploadFile({ file, path }) {
+			
+			// 上传函数保持不变（确保处理错误）
+			async function uploadFile(file)
+			{
+				dropZone.innerHTML = file.file.name;
 				return new Promise((resolve, reject) => {
-					const formData = new FormData();
 					const xhr = new XMLHttpRequest();
-					formData.append("file", file, path);
-
-					xhr.upload.addEventListener("progress", function (e) {
-						if (e.lengthComputable) {
-							progressBar.value = loaded+e.loaded;
-							progressBar.max = total;
-							
-							if (e.loaded === e.total) {
-								loaded += e.total;
-							}
+					const formData = new FormData();
+					let previousLoaded = 0;
+					formData.append("file", file.file);
+					
+					xhr.upload.addEventListener("progress", (e) => {
+						if (e.lengthComputable)
+						{
+							size.loaded += e.loaded-previousLoaded;
+							previousLoaded = e.loaded;
+							progressBar.max = size.total;
+							progressBar.value = size.loaded;
 						}
 					});
-
-					xhr.addEventListener("load", function () {
-						if (xhr.status === 200) {
-							resolve("文件上传成功");
-						} else {
-							reject("文件上传失败");
-						}
+					
+					xhr.addEventListener("load", () => {
+						if (xhr.status === 200) resolve();
+						else reject(xhr.statusText);
 					});
-
-					xhr.addEventListener("error", function () {
-						reject("文件上传失败");
-					});
-
-					xhr.open("POST", `/weiw/index.php?mods=file_upload&p={echo:var.file_list.current}`, true);
+					
+					xhr.addEventListener("error", () => reject("Network error"));
+					xhr.open("POST", `/weiw/index.php?mods=file_upload&p=${encodeURIComponent('{echo:var.file_list.current}'+file.path)}`, true);
 					xhr.send(formData);
 				});
 			}
 			
-			function fileDelete(name, path) {
+			
+			function fileDelete(name, path)
+			{
 				customConfirm(`你确定要 删除 文件吗？<br>${name}`, async function(result) {
-					path = encodeURIComponent(path);
-					
-					if (result) {
+					if (result)
+					{
 						try {
 							const response = await fetch(`/weiw/index.php?mods=file_delete&p=${path}`);
 							if (!response.ok) {
@@ -419,7 +431,8 @@
 				});
 			}
 			
-			function copyToClipboard(text) {
+			function copyToClipboard(text)
+			{
 				const textArea = document.createElement('textarea');
 				textArea.value = text;
 				document.body.appendChild(textArea);
