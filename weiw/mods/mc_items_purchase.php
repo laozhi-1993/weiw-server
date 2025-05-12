@@ -10,7 +10,7 @@
 			
 			$client = config::loadConfig('client');
 			$client = reset($client);
-			$items = json_decode(config::loadConfig('items'), true);
+			$items = json_decode($client['items'], true);
 			$Rcon = new Rcon (
 				$client['rcon']['host'],
 				$client['rcon']['post'],
