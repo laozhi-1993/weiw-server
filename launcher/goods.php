@@ -111,6 +111,8 @@
 			}
 
 			.item-icon img {
+				max-width: 80%;
+				max-height: 80%;
 				object-fit: cover;
 				transition: transform 0.3s ease;
 			}
