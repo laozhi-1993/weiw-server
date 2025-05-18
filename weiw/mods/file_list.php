@@ -6,7 +6,7 @@
 				throw new Exception("没有权限");
 			}
 			
-			$file_handler = new file_handler($_GET['p'] ?? '', "{$_SERVER['DOCUMENT_ROOT']}/files");
+			$file_handler = new file_handler("{$_SERVER['DOCUMENT_ROOT']}/files", $_GET['p'] ?? '');
 			
 			return [
 				'current'       => $file_handler->getCurrentPath(),

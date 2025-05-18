@@ -5,7 +5,7 @@
 	public $currentPath;
 	
 	
-	public function __construct(string $currentPath, string $basePath = '.')
+	public function __construct(string $basePath, string $currentPath = '.')
 	{
 		$this->webRoot = $_SERVER['DOCUMENT_ROOT'];
 		$this->basePath = $basePath;
@@ -96,7 +96,7 @@
 			if ($fileInfo->isFile()) {
 				$files[] = [
 					filemtime($fileInfo->getPathname()),
-					http::get_current_url() . $this->relativePath($webRoot, $fileInfo->getPathname()),
+					http::get_current_url($this->relativePath($webRoot, $fileInfo->getPathname())),
 					$this->relativePath($containedPath, $fileInfo->getPathname()),
 				];
 			}
@@ -125,13 +125,17 @@
 			$entry = [
 				'type' => $fileInfo->isDir() ? 'dir' : 'file',
 				'name' => $fileInfo->getFilename(),
-				'path' => rawurlencode($this->joinPaths(
-					$this->getCurrentPath(),
-					$fileInfo->getFilename()
-				)),
-				'url'  => http::get_current_url() . $this->relativePath(
-					$this->getWebRoot(),
-					$fileInfo->getPathname()
+				'path' => rawurlencode(
+					$this->joinPaths(
+						$this->getCurrentPath(),
+						$fileInfo->getFilename(),
+					)
+				),
+				'url'  => http::get_current_url(
+					$this->relativePath(
+						$this->getWebRoot(),
+						$fileInfo->getPathname(),
+					)
 				),
 				'date' => date("Y-m-d H:i", $fileInfo->getMTime() + 28800),
 			];

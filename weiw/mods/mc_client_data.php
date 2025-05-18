@@ -20,15 +20,13 @@
 		$userData = $user->toArray();
 
 		// 定义目录路径
-		$file_handler = new file_handler($client['name'], "{$_SERVER['DOCUMENT_ROOT']}/files");
+		$file_handler = new file_handler("{$_SERVER['DOCUMENT_ROOT']}/files/{$client['name']}");
 
 		if (!$file_handler->isExists()) {
 			mkdir($file_handler->getFullPath(), 0777, true);
 		}
 
-		$fileDownloads                = Array();
-		$clientData                   = Array();
-
+		$clientData = Array();
 		$clientData['username']       = $userData['name'];
 		$clientData['uuid']           = $userData['uuid'];
 		$clientData['accessToken']    = $userData['accessToken'];
@@ -47,15 +45,23 @@
 
 
 
-		if (preg_match_all('!\[(.+)\](https?://[^\s]+)!i', $client['downloads'], $downloads, PREG_SET_ORDER))
+		foreach(preg_split('!\r\n|\n|\r!', $client['downloads']) as $download)
 		{
-			foreach($downloads as $download)
+			if ($download && preg_match('!(?:\[(.+)\])?(https?://.+)!i', $download, $file))
 			{
-				$filePath = $download[1] . '/' . urldecode(basename($download[2]));
-				$fileTime = 0;
+				if ($file[1])
+				{
+					$filePath = $file[1] . '/' . urldecode(basename($file[2]));
+					$fileTime = 0;
+				}
+				else
+				{
+					$filePath = 'mods/' . urldecode(basename($file[2]));
+					$fileTime = 0;
+				}
 
-				$fileDownloads[$filePath] = [
-					'url'  => $download[2],
+				$clientData['downloads'][] = [
+					'url'  => $file[2],
 					'path' => $filePath,
 					'time' => $fileTime,
 				];
@@ -64,21 +70,19 @@
 
 		foreach ($file_handler->getFilesRecursively() as $file)
 		{
-			$fileDownloads[$file[2]] = [
+			$clientData['downloads'][] = [
 				'url'  => $file[1],
 				'path' => $file[2],
 				'time' => $file[0],
 			];
 		}
 
-		foreach($fileDownloads as $fileDownload)
+		foreach($clientData['downloads'] as $fileDownload)
 		{
 			if (preg_match('!^mods/.*jar$!i', $fileDownload['path'] ?? ''))
 			{
 				$clientData['mods'][] = basename($fileDownload['path']);
 			}
-
-			$clientData['downloads'][] = $fileDownload;
 		}
 
 

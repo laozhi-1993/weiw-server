@@ -31,7 +31,7 @@
 	}
 	
 	
-	public static function get_current_url($path = '') {
+	public static function get_current_url() {
 		// 检查是否为 HTTPS 协议
 		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 		
@@ -49,7 +49,18 @@
 			}
 		}
 		
-		// 返回完整的 URL
-		return $protocol . $domain . '/'. $path;
+		$paths = [];
+		$paths[] = $protocol . $domain;
+		
+		foreach(func_get_args() as $path)
+		{
+			foreach(explode('/', $path) as $routeParameter)
+			{
+				if ($routeParameter) $paths[] = rawurlencode($routeParameter);
+			}
+		}
+		
+		// 合拼完整的 URL
+		return implode('/', $paths);
 	}
 }
