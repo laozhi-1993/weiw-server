@@ -438,7 +438,7 @@
 
 								<h1 class="title">文件下载列表</h1>
 								<div class="form-group">
-									<textarea name="downloads" rows="15" placeholder="地址格式[<文件夹名>]<下载链接地址>，比如[mods]https...，换行进行分隔。">{echo:var.value.downloads}</textarea>
+									<textarea name="downloads" rows="15" placeholder="每行一个地址">{echo:var.value.downloads}</textarea>
 								</div>
 
 								<h1 class="title">道具</h1>
