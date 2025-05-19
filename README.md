@@ -3,14 +3,6 @@
 ## 项目简介
 `weiw-server` 是 [weiw-launcher](https://github.com/laozhi-1993/weiw-launcher) 项目的服务端组件。它与 [weiw-launcher](https://github.com/laozhi-1993/weiw-launcher) 客端协同工作，提供用户认证和游戏相关的服务器功能。
 
-## 功能特性
-
-- **登录认证**：通过 authlib-injector 实现与原版 Minecraft 相同的登录认证体验。
-- **用户界面**：友好的用户界面，方便用户操作。
-- **皮肤系统**：实现了简单的皮肤更换和使用功能。
-- **金钱系统**：可以编辑 Minecraft 服务器指令让玩家使用金钱购买执行、进行每日签到获取金钱，并使用管理权限进行金钱分配。
-- **RCON 指令执行**：可以使用 RCON 在客户端执行 Minecraft 服务器上的指令。
-
 ## 使用说明
 
 ### 安装要求
