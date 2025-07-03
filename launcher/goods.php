@@ -185,10 +185,10 @@
 		</style>
 	</head>
 	<body>
-		<includes-message><?php include('includes/message.html') ?></includes-message>
-		<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
-
 		<section>
+			<includes-message><?php include('includes/message.html') ?></includes-message>
+			<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
+
 			<header>
 				<div class="gold-info">
 					<h1>村民商店</h1>
@@ -219,7 +219,7 @@
 		<script>
 			function determine(id,name,price)
 			{
-				window.parent.customConfirm(`你确定要花费 ${price} 购买 ${name} 吗？`, function(result) {
+				window.parent.showConfirm(`你确定要花费 ${price} 购买 ${name} 吗？`, function(result) {
 					if (result) {
 						fetch(`/weiw/index.php?mods=mc_items_purchase&id=${id}`, {
 							method: 'GET',

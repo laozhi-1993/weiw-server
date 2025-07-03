@@ -26,54 +26,74 @@
 				// 动画结束后移除元素
 				setTimeout(function() {
 					messageElement.remove();
-				}, 500);
+				}, 300);
 			}
 		}
 	</script>
 	<style>
         @keyframes remove {
             0% {
-                transform: scale(1);
+                transform: translateY(0);
 				opacity: 1;
             }
             100% {
-                transform: scale(0);
+                transform: translateY(-100%);
 				opacity: 0;
             }
         }
 		
+        @keyframes slideInFromTop {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
 		.result {
 			position: relative;
 			top: 0;
 			left: 0;
 			z-index: 1;
-		}
-		.result .remove {
-			animation: remove 0.51s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-		.result data {
-			display: none;
-		}
-		.result div {
-			margin-bottom: 8px;
-			position: relative;
-			padding: 10px;
-			padding-right: 30px;
-			background-color: #f4d03f;
-			border-radius: 5px;
-		}
-		.result div span:first-child {
-			color: #000;
-			font-size: 14px;
-		}
-		.result div span:last-child {
-			position: absolute;
-			top: 0;
-			right: 5px;
-			display: inline-block;
-			cursor: pointer;
-			padding: 10px;
-			color: #ff0000;
+			overflow: hidden;
+			
+			
+			.remove {
+				animation: remove 0.31s cubic-bezier(0.25, 1, 0.5, 1);
+			}
+			
+			data {
+				display: none;
+			}
+			
+			div {
+				margin-bottom: 8px;
+				position: relative;
+				padding: 10px;
+				padding-right: 30px;
+				background-color: #f4d03f;
+				border-radius: 5px;
+				animation: slideInFromTop 0.51s cubic-bezier(0.25, 1, 0.5, 1);
+				
+				
+				span:first-child {
+					color: #000;
+					font-size: 14px;
+				}
+				
+				span:last-child {
+					position: absolute;
+					top: 0;
+					right: 5px;
+					display: inline-block;
+					cursor: pointer;
+					padding: 10px;
+					color: #ff0000;
+				}
+			}
 		}
 	</style>
 	<div class="result">

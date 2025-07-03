@@ -1,0 +1,339 @@
+	<style>
+		dialog {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%) scale(0.8);
+			background: white;
+			border-radius: 16px;
+			box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+			margin: 0;
+			max-width: 500px;
+			width: 90%;
+			padding: 0;
+			border: none;
+			overflow: hidden;
+			z-index: 1000;
+			user-select: none;
+			box-sizing: border-box;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			
+			
+			
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			&::backdrop {
+				background: rgba(0, 0, 0, 0.3);
+				backdrop-filter: blur(3px);
+			}
+			
+			&[open] {
+				animation: dialog-open 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+				
+				&::backdrop {
+					animation: dialog-backdropFadeIn 0.4s ease forwards;
+				}
+			}
+			
+			&.closing {
+				animation: dialog-close 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+			}
+			
+			.dialog-content {
+				padding: 50px 20px;
+				padding-bottom: 15px;
+				color: #333;
+				text-align: center;
+				font-size: 1.1rem;
+				line-height: 1.6;
+				animation: dialog-up 0.5s ease-out 0.1s forwards;
+				opacity: 0;
+			}
+			
+			.dialog-actions {
+				padding: 20px;
+				display: flex;
+				gap: 15px;
+				animation: dialog-up 0.5s ease-out 0.2s forwards;
+				opacity: 0;
+				
+				
+				
+				.btn {
+					flex: 1;
+					padding: 15px;
+					border: none;
+					border-radius: 25px;
+					font-size: 1.05rem;
+					font-weight: 600;
+					line-height: 20px;
+					cursor: pointer;
+					transition: all 0.3s ease;
+					position: relative;
+					overflow: hidden;
+					
+					
+					
+					&::after {
+						content: '';
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 100%;
+						background: rgba(255, 255, 255, 0.2);
+						transform: translateX(-100%);
+						transition: transform 0.3s ease;
+					}
+					
+					&:hover::after {
+						transform: translateX(0);
+					}
+					
+					&:hover {
+						transform: translateY(-2px);
+						box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+					}
+				}
+				
+				.cancel-btn {
+					background: #f1f2f6;
+					color: #7f8c8d;
+					
+					&:hover {
+						background: #dfe4ea;
+					}
+				}
+				
+				.success-btn {
+					background: linear-gradient(135deg, #3498db, #2980b9);
+					color: white;
+				}
+				
+				.delete-btn {
+					background: linear-gradient(135deg, #ff416c, #ff4b2b);
+					color: white;
+				}
+				
+				.error-btn {
+					background: linear-gradient(135deg, #3498db, #2980b9);
+					color: white;
+				}
+				
+				.confirm-btn {
+					background: linear-gradient(135deg, #11998e, #38ef7d);
+					color: white;
+				}
+			}
+		}
+		
+		
+		@keyframes dialog-backdropFadeIn {
+			from { opacity: 0; }
+			to { opacity: 1; }
+		}
+		
+		@keyframes dialog-open {
+			0% {
+				transform: translate(-50%, -50%) scale(0.8);
+				opacity: 0;
+			}
+			70% {
+				transform: translate(-50%, -50%) scale(1.05);
+				opacity: 1;
+			}
+			100% {
+				transform: translate(-50%, -50%) scale(1);
+				opacity: 1;
+			}
+		}
+		
+		@keyframes dialog-close {
+			0% {
+				transform: translate(-50%, -50%) scale(1);
+				opacity: 1;
+			}
+			100% {
+				transform: translate(-50%, -50%) scale(0.8);
+				opacity: 0;
+			}
+		}
+		
+		@keyframes dialog-icon {
+			0% { transform: scale(0.8); opacity: 0; }
+			70% { transform: scale(1.1); }
+			100% { transform: scale(1); opacity: 1; }
+		}
+		
+		@keyframes dialog-up {
+			from {
+				transform: translateY(15px);
+				opacity: 0;
+			}
+			to {
+				transform: translateY(0);
+				opacity: 1;
+			}
+		}
+	</style>
+	
+	<dialog id="dialogConfirm">
+		<div class="dialog-content"></div>
+		<div class="dialog-actions">
+			<button class="btn cancel-btn">取消</button>
+			<button class="btn confirm-btn">确认</button>
+		</div>
+	</dialog>
+	
+	<dialog id="dialogDelete">
+		<div class="dialog-content"></div>
+		<div class="dialog-actions">
+			<button class="btn cancel-btn">取消</button>
+			<button class="btn delete-btn">删除</button>
+		</div>
+	</dialog>
+	
+	<dialog id="dialogSuccess">
+		<div class="dialog-content"></div>
+		<div class="dialog-actions">
+			<button class="btn success-btn">确定</button>
+		</div>
+	</dialog>
+	
+	<dialog id="dialogError">
+		<div class="dialog-content"></div>
+		<div class="dialog-actions">
+			<button class="btn error-btn">确定</button>
+		</div>
+	</dialog>
+	
+	<script>
+		class Dialog {
+			constructor(id) {
+				this.dialog = document.getElementById(id);
+			}
+			
+			content(text) {
+				this.dialog.querySelector('.dialog-content').innerHTML = text;
+			}
+			
+			button(selector, callback) {
+				if (selector === 'outside') {
+					this.dialog.onclick = (e) => {
+						const dialogDimensions = this.dialog.getBoundingClientRect();
+						if (
+							e.clientX < dialogDimensions.left ||
+							e.clientX > dialogDimensions.right ||
+							e.clientY < dialogDimensions.top ||
+							e.clientY > dialogDimensions.bottom
+						) {
+							callback();
+						}
+					}
+					
+					return;
+				}
+				
+				this.dialog.querySelector(selector).onclick = callback;
+			}
+			
+			open() {
+				this.dialog.showModal();
+			}
+			
+			close() {
+				this.dialog.classList.add('closing');
+				
+				// 等待动画完成
+				setTimeout(() => {
+					this.dialog.classList.remove('closing');
+					this.dialog.close();
+				}, 400);
+			}
+		}
+		
+		function showConfirm(content, callback)
+		{
+			const dialog = new Dialog('dialogConfirm');
+			
+			dialog.content(content);
+			dialog.open();
+			
+			dialog.button('outside', () => {
+				callback(false);
+				dialog.close();
+			});
+			
+			dialog.button('.cancel-btn', () => {
+				callback(false);
+				dialog.close();
+			});
+			
+			dialog.button('.confirm-btn', () => {
+				callback(true);
+				dialog.close();
+			});
+		}
+		
+		function showDelete(content, callback)
+		{
+			const dialog = new Dialog('dialogDelete');
+			
+			dialog.content(content);
+			dialog.open();
+			
+			dialog.button('outside', () => {
+				callback(false);
+				dialog.close();
+			});
+			
+			dialog.button('.cancel-btn', () => {
+				callback(false);
+				dialog.close();
+			});
+			
+			dialog.button('.delete-btn', () => {
+				callback(true);
+				dialog.close();
+			});
+		}
+		
+		function showSuccess(content, callback)
+		{
+			const dialog = new Dialog('dialogSuccess');
+			
+			dialog.content(content);
+			dialog.open();
+			
+			dialog.button('outside', () => {
+				callback();
+				dialog.close();
+			});
+			
+			dialog.button('.success-btn', () => {
+				callback();
+				dialog.close();
+			});
+		}
+		
+		function showError(content, callback)
+		{
+			const dialog = new Dialog('dialogError');
+			
+			dialog.content(content);
+			dialog.open();
+			
+			dialog.button('outside', () => {
+				callback();
+				dialog.close();
+			});
+			
+			dialog.button('.error-btn', () => {
+				callback();
+				dialog.close();
+			});
+		}
+	</script>

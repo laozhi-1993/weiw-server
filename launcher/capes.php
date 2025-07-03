@@ -134,10 +134,10 @@
 		</style>
 	</head>
 	<body>
-		<includes-message><?php include('includes/message.html') ?></includes-message>
-		<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
-		
 		<section>
+			<includes-message><?php include('includes/message.html') ?></includes-message>
+			<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
+			
 			<header>
 				<h1>披风库</h1>
 				<p>探索神秘力量，装备你的专属披风</p>

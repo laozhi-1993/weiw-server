@@ -17,8 +17,11 @@
 			}
 
 			body {
-				height: 100vh;
+				background-color: #2e2e2e;
+				height: calc(100vh - 50px);
 				margin: 0;
+				padding: 20px;
+				padding-top: 30px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -135,6 +138,10 @@
 		</style>
 	</head>
 	<body>
+		<includes-header><?php include('includes/window-header.html') ?></includes-header>
+		<includes-scrollbar><?php include('includes/scrollbar.html') ?></includes-scrollbar>
+		
+		
 		<div class="terminal-container">
 			<div class="terminal-header">
 				<center>༺࿈终端࿈༻</center>
@@ -149,8 +156,8 @@
 				<button>
 					<span>发送</span>
 				</button>
-				<button type="button" onClick="changepassword()">
-					<span>更改密码</span>
+				<button type="button" onClick="window.location.href='index.php'">
+					<span>返回首页</span>
 				</button>
 			</form>
 		</div>
@@ -178,10 +185,6 @@
 					history.scrollTop = history.scrollHeight;
 				});
 			});
-			
-			function changepassword() {
-				document.querySelector('input').value = "changepassword [旧密码] [新密码] [确认新密码]";
-			}
 			
 			document.addEventListener('click', () => input.focus());
 		</script>

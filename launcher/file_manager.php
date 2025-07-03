@@ -223,7 +223,7 @@
 		<section>
 			<main>
 				<includes-header><?php include('includes/window-header.html') ?></includes-header>
-				<includes-confirm><?php include('includes/custom_confirm.html') ?></includes-confirm>
+				<includes-dialog><?php include('includes/dialog.html') ?></includes-dialog>
 				<includes-message><?php include('includes/message.html') ?></includes-message>
 				
 				<div class="upload-container">
@@ -413,7 +413,7 @@
 			
 			function fileDelete(name, path)
 			{
-				customConfirm(`你确定要 删除 文件吗？<br>${name}`, async function(result) {
+				showDelete(`你确认要删除 "${name}" 文件吗？`, async function(result) {
 					if (result)
 					{
 						try {
