@@ -1,8 +1,8 @@
 <?php
 	
-	if (version_compare(PHP_VERSION, '7.0.0', '<')) {
-		// 如果版本小于 7，则输出错误信息并终止代码
-		die("PHP 版本过低，请升级到 PHP 7 或更高版本。");
+	if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+		// 如果版本小于 8，则输出错误信息并终止代码
+		die("PHP 版本过低，请升级到 PHP 8 或更高版本。");
 	}
 	
 	$customAutoload = function($className)

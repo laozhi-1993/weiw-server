@@ -26,23 +26,65 @@
 				mkdir($file_handler->getFullPath(), 0777, true);
 			}
 
+
+			$getAuthServerUrl = function() {
+				// 获取配置
+				$config = config::loadConfig('config');
+
+				if ($config['authServerUrl']) {
+					return $config['authServerUrl'];
+				}
+
+				return http::get_current_url('weiw/index_auth.php');
+			};
+
+			$getAuthPath = function() use ($client) {
+				return rawurldecode(basename($client['authUrl']));
+			};
+
+			$getJvm = function() use ($client) {
+				return preg_split('!\r\n|\n|\r!', $client['jvm']);
+			};
+
+			$getServer = function() use ($client) {
+				$servers = [];
+				$serverLines = preg_split('!\r\n|\n|\r!', $client['server']);
+
+				foreach($serverLines as $serverLine)
+				{
+					$serverComponents  = explode(':', $serverLine);
+
+					$servers[] = [
+						'address' => $serverComponents [0],
+						'port'    => $serverComponents [1] ?? '25565',
+						'name'    => $serverComponents [2] ?? 'server',
+					];
+				}
+
+				return $servers;
+			};
+
 			$clientData = Array();
-			$clientData['username']       = $userData['name'];
-			$clientData['uuid']           = $userData['uuid'];
-			$clientData['accessToken']    = $userData['accessToken'];
+			$clientData['username']    = $userData['name'];
+			$clientData['uuid']        = $userData['uuid'];
+			$clientData['accessToken'] = $userData['accessToken'];
 
 			$clientData['id']             = $client['id'];
 			$clientData['name']           = $client['name'];
 			$clientData['version']        = $client['version'];
 			$clientData['extensionType']  = $client['extensionType'];
 			$clientData['extensionValue'] = $client['extensionValue'];
-			$clientData['address']        = $client['address'];
-			$clientData['authModule']     = $client['authModule'];
-			$clientData['jvm']            = $client['jvm'];
+			$clientData['jvm']            = $getJvm();
+			$clientData['server']         = $getServer();
+			$clientData['authPath']       = $getAuthPath();
+			$clientData['authServerUrl']  = $getAuthServerUrl();
 
-			$clientData['mods']           = [];
-			$clientData['downloads']      = [];
-
+			$clientData['mods'] = Array();
+			$clientData['downloads'] = Array([
+				'url'  => $client['authUrl'],
+				'path' => $clientData['authPath'],
+				'time' => 0,
+			]);
 
 
 			foreach(preg_split('!\r\n|\n|\r!', $client['downloads']) as $download)

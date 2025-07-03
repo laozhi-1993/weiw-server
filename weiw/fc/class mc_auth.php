@@ -9,7 +9,7 @@
 	private $implementationVersion;
 	private $skinDomains;
 	private $serverName;
-	private $authUrl;
+	private $authServerUrl;
 	private $publicKey;
 	private $privateKey;
     public function __construct()
@@ -26,13 +26,13 @@
 			$this->pathInfo = Null;
 		}
 		
-		if ($config['authUrl'])
+		if ($config['authServerUrl'])
 		{
-			$this->authUrl = $config['authUrl'];
+			$this->authServerUrl = $config['authServerUrl'];
 		}
 		else
 		{
-			$this->authUrl = $this->resolveAuthUrl();
+			$this->authServerUrl = $this->resolveAuthUrl();
 		}
 		
 		$this->data                  = json_decode(file_get_contents('php://input'), true);
@@ -44,8 +44,8 @@
 		$this->publicKey             = $rsa['public'];
 		$this->privateKey            = $rsa['private'];
 		
-		$this->serverName = $config['serverName'];
-		$this->skinDomains[] = parse_url($this->authUrl, PHP_URL_HOST);
+		$this->serverName = $config['name'];
+		$this->skinDomains[] = parse_url($this->authServerUrl, PHP_URL_HOST);
 		
 		
 		if (!is_dir($this->texturesTempDir))
@@ -73,13 +73,13 @@
 		
 		if(strlen($user->CAPE['hash']) == 64)
 		{
-			$textures['textures']['CAPE']['url'] = "{$this->authUrl}/texture/{$user->CAPE['hash']}";
+			$textures['textures']['CAPE']['url'] = "{$this->authServerUrl}/texture/{$user->CAPE['hash']}";
 		}
 		
 		
 		if(strlen($user->SKIN['hash']) == 64)
 		{
-			$textures['textures']['SKIN']['url'] = "{$this->authUrl}/texture/{$user->SKIN['hash']}";
+			$textures['textures']['SKIN']['url'] = "{$this->authServerUrl}/texture/{$user->SKIN['hash']}";
 			$textures['textures']['SKIN']['metadata']['model'] = $user->SKIN['model'];
 		}
 		

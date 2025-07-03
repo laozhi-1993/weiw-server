@@ -13,12 +13,12 @@
 			if($_GET['type'] == 'config')
 			{
 				$requiredParams = [
-					'serverName',
+					'name',
 					'domain',
 					'download',
-					'authUrl',
-					'checkinMoney',
-					'defaultMoney'
+					'auth-server-url',
+					'checkin-money',
+					'default-money'
 				];
 				
 				foreach ($requiredParams as $param) {
@@ -28,12 +28,12 @@
 				}
 				
 				$config = new config('config');
-				$config ->setValue('serverName',   $_GET['serverName']);
-				$config ->setValue('domain',       $_GET['domain']);
-				$config ->setValue('download',     $_GET['download']);
-				$config ->setValue('authUrl',      $_GET['authUrl']);
-				$config ->setValue('checkinMoney', $_GET['checkinMoney']);
-				$config ->setValue('defaultMoney', $_GET['defaultMoney']);
+				$config ->setValue('name',          $_GET['name']);
+				$config ->setValue('domain',        $_GET['domain']);
+				$config ->setValue('download',      $_GET['download']);
+				$config ->setValue('authServerUrl', $_GET['auth-server-url']);
+				$config ->setValue('checkinMoney',  $_GET['checkin-money']);
+				$config ->setValue('defaultMoney',  $_GET['default-money']);
 				
 				
 				throw new Exception('保存完成');

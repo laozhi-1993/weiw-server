@@ -8,15 +8,15 @@
 			
 			$client = config::loadConfig('client');
 			$requiredParams = [
-				'address',
-				'authModule',
+				'server',
+				'auth-url',
 				'jvm',
 				'downloads',
 				'items',
-				'rconHost',
-				'rconPost',
-				'rconPassword',
-				'rconTime'
+				'rcon-host',
+				'rcon-post',
+				'rcon-password',
+				'rcon-time'
 			];
 			
 			foreach ($requiredParams as $param) {
@@ -38,17 +38,17 @@
 			
 			$Arr = $client[$_GET['id']];
 			
-			$Arr['address']          = $_POST['address'];
-			$Arr['authModule']       = $_POST['authModule'];
+			$Arr['server']           = $_POST['server'];
+			$Arr['authUrl']          = $_POST['auth-url'];
 			$Arr['jvm']              = $_POST['jvm'];
 			$Arr['downloads']        = $_POST['downloads'];
 			$Arr['items']            = $_POST['items'];
 			
 			
-			$Arr['rcon']['host']     = $_POST['rconHost'];
-			$Arr['rcon']['post']     = $_POST['rconPost'];
-			$Arr['rcon']['password'] = $_POST['rconPassword'];
-			$Arr['rcon']['time']     = $_POST['rconTime'];
+			$Arr['rcon']['host']     = $_POST['rcon-host'];
+			$Arr['rcon']['post']     = $_POST['rcon-post'];
+			$Arr['rcon']['password'] = $_POST['rcon-password'];
+			$Arr['rcon']['time']     = $_POST['rcon-time'];
 			
 			$client = new config('client');
 			$client ->setValue($_GET['id'], $Arr);

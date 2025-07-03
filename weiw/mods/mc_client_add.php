@@ -9,14 +9,22 @@
 			$requiredParams = [
 				'name',
 				'version',
-				'loaderType',
-				'loaderValue'
+				'extension-type',
+				'extension-value',
+				'server',
+				'auth-url',
+				'jvm',
+				'downloads',
 			];
 			
 			foreach ($requiredParams as $param) {
 				if (!isset($_GET[$param])) {
 					throw new Exception("缺少参数 $param");
 				}
+			}
+			
+			if (!in_array($_GET['extension-type'], ['fabric', 'forge', 'neoforge'], true)) {
+				$_GET['extension-type'] = 'none';
 			}
 			
 			
@@ -27,21 +35,20 @@
 				mkdir($clientDir, 0777, true);
 			}
 			
+			
 			$id = uniqid();
 			$Arr = Array();
-			
-			
 			$Arr['id']               = $id;
 			$Arr['name']             = $_GET['name'];
 			$Arr['version']          = $_GET['version'];
-			$Arr['extensionType']    = $_GET['loaderType'];
-			$Arr['extensionValue']   = $_GET['loaderValue'];
+			$Arr['extensionType']    = $_GET['extension-type'];
+			$Arr['extensionValue']   = $_GET['extension-value'];
 			
 			
-			$Arr['address']          = '127.0.0.1';
-			$Arr['authModule']       = 'https://authlib-injector.yushi.moe/artifact/53/authlib-injector-1.2.5.jar';
-			$Arr['jvm']              = '-Xmx6G';
-			$Arr['downloads']        = '';
+			$Arr['server']           = $_GET['server'];
+			$Arr['authUrl']          = $_GET['auth-url'];
+			$Arr['jvm']              = $_GET['jvm'];
+			$Arr['downloads']        = $_GET['downloads'];
 			$Arr['items']            = config::loadConfig('items');
 			
 			
