@@ -1,8 +1,8 @@
 <?php return array (
-  'serverName' => 'example',
+  'name' => 'example',
   'domain' => 'example.com',
   'download' => '',
-  'authUrl' => '',
+  'authServerUrl' => '',
   'checkinMoney' => '1000',
   'defaultMoney' => '1000',
 ); ?>
