@@ -1,2 +1,0 @@
-* # 忽略所有文件
-!.gitignore # 但不忽略 .gitignore 本身
