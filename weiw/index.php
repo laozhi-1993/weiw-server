@@ -5,9 +5,15 @@
 		die("PHP 版本过低，请升级到 PHP 8 或更高版本。");
 	}
 	
+	function rootdir(...$args)
+	{
+		return implode(DIRECTORY_SEPARATOR, array_merge([__DIR__], $args));
+	}
+	
+	
 	$customAutoload = function($className)
 	{
-		if(file_exists($classRoute = __MKHDIR__.strtolower("/fc/class {$className}.php")) && is_file($classRoute))
+		if(file_exists($classRoute = rootdir('fc', strtolower("class {$className}.php"))) && is_file($classRoute))
 		{
 			require_once($classRoute);
 		}
@@ -18,11 +24,45 @@
 		throw new mkh_error($error_level,$error_message,$error_file,$error_line);
 	};
 	
+	
 	error_reporting(~E_NOTICE);
+	
     define('__MKHDIR__', __DIR__);
     define('__currenttime__', microtime(true));
+	
 	spl_autoload_register($customAutoload);
 	set_error_handler($customErrorHandler);
+	
+	
+	$files = glob(rootdir('config', '*.example'));
+	$folders = [
+		'config',
+		'data',
+		'mods',
+		'fc',
+		'user_textures',
+		'users',
+	];
+	
+	foreach ($files as $sourceFile)
+	{
+		$targetFile = substr($sourceFile, 0, -8);
+		
+		if (!file_exists($targetFile))
+		{
+			copy($sourceFile, $targetFile);
+		}
+	}
+	
+	foreach ($folders as $dirname)
+	{
+		$fullDir = rootdir($dirname);
+		
+		if (!is_dir($fullDir))
+		{
+			mkdir($fullDir, 0755, true);
+		}
+	}
 	
 	
 	if(debug_backtrace() === Array())
@@ -32,7 +72,7 @@
 			header('content-type: application/json');
 			
 			
-			if(preg_match('!^[A-Za-z0-9._-]+$!',$_GET['mods']) && is_file($route = __MKHDIR__."/mods/{$_GET['mods']}.php"))
+			if(preg_match('!^[A-Za-z0-9._-]+$!',$_GET['mods']) && is_file($route = rootdir('mods', "{$_GET['mods']}.php")))
 			{
 				try
 				{
