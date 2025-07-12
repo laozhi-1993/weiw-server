@@ -49,7 +49,7 @@
 			$Arr['authUrl']          = $_GET['auth-url'];
 			$Arr['jvm']              = $_GET['jvm'];
 			$Arr['downloads']        = $_GET['downloads'];
-			$Arr['items']            = config::loadConfig('items');
+			$Arr['items']            = config::loadConfig('config')['items'];
 			
 			
 			$Arr['rcon']['host']     = '127.0.0.1';

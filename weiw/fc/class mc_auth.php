@@ -15,7 +15,6 @@
     public function __construct()
 	{
 		$config = config::loadConfig('config');
-		$rsa    = config::loadConfig('rsa');
 		
 		if(isset($_SERVER['PATH_INFO']))
 		{
@@ -41,8 +40,8 @@
 		$this->texturesTempDir       = __MKHDIR__.'/data/textures/';
 		$this->implementationName    = 'weiw auth server';
 		$this->implementationVersion = '1.1.2';
-		$this->publicKey             = $rsa['public'];
-		$this->privateKey            = $rsa['private'];
+		$this->publicKey             = $config['public'];
+		$this->privateKey            = $config['private'];
 		
 		$this->serverName = $config['name'];
 		$this->skinDomains[] = parse_url($this->authServerUrl, PHP_URL_HOST);

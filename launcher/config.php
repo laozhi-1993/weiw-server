@@ -7,7 +7,7 @@
 
 	$MKH = new mkh();
 	$MKH ->mods('mc_launcher');
-	$MKH ->mods('mc_config');
+	$MKH ->mods('mc_server');
 	$MKH ->mods('mc_client');
 ?>
 <!DOCTYPE html>
@@ -437,9 +437,7 @@
 					
 					<div>
 						<button class="menuButton" onclick="showContent(1)">客户端</button>
-						<button class="menuButton" onclick="showContent(2)">网站</button>
-						<button class="menuButton" onclick="showContent(3)">道具</button>
-						<button class="menuButton" onclick="showContent(4)">秘钥</button>
+						<button class="menuButton" onclick="showContent(2)">服务端</button>
 					</div>
 				</div>
 
@@ -555,74 +553,61 @@
 
 
 				<div class="content">
-					<form class="nested" action="/weiw/index.php?mods=mc_config_save&type=config" method="GET">
+					<form class="nested" action="/weiw/index.php?mods=mc_server_update" method="GET">
 						<div class="form-inline">
 							<div class="form-group">
 								<label>网站名字</label>
-								<input type="text" name="name" value="{echo:var.mc_config.config.name}" placeholder="请输入网站名字">
+								<input type="text" name="name" value="{echo:var.mc_server.name}" placeholder="请输入网站名字">
 							</div>
 
 							<div class="form-group">
 								<label>网站域名</label>
-								<input type="text" name="domain" value="{echo:var.mc_config.config.domain}" placeholder="请输入网站域名">
+								<input type="text" name="domain" value="{echo:var.mc_server.domain}" placeholder="请输入网站域名">
 							</div>
 						</div>
 
 						<div class="form-inline">
 							<div class="form-group">
 								<label>认证地址</label>
-								<input type="text" name="auth-server-url" value="{echo:var.mc_config.config.authServerUrl}" placeholder="留空将自动获取">
+								<input type="text" name="auth-server-url" value="{echo:var.mc_server.authServerUrl}" placeholder="留空将自动获取">
 							</div>
 
 							<div class="form-group">
 								<label>下载地址</label>
-								<input type="text" name="download" value="{echo:var.mc_config.config.download}" placeholder="请输入下载地址">
+								<input type="text" name="download" value="{echo:var.mc_server.download}" placeholder="请输入下载地址">
 							</div>
 						</div>
 
 						<div class="form-inline">
 							<div class="form-group">
 								<label>初始金钱</label>
-								<input type="number" name="default-money" value="{echo:var.mc_config.config.defaultMoney}" placeholder="请输入初始金钱">
+								<input type="number" name="default-money" value="{echo:var.mc_server.defaultMoney}" placeholder="请输入初始金钱">
 							</div>
 
 							<div class="form-group">
 								<label>签到金钱</label>
-								<input type="number" name="checkin-money" value="{echo:var.mc_config.config.checkinMoney}" placeholder="请输入签到金钱">
+								<input type="number" name="checkin-money" value="{echo:var.mc_server.checkinMoney}" placeholder="请输入签到金钱">
 							</div>
 						</div>
 
-						<button type="submit" class="save-btn">保存设置</button>
-					</form>
-				</div>
-
-
-				<div class="content">
-					<form class="nested" action="/weiw/index.php?mods=mc_config_save&type=items" method="GET">
+						<h1 class="title">道具模板</h1>
 						<div class="form-group">
-							<label>编辑道具内容</label>
-							<textarea name="value" rows="20" spellcheck="false">{echo:var.mc_config.items}</textarea>
+							<textarea name="items" rows="20" spellcheck="false">{echo:var.mc_server.items}</textarea>
 						</div>
 						
-						<button type="submit" class="save-btn">保存设置</button>
-					</form>
-				</div>
-
-
-				<div class="content">
-					<form class="nested" action="/weiw/index.php?mods=mc_config_save&type=rsa" method="GET">
+						<h1 class="title">秘钥</h1>
 						<div class="form-inline">
 							<div class="form-group">
 								<label>私钥</label>
-								<textarea name="private" rows="20" placeholder="请输入私钥" spellcheck="false">{echo:var.mc_config.rsa.private}</textarea>
+								<textarea name="private" rows="20" placeholder="请输入私钥" spellcheck="false">{echo:var.mc_server.private}</textarea>
 							</div>
 
 							<div class="form-group">
 								<label>公钥</label>
-								<textarea name="public" rows="20" placeholder="请输入公钥" spellcheck="false">{echo:var.mc_config.rsa.public}</textarea>
+								<textarea name="public" rows="20" placeholder="请输入公钥" spellcheck="false">{echo:var.mc_server.public}</textarea>
 							</div>
 						</div>
-
+						
 						<button type="submit" class="save-btn">保存设置</button>
 					</form>
 				</div>
