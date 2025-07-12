@@ -33,7 +33,6 @@
 			
 			.card {
 				padding: 50px;
-				backdrop-filter: blur(10px);
 			}
 			
 			h2 {
