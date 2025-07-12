@@ -91,6 +91,7 @@
 
 			.content .nested {
 				padding: 20px;
+				border-top: 3px solid #FF5800;
 				border-radius: 5px;
 				background-color: #3c3c3c;
 				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);

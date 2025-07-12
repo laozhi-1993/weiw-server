@@ -1,5 +1,5 @@
 <?php return array (
-  'name' => 'example',
+  'name' => '方块世界',
   'domain' => 'example.com',
   'download' => '',
   'authServerUrl' => '',
