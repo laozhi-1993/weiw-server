@@ -7,10 +7,19 @@
 			$serverData['mods'] = [];
 
 			// 获取客户端配置
-			$client = config::loadConfig('client');
-			$client = reset($client);
+			if (isset($_GET['id']))
+			{
+				$clients = config::loadConfig('client');
+				$client  = $clients[$_GET['id']] ?? false;
+			}
+			else
+			{
+				$clients = config::loadConfig('client');
+				$client  = reset($clients);
+			}
 
-			if (!$client) {
+			if (!$client)
+			{
 				return $serverData;
 			}
 

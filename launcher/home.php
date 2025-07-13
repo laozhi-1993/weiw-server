@@ -599,7 +599,7 @@
 				if (client) {
 					window.parent.start(client);
 				} else {
-					window.parent.customConfirm('没有客户端配置', () => {});
+					window.parent.showSuccess('没有客户端配置', () => {});
 				}
 			}
 			

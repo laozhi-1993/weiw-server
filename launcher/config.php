@@ -126,6 +126,12 @@
 				line-height: 35px;
 			}
 
+			details summary a {
+				text-decoration: none;
+				color: inherit;
+				outline: none;
+			}
+
 			details summary .name {
 				color: #fff;
 				font-size: 1rem;
@@ -489,7 +495,7 @@
 								<span class="name">{echo:var.value.name}</span>
 								<span class="version">v{echo:var.value.version}</span>
 								<span class="type">{echo:var.value.extensionType}</span>
-								<span class="id">ID:{echo:var.value.id}</span>
+								<span class="id"><a href="javascript:copyToClipboard('{echo:var.value.id}')">ID:{echo:var.value.id}</a></span>
 							</summary>
 							
 							<form class="details-container" action="/weiw/index.php?mods=mc_client_update&id={echo:var.value.id}" method="POST">
@@ -796,6 +802,22 @@
 					}
 				});
 			});
+			
+			function copyToClipboard(text)
+			{
+				const textArea = document.createElement('textarea');
+				textArea.value = text;
+				document.body.appendChild(textArea);
+				
+				textArea.select();
+				textArea.setSelectionRange(0, 99999);
+				
+				document.execCommand('copy');
+				document.body.removeChild(textArea);
+				document.querySelector('section').scrollTop = 0;
+				
+				showMessage('已将ID复制到剪切板');
+			}
 			
 			const container = document.querySelector('reorder-container');
 			new Sortable(container, {
