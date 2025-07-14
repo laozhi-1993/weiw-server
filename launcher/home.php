@@ -1,6 +1,6 @@
 <?php include_once("$_SERVER[DOCUMENT_ROOT]/weiw/index.php");
 
-sleep(5);
+
 	$MKH = new mkh();
 	$MKH ->mods('mc_launcher');
 	$MKH ->mods('mc_user');
