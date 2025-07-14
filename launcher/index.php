@@ -172,7 +172,9 @@
 				transition: fill 0.3s ease;
 				fill: #9393ff;
 			}
-			main .content {
+			
+			.content {
+				position: relative;
 				display: flex;
 				gap: 8px;
 				flex-direction: column;
@@ -183,46 +185,115 @@
 				box-sizing: border-box;
 				background: radial-gradient(#333,#333);
 			}
-			main .content #tab {
-				border: none;
-				width:  100%;
-				height: calc(100% - 0px);
-			}
-			main .content #tab-loading {
-				display: none;
-				text-align: center;
+			
+			iframe {
+				width: 100%;
 				height: 100%;
+				border: none;
 			}
 			
-			.loading {
-				display: inline-block;
-				position: relative;
-				top: calc(50% - 100px);
-			}
-			.loading::before {
-				display: inline-block;
-				content: 'Loading';
-				color: #CCCCCC;
-				font-family: Arial, Helvetica, sans-serif;
-				font-size: 48px;
-				letter-spacing: 2px;
-				box-sizing: border-box;
-				animation: floating 1s ease-out infinite alternate;
-			}
-			.loading::after {
-				content: '';  
-				width: 100%;
-				height: 10px;
-				background: rgba(0, 0, 0, 0.15);
+			.skeleton-container {
 				position: absolute;
+				top: 0;
 				left: 0;
-				top: 100%;
-				filter: blur(4px);
-				border-radius: 50%;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				gap: 30px;
+				overflow: none;
+				padding: 20px;
+				padding-top: 40px;
 				box-sizing: border-box;
-				animation: animloader 1s ease-out infinite alternate;
 			}
-
+			
+			.skeleton-row {
+				display: flex;
+				gap: 30px;
+				width: 100%;
+			}
+			
+			.skeleton-col {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				gap: 30px;
+			}
+			
+			.skeleton-item {
+				background-color: #444;
+				border-radius: 8px;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			/* 闪烁动画 */
+			.skeleton-item::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: linear-gradient(90deg, 
+					transparent, 
+					rgba(255, 255, 255, 0.1), 
+					transparent);
+				animation: shimmer 1s infinite;
+			}
+			
+			.skeleton-header {
+				height: 80px;
+				margin-bottom: 20px;
+			}
+			
+			.skeleton-title {
+				height: 40px;
+				width: 70%;
+			}
+			
+			.skeleton-text {
+				height: 16px;
+				width: 100%;
+			}
+			
+			.skeleton-text.short {
+				width: 85%;
+			}
+			
+			.skeleton-text.medium {
+				width: 92%;
+			}
+			
+			.skeleton-avatar {
+				width: 60px;
+				height: 60px;
+				border-radius: 50%;
+			}
+			
+			.skeleton-card {
+				height: 200px;
+			}
+			
+			.skeleton-image {
+				height: 180px;
+			}
+			
+			.skeleton-footer {
+				height: 100%;
+				margin-top: 20px;
+			}
+			
+			.hidden {
+				display: none;
+			}
+			
+			@media (max-width: 768px) {
+				.skeleton-row {
+					flex-direction: column;
+				}
+			}
+			
 			@keyframes floating {
 				0% {
 					transform: translateY(0);
@@ -231,7 +302,12 @@
 					transform: translateY(-25px);
 				}
 			}
-
+			
+			@keyframes shimmer {
+				0% { transform: translateX(-100%); }
+				100% { transform: translateX(100%); }
+			}
+			
 			@keyframes animloader {
 				0% {
 					transform: scale(0.8);
@@ -239,11 +315,6 @@
 				100% {
 					transform: scale(1.2);
 				}
-			}
-			
-			@font-face {
-				font-family: 'digital-7';
-				src: url('fonts/7segment.ttf');
 			}
 		</style>
 		
@@ -306,8 +377,41 @@
 					</ul>
 				</div>
 				<div class="content">
-					<iframe id="tab"></iframe>
-					<div id="tab-loading"><span class="loading"></span></div>
+					<div class="skeleton-container hidden">
+						<div class="skeleton-row">
+							<div class="skeleton-col">
+								<div class="skeleton-item skeleton-header"></div>
+								<div class="skeleton-item skeleton-title"></div>
+								<div class="skeleton-item skeleton-text short"></div>
+								<div class="skeleton-item skeleton-text medium"></div>
+								<div class="skeleton-item skeleton-text"></div>
+								<div class="skeleton-item skeleton-text short"></div>
+							</div>
+							<div class="skeleton-col">
+								<div class="skeleton-item skeleton-card"></div>
+								<div class="skeleton-row">
+									<div class="skeleton-item skeleton-avatar"></div>
+									<div class="skeleton-col" style="flex: 3;">
+										<div class="skeleton-item skeleton-text" style="width: 70%;"></div>
+										<div class="skeleton-item skeleton-text" style="width: 90%;"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="skeleton-row">
+							<div class="skeleton-col">
+								<div class="skeleton-item skeleton-image"></div>
+							</div>
+							<div class="skeleton-col">
+								<div class="skeleton-item skeleton-image"></div>
+							</div>
+							<div class="skeleton-col">
+								<div class="skeleton-item skeleton-image"></div>
+							</div>
+						</div>
+						<div class="skeleton-item skeleton-footer"></div>
+					</div>
+					<iframe></iframe>
 				</div>
 			</main>
 		</section>
@@ -325,9 +429,9 @@
 			
 			document.querySelectorAll(".menu ul.iframe-nav li[data-url]").forEach(function(item) {
 				item.addEventListener("click", function() {
-					document.getElementById("tab-loading").style.display = "block";
-					document.getElementById("tab").style.display = "none";
-					document.getElementById("tab").src = this.getAttribute("data-url");
+					document.querySelector(".skeleton-container").classList.remove("hidden");
+					document.querySelector("iframe").classList.add("hidden");
+					document.querySelector("iframe").src = this.getAttribute("data-url");
 					document.querySelectorAll(".menu ul li[data-url]").forEach(function(item) {
 						item.classList.remove("select");
 					});
@@ -336,9 +440,9 @@
 				});
 			});
 			document.querySelector(".menu ul li:nth-child(1)").click();
-			document.querySelector("#tab").onload = function() {
-				document.getElementById("tab-loading").style.display = "none";
-				document.getElementById("tab").style.display = "block";
+			document.querySelector("iframe").onload = function() {
+				document.querySelector(".skeleton-container").classList.add("hidden");
+				document.querySelector("iframe").classList.remove("hidden");
 			};
 		</script>
 	</body>
