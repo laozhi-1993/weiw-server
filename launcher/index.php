@@ -1,7 +1,6 @@
 <?php include_once("$_SERVER[DOCUMENT_ROOT]/weiw/index.php");
 
-//http_response_code(404);
-sleep(1);
+
 	$MKH = new mkh();
 	$MKH ->mods('mc_launcher');
 	$MKH ->mods('mc_user');
