@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 	<head>
+		<title>{echo:var.config.name}</title>
 		<style>
 			body {
 				margin: 0;
@@ -317,9 +318,6 @@
 				}
 			}
 		</style>
-		
-		
-		<title>我的世界启动器</title>
 	</head>
 	<body>
 		<includes-header><?php include('includes/window-header.html') ?></includes-header>
@@ -418,6 +416,40 @@
 		
 		
 		<script>
+			class TimeoutLatch
+			{
+				constructor(time, callback)
+				{
+					this.allow = false;
+					this.timerId = false;
+					this.time = time;
+					this.callback = callback;
+				}
+				
+				start()
+				{
+					clearTimeout(this.timerId);
+					
+					this.allow = false;
+					this.timerId = setTimeout(() => {
+						if (this.allow) {
+							this.callback();
+						} else {
+							this.allow = true;
+						}
+					}, this.time);
+				}
+				
+				done()
+				{
+					if (this.allow) {
+						this.callback();
+					} else {
+						this.allow = true;
+					}
+				}
+			}
+			
 			function logout() {
 				showConfirm('确认要退出登陆吗？', (result) => {
 					if (result) {
@@ -427,23 +459,27 @@
 				});
 			}
 			
+			const timeoutLatch = new TimeoutLatch(500, () => {
+				document.querySelector(".skeleton-container").classList.add("hidden");
+				document.querySelector("iframe").classList.remove("hidden");
+			});
+			
 			document.querySelectorAll(".menu ul.iframe-nav li[data-url]").forEach(function(item) {
 				item.addEventListener("click", function() {
 					document.querySelector(".skeleton-container").classList.remove("hidden");
 					document.querySelector("iframe").classList.add("hidden");
 					document.querySelector("iframe").src = this.getAttribute("data-url");
+					
 					document.querySelectorAll(".menu ul li[data-url]").forEach(function(item) {
 						item.classList.remove("select");
 					});
 					
+					timeoutLatch.start();
 					this.classList.add("select");
 				});
 			});
 			document.querySelector(".menu ul li:nth-child(1)").click();
-			document.querySelector("iframe").onload = function() {
-				document.querySelector(".skeleton-container").classList.add("hidden");
-				document.querySelector("iframe").classList.remove("hidden");
-			};
+			document.querySelector("iframe").onload = () => timeoutLatch.done();
 		</script>
 	</body>
 </html>

@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 	<head>
+		<title>登陆</title>
 		<style>
 			body {
 				background-color: #0568C1;
@@ -126,7 +127,6 @@
 				margin-right: 0.5rem;
 			}
 		</style>
-		<title>登陆</title>
 	</head>
 	<body>
 		<includes-header><?php include('includes/window-header.html') ?></includes-header>

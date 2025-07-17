@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 	<head>
+		<title>玩家列表</title>
 		<style>
 			::-webkit-scrollbar {width: 10px}
 			::-webkit-scrollbar {height: 10px}
