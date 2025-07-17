@@ -418,34 +418,37 @@
 		<script>
 			class TimeoutLatch
 			{
-				constructor(time, callback)
+				constructor(time)
 				{
-					this.allow = false;
-					this.timerId = false;
 					this.time = time;
-					this.callback = callback;
+					
+					this.toggle = false;
+					this.timerId = false;
+					this.callback = false;
 				}
 				
 				start()
 				{
 					clearTimeout(this.timerId);
 					
-					this.allow = false;
 					this.timerId = setTimeout(() => {
-						if (this.allow) {
+						if (this.callback) {
 							this.callback();
 						} else {
-							this.allow = true;
+							this.toggle = true;
 						}
 					}, this.time);
+					
+					this.toggle = false;
+					this.callback = false;
 				}
 				
-				done()
+				done(callback)
 				{
-					if (this.allow) {
-						this.callback();
+					if (this.toggle) {
+						callback();
 					} else {
-						this.allow = true;
+						this.callback = callback;
 					}
 				}
 			}
@@ -459,10 +462,7 @@
 				});
 			}
 			
-			const timeoutLatch = new TimeoutLatch(500, () => {
-				document.querySelector(".skeleton-container").classList.add("hidden");
-				document.querySelector("iframe").classList.remove("hidden");
-			});
+			const timeoutLatch = new TimeoutLatch(500);
 			
 			document.querySelectorAll(".menu ul.iframe-nav li[data-url]").forEach(function(item) {
 				item.addEventListener("click", function() {
@@ -478,8 +478,13 @@
 					this.classList.add("select");
 				});
 			});
+			document.querySelector("iframe").onload = function() {
+				timeoutLatch.done(() => {
+					document.querySelector(".skeleton-container").classList.add("hidden");
+					document.querySelector("iframe").classList.remove("hidden");
+				});
+			}
 			document.querySelector(".menu ul li:nth-child(1)").click();
-			document.querySelector("iframe").onload = () => timeoutLatch.done();
 		</script>
 	</body>
 </html>
