@@ -429,20 +429,65 @@
 				box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
 			}
 			
-			/* 页脚 */
+			/* 页脚样式 */
 			footer {
 				text-align: center;
-				padding: 30px;
-				background: rgba(5, 15, 25, 0.9);
-				border-top: 1px solid rgba(46, 204, 113, 0.2);
+				padding: 40px 30px;
+				background: rgba(5, 15, 25, 0.95);
+				border-top: 1px solid rgba(46, 204, 113, 0.3);
 				display: flex;
 				flex-direction: column;
 				align-items: center;
+				margin-top: auto;
+			}
+			
+			.footer-content {
+				max-width: 800px;
+				margin: 0 auto;
 			}
 			
 			footer p {
 				color: #7f8c8d;
 				font-size: 1.1rem;
+				margin-bottom: 25px;
+				line-height: 1.6;
+			}
+			
+			.github-links {
+				display: flex;
+				justify-content: center;
+				flex-wrap: wrap;
+				gap: 20px;
+				margin: 20px 0;
+			}
+			
+			.github-link {
+				display: flex;
+				align-items: center;
+				padding: 12px 25px;
+				background: rgba(10, 25, 40, 0.7);
+				border-radius: 50px;
+				text-decoration: none;
+				color: #7f8c8d;
+				border: 1px solid rgba(46, 204, 113, 0.2);
+				transition: all 0.3s ease;
+			}
+			
+			.github-link:hover {
+				background: rgba(46, 204, 113, 0.1);
+				color: #2ecc71;
+				border-color: rgba(46, 204, 113, 0.5);
+				transform: translateY(-3px);
+			}
+			
+			.github-link i {
+				font-size: 1.5rem;
+				margin-right: 10px;
+			}
+			
+			.server-name {
+				color: #2ecc71;
+				font-weight: bold;
 			}
 			
 			/* 返回顶部按钮 */
@@ -495,6 +540,17 @@
 			
 			
 			@media (max-width: 768px) {
+				.github-links {
+					flex-direction: column;
+					align-items: center;
+				}
+				
+				.github-link {
+					width: 100%;
+					max-width: 300px;
+					justify-content: center;
+				}
+				
 				.hero {
 					height: 600px;
 				}
@@ -638,7 +694,21 @@
 		
 		<!-- 页脚 -->
 		<footer>
-			<p>© 2025 {echo:var.config.name} | 打造最有趣的我的世界服务器</p>
+			<div class="footer-content">
+				<div class="github-links">
+					<a href="https://github.com/laozhi-1993/weiw-server" class="github-link" target="_blank">
+						<i class="fab fa-github"></i>
+						<span>服务器源码仓库</span>
+					</a>
+					
+					<a href="https://github.com/laozhi-1993/weiw-launcher" class="github-link" target="_blank">
+						<i class="fab fa-github"></i>
+						<span>启动器源码仓库</span>
+					</a>
+				</div>
+				
+				<p>© 2025 <span class="server-name">{echo:var.config.name}</span> | 打造最有趣的我的世界服务器 | 本服务器与Mojang及Microsoft无关</p>
+			</div>
 		</footer>
 		
 		<!-- 粒子背景脚本 -->
