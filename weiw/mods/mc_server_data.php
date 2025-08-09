@@ -40,7 +40,7 @@
 
 			foreach ($file_handler->getDirectoryListing() as $file)
 			{
-				if (strpos($file['name'], '[c]') !== 0)
+				if (strpos($file['name'], '[c]') !== 0 && $file['type'] === 'file')
 				{
 					$serverData['downloads'][] = [
 						'url' => $file['url'],
@@ -51,7 +51,7 @@
 
 			foreach($serverData['downloads'] as $fileDownload)
 			{
-				if (preg_match('!^mods/.*jar$!i', $fileDownload['path'] ?? ''))
+				if (preg_match('!^mods/[^/]*$!i', $fileDownload['path'] ?? ''))
 				{
 					$serverData['mods'][] = basename($fileDownload['path']);
 				}

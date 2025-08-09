@@ -147,7 +147,7 @@
 
 			foreach($clientData['downloads'] as $fileDownload)
 			{
-				if (preg_match('!^mods/.*jar$!i', $fileDownload['path'] ?? ''))
+				if (preg_match('!^mods/[^/]*$!i', $fileDownload['path'] ?? ''))
 				{
 					$clientData['mods'][] = basename($fileDownload['path']);
 				}
