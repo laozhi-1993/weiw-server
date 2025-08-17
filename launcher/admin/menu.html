@@ -1,0 +1,80 @@
+	<style>
+		.menu {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 20px;
+			margin-bottom: 20px;
+			background-color: #3c3c3c;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+		}
+
+		.menu div {
+			display: flex;
+			justify-content: space-between;
+			gap: 10px;
+		}
+
+		.menu button {
+			background-color: #444;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			line-height: 20px;
+			font-size: 16px;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+
+		.menu button:hover {
+			background-color: #666;
+		}
+
+		.menu button.active {
+			background-color: #007bff;
+			box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+		}
+	</style>
+	
+	<div class="menu">
+		<button onclick="window.location.href='../index.php'">返回首页</button>
+		
+		<div>
+			<button onclick="window.location.href='client.php'">客户端</button>
+			<button onclick="window.location.href='server.php'">服务端</button>
+			<button onclick="window.location.href='users.php'">用户</button>
+			<button onclick="window.location.href='files.php'">文件</button>
+			<button onclick="window.location.href='console.php'">终端</button>
+		</div>
+	</div>
+	
+	<script>
+		// 获取当前 URL 的文件名部分（含扩展名）
+		function getCurrentFileName() {
+		  // 使用 URL API 解析当前地址
+		  const pathname = new URL(window.location.href).pathname;
+		  
+		  // 提取最后一个斜杠后的内容
+		  return pathname.substring(pathname.lastIndexOf('/') + 1);
+		}
+		
+		switch (getCurrentFileName()) {
+			case "client.php":
+				document.querySelector('.menu div button:nth-child(1)').classList.add('active');
+			break;
+			case "server.php":
+				document.querySelector('.menu div button:nth-child(2)').classList.add('active');
+			break;
+			case "users.php":
+				document.querySelector('.menu div button:nth-child(3)').classList.add('active');
+			break;
+			case "files.php":
+				document.querySelector('.menu div button:nth-child(4)').classList.add('active');
+			break;
+			case "console.php":
+				document.querySelector('.menu div button:nth-child(5)').classList.add('active');
+			break;
+		}
+	</script>

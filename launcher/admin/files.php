@@ -222,9 +222,10 @@
 	<body>
 		<section>
 			<main>
-				<includes-header><?php include('includes/window-header.html') ?></includes-header>
-				<includes-dialog><?php include('includes/dialog.html') ?></includes-dialog>
-				<includes-message><?php include('includes/message.html') ?></includes-message>
+				<includes-header><?php include('../includes/window-header.html') ?></includes-header>
+				<includes-message><?php include('../includes/message.html') ?></includes-message>
+				<includes-dialog><?php include('../includes/dialog.html') ?></includes-dialog>
+				<includes-menu><?php include('menu.html') ?></includes-menu>
 				
 				<div class="upload-container">
 					<p>将文件拖拽到此区域进行上传</p>
@@ -240,7 +241,6 @@
 							<a href="?p={echo:var.value.path}">{echo:var.value.name}</a>
 						</span>
 					</div>
-					<button class="back-home-btn" onclick="window.location.href='index.php'">返回首页</button>
 				</div>
 				
 				<h1>文件列表</h1>
