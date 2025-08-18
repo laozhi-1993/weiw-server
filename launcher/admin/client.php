@@ -586,7 +586,7 @@
 				
 				if (type === 'forge')
 				{
-					getJson('config.php/forge', loaderValues, (data, addDiv) => {
+					getJson('client.php/forge', loaderValues, (data, addDiv) => {
 						if (data[version.value]) {
 							for(const item of data[version.value].reverse()) {
 								addDiv([type,item].join('-'), () => {
