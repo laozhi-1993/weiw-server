@@ -5,4 +5,10 @@
 			http_response_code(403);
 			exit;
 		}
+		
+		if(!mc_user_authentication::getUser())
+		{
+			http_response_code(401);
+			exit;
+		}
 	};

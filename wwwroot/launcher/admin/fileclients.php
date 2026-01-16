@@ -2,7 +2,7 @@
 
 
 	$MKH = new mkh();
-	$MKH ->mods('mc_launcher');
+	$MKH ->mods('mc_verify_access');
 	$MKH ->mods('fileclient_list');
 ?>
 <!DOCTYPE html>

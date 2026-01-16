@@ -1,12 +1,12 @@
 <?php include_once("$_SERVER[DOCUMENT_ROOT]/weiw/index.php");
 
+
+	$MKH = new mkh();
+	$MKH ->mods('mc_verify_access');
+
 	if ($_SERVER['PATH_INFO'] === '/forge') {
 		die(file_get_contents("https://files.minecraftforge.net/net/minecraftforge/forge/maven-metadata.json"));
 	}
-
-
-	$MKH = new mkh();
-	$MKH ->mods('mc_launcher');
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">

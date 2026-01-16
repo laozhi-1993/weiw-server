@@ -2,7 +2,7 @@
 
 
 	$MKH = new mkh();
-	$MKH ->mods('mc_launcher');
+	$MKH ->mods('mc_verify_access');
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">

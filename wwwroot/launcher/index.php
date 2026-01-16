@@ -2,7 +2,7 @@
 
 
 	$MKH = new mkh();
-	$MKH ->mods('mc_launcher');
+	$MKH ->mods('mc_verify_access');
 	$MKH ->mods('mc_user');
 ?>
 <!DOCTYPE html>
@@ -445,8 +445,7 @@
 			function logout() {
 				showConfirm('确认要退出登陆吗？', (result) => {
 					if (result) {
-						document.cookie = 'login_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-						window.location.replace('login.php');
+						window.location.replace('/weiw/index.php?mods=mc_user_logout');
 					}
 				});
 			}

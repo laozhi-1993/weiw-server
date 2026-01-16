@@ -2,8 +2,7 @@
 
 
 	$MKH = new mkh();
-	$MKH ->mods('mc_launcher');
-	$MKH ->mods('mc_check_auth');
+	$MKH ->mods('mc_login_location');
 ?>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">

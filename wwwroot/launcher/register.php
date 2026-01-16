@@ -2,7 +2,6 @@
 
 
 	$MKH = new mkh();
-	$MKH ->mods('mc_launcher');
 ?>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">

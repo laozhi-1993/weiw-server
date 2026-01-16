@@ -1,3 +1,9 @@
+<?php include_once("$_SERVER[DOCUMENT_ROOT]/weiw/index.php");
+
+
+	$MKH = new mkh();
+	$MKH ->mods('mc_verify_access');
+?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 	<head>

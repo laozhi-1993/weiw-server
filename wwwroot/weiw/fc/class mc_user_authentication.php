@@ -18,7 +18,7 @@
 				$user = $userManager->getUserByUuid($id);
 				
 				// 验证用户对象及其登录令牌是否匹配
-				if ($user && $token === $user->loginToken) {
+				if ($user && $user->loginToken && $token === $user->loginToken) {
 					return $user;
 				}
 			}
@@ -35,8 +35,12 @@
 	}
 	
 	// 静态方法，用于清除登录令牌的Cookie
-	public static function clearLoginToken()
+	public static function clearLoginToken($user)
 	{
+		$user->setLoginToken();
+		$user->setAccessToken();
+		$userManager = new mc_user_manager();
+		$userManager->saveToFile($user);
 		setcookie('login_token','',0,'/');
 	}
 }
