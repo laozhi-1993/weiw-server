@@ -641,7 +641,6 @@
 				<span class="domain">{echo:var.config.domain}</span>
 			</div>
 			<div class="nav-links">
-				<a href="#video">演示视频</a>
 				<a href="#features">服务器特色</a>
 				<a href="#contact">联系我们</a>
 			</div>
@@ -658,15 +657,6 @@
 			<!-- 滚动提示 -->
 			<div style="position: absolute; bottom: 50px; animation: bounce 2s infinite;">
 				<i class="fas fa-chevron-down" style="font-size: 2rem; color: #3498db;"></i>
-			</div>
-		</section>
-		
-		<!-- 视频区域 -->
-		<section class="video-section" id="video">
-			<h2 class="section-title">演示视频</h2>
-			<div class="video-container">
-				<!-- 请将src替换为实际的Bilibili视频嵌入URL -->
-				<iframe src="//player.bilibili.com/player.html?bvid=BV1An8RzpEqU&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 			</div>
 		</section>
 		
