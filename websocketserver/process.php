@@ -2,7 +2,6 @@
 
 class Process
 {
-    private $command;         // 完整的启动命令字符串
     private $cwd;             // 工作目录
     private $env;             // 环境变量（可选）
 
@@ -12,52 +11,58 @@ class Process
     private $stderrBuffer = '';
 
 
-    public function __construct(string $command, string $cwd, array $env = null)
+    public function __construct(string $cwd, array|null $env = null)
     {
-        $this->command     = $command;
-        $this->cwd         = $cwd;
-        $this->env         = $env;
+        $this->cwd = $cwd;
+        $this->env = $env;
     }
 
     /**
-     * 启动外部进程
+     * 发送命令
      */
-    public function start(): bool
+    public function send(string $command): bool
     {
-        if ($this->isRunning()) {
+        try
+        {
+            if ($this->isRunning()) {
+                return false;
+            }
+
+            $filePath = $this->cwd . DIRECTORY_SEPARATOR . $command;
+            if (file_exists($filePath) && is_file($filePath)) {
+                $command = $filePath;
+            }
+
+            $descriptorspec = [
+                0 => ["pipe", "r"],  // stdin  - 用于向进程输入命令
+                1 => ["pipe", "w"],  // stdout - 标准输出
+                2 => ["pipe", "w"],  // stderr - 错误输出
+            ];
+
+            $this->process = proc_open(
+                $command,
+                $descriptorspec,
+                $this->pipes,
+                $this->cwd,
+                $this->env,
+                ['bypass_shell' => true]  // Windows 下推荐，避免 shell 解析问题
+            );
+
+            if (!is_resource($this->process)) {
+                return false;
+            }
+
+            // stdin 保持阻塞（写命令时需要），stdout/stderr 尝试非阻塞（Windows 无效但保留）
+            stream_set_blocking($this->pipes[0], true);
+            stream_set_blocking($this->pipes[1], false);
+            stream_set_blocking($this->pipes[2], false);
+
+            return true;
+        }
+        catch(error $error)
+        {
             return false;
         }
-
-        $descriptorspec = [
-            0 => ["pipe", "r"],  // stdin  - 用于向进程输入命令
-            1 => ["pipe", "w"],  // stdout - 标准输出
-            2 => ["pipe", "w"],  // stderr - 错误输出
-        ];
-
-        $this->process = proc_open(
-            $this->command,
-            $descriptorspec,
-            $this->pipes,
-            $this->cwd,
-            $this->env,
-            ['bypass_shell' => true]  // Windows 下推荐，避免 shell 解析问题
-        );
-
-        if (!is_resource($this->process)) {
-            return false;
-        }
-
-        // stdin 保持阻塞（写命令时需要），stdout/stderr 尝试非阻塞（Windows 无效但保留）
-        stream_set_blocking($this->pipes[0], true);
-        stream_set_blocking($this->pipes[1], false);
-        stream_set_blocking($this->pipes[2], false);
-
-        return true;
-    }
-
-    public function getCommand()
-    {
-        return $this->command;
     }
 
     /**
@@ -65,7 +70,11 @@ class Process
      */
     public function writeCommand(string $command): bool
     {
-        if (!$this->isRunning() || !is_resource($this->pipes[0])) {
+        if (!isset($this->pipes[0])) {
+            return false;
+        }
+
+        if (!is_resource($this->pipes[0])) {
             return false;
         }
 
@@ -78,7 +87,11 @@ class Process
      */
     public function freadStdout()
     {
-        if (!$this->isRunning() || !is_resource($this->pipes[1])) {
+        if (!isset($this->pipes[1])) {
+            return [];
+        }
+
+        if (!is_resource($this->pipes[1])) {
             return [];
         }
 
@@ -98,7 +111,11 @@ class Process
      */
     public function freadStderr()
     {
-        if (!$this->isRunning() || !is_resource($this->pipes[2])) {
+        if (!isset($this->pipes[2])) {
+            return [];
+        }
+
+        if (!is_resource($this->pipes[2])) {
             return [];
         }
 
@@ -123,6 +140,14 @@ class Process
         }
 
         return false;
+    }
+
+     /**
+     * 判断是否是 windows 系统
+     */
+    public function isWindows()
+    {
+        return PHP_OS_FAMILY === 'Windows';
     }
 
     /**
@@ -160,22 +185,48 @@ class Process
     /**
      * Windows 兼容的非阻塞 pipe 读取
      */
-    private function readPipeNonBlocking($pipe): string|false
+    private function readPipeNonBlocking($pipe): string
     {
-        if (!is_resource($pipe)) {
-            return false;
-        }
+		if (!is_resource($pipe)) {
+			return false;
+		}
 
-        $stat = fstat($pipe);
-        if (!$stat) {
-            return false;
-        }
+        if ($this->isWindows())
+        {
+			$stat = fstat($pipe);
+			if (!$stat) {
+				return false;
+			}
 
-        $available = $stat['size'] ?? $stat['unread_bytes'] ?? 0;
-        if ($available <= 0) {
-            return '';
-        }
+			$available = $stat['size'] ?? $stat['unread_bytes'] ?? 0;
+			if ($available <= 0) {
+				return '';
+			}
 
-        return fread($pipe, 8192);
+			return fread($pipe, 8192);
+        }
+        else
+        {
+			$read   = [$pipe];
+			$write  = null;
+			$except = null;
+
+			// 超时设很短，避免阻塞太久（0.05秒 ~ 0.2秒 都行）
+			$changed = @stream_select($read, $write, $except, 0, 50000); // 50ms
+
+			if ($changed === false) {
+				// select 出错（罕见）
+				return '';
+			}
+
+			if ($changed === 0) {
+				// 超时 → 暂无数据
+				return '';
+			}
+
+			// 有数据可读了，安全读取
+			$data = @fread($pipe, 8192);
+			return $data !== false ? $data : '';
+		}
     }
 }

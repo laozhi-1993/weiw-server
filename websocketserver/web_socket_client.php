@@ -340,12 +340,16 @@ class web_socket_client
     /** 向客户端发送数据 */
     public function send(string $data)
     {
-        fwrite($this->socket, $data);
+        if (is_resource($this->socket)) {
+            fwrite($this->socket, $data);
+        }
     }
 
     /** 关闭客户端连接 */
     public function close()
     {
-        fclose($this->socket);
+        if (is_resource($this->socket)) {
+            fclose($this->socket);
+        }
     }
 }

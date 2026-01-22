@@ -33,10 +33,9 @@ class process_manager
 		{
 			$name = basename($directory);
 			$names[$name] = null;
-			$command = $directory . DIRECTORY_SEPARATOR . $this->runscript;
 			
 			if (!isset($this->processes[$name])) {
-				$this->processes[$name] = new Process($command, $directory);
+				$this->processes[$name] = new Process($directory);
 			}
 		}
 		
@@ -138,12 +137,7 @@ class process_manager
 			if ($name) {
 				
 				if ($msg === 'start') {
-					if (file_exists($Process->getCommand()) && is_file($Process->getCommand())) {
-						$Process->start();
-						return;
-					}
-					
-					$client->send(web_socket_client::encode("Error: {$this->runscript} not found!"));
+					$Process->send($this->runscript);
 					return;
 				}
 				
@@ -152,7 +146,15 @@ class process_manager
 					return;
 				}
 				
-				$Process->writeCommand($msg);
+				if ($Process->isRunning())
+				{
+					$Process->writeCommand($msg);
+				}
+				else
+				{
+					$Process->send($msg);
+				}
+				
 				return;
 			}
 			

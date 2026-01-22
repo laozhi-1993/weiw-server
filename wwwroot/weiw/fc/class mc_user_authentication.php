@@ -1,7 +1,7 @@
 <?php class mc_user_authentication
 {
 	// 静态方法，用于获取当前用户对象
-	public static function getUser(string $loginToken = null)
+	public static function getUser(string|null $loginToken = null)
 	{
 		if ($loginToken === null)
 		{
