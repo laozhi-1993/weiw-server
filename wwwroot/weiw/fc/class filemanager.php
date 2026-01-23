@@ -8,237 +8,237 @@
  */
 class FileManager
 {
-    private string $rootPath;        // 根目录绝对路径（真实路径）
-    private string $baseUrl;         // 访问文件的完整域名+端口基础URL，例如：https://example.com/storage/
+	private string $rootPath;        // 根目录绝对路径（真实路径）
+	private string $baseUrl;         // 访问文件的完整域名+端口基础URL，例如：https://example.com/storage/
 
-    /**
-     * 构造函数
-     * @param string $rootPath 允许操作的根目录（服务器绝对路径）
-     * @param string $baseUrl  文件下载链接的前缀（带协议、域名、端口，可选路径）
-     */
-    public function __construct(string $rootPath, string $baseUrl = '')
-    {
-        $this->rootPath = rtrim(realpath($rootPath), DIRECTORY_SEPARATOR) ?: $rootPath;
-        if (!is_dir($this->rootPath)) {
-            mkdir($this->rootPath, 0777, true);
-        }
+	/**
+	 * 构造函数
+	 * @param string $rootPath 允许操作的根目录（服务器绝对路径）
+	 * @param string $baseUrl  文件下载链接的前缀（带协议、域名、端口，可选路径）
+	 */
+	public function __construct(string $rootPath, string $baseUrl = '')
+	{
+		$this->rootPath = rtrim(realpath($rootPath), DIRECTORY_SEPARATOR) ?: $rootPath;
+		if (!is_dir($this->rootPath)) {
+			mkdir($this->rootPath, 0777, true);
+		}
 
-        // 确保 baseUrl 以 / 结尾
-        $this->baseUrl = rtrim($baseUrl, '/') . '/';
-    }
+		// 确保 baseUrl 以 / 结尾
+		$this->baseUrl = rtrim($baseUrl, '/') . '/';
+	}
 
-    /**
-     * 规范化路径，防止目录穿越，并确保在根目录内
-     * @param string $path 相对路径
-     * @return string 绝对路径（如果非法返回根目录）
-     */
-    private function safePath(string $path = ''): string
-    {
-        $path = trim($path, '/\\');
+	/**
+	 * 规范化路径，防止目录穿越，并确保在根目录内
+	 * @param string $path 相对路径
+	 * @return string 绝对路径（如果非法返回根目录）
+	 */
+	private function safePath(string $path = ''): string
+	{
+		$path = trim($path, '/\\');
 
-        if ($path === '' || $path === '.' || $path === '..') {
-            return $this->rootPath;
-        }
+		if ($path === '' || $path === '.' || $path === '..') {
+			return $this->rootPath;
+		}
 
-        $fullPath = realpath($this->rootPath . DIRECTORY_SEPARATOR . $path);
+		$fullPath = realpath($this->rootPath . DIRECTORY_SEPARATOR . $path);
 
-        // realpath 失败或不在根目录内，则返回根目录
-        if ($fullPath === false || strpos($fullPath, $this->rootPath . DIRECTORY_SEPARATOR) !== 0) {
-            return $this->rootPath;
-        }
+		// realpath 失败或不在根目录内，则返回根目录
+		if ($fullPath === false || strpos($fullPath, $this->rootPath . DIRECTORY_SEPARATOR) !== 0) {
+			return $this->rootPath;
+		}
 
-        return $fullPath;
-    }
+		return $fullPath;
+	}
 
-    /**
-     * 获取相对路径（相对于根目录）
-     * @param string $fullPath 绝对路径
-     * @return string
-     */
-    private function getRelativePath(string $fullPath): string
-    {
-        if (strpos($fullPath, $this->rootPath . DIRECTORY_SEPARATOR) === 0) {
-            $relative = substr($fullPath, strlen($this->rootPath) + 1);
-            return str_replace('\\', '/', $relative);
-        }
-        return '';
-    }
+	/**
+	 * 获取相对路径（相对于根目录）
+	 * @param string $fullPath 绝对路径
+	 * @return string
+	 */
+	private function getRelativePath(string $fullPath): string
+	{
+		if (strpos($fullPath, $this->rootPath . DIRECTORY_SEPARATOR) === 0) {
+			$relative = substr($fullPath, strlen($this->rootPath) + 1);
+			return str_replace('\\', '/', $relative);
+		}
+		return '';
+	}
 
-    /**
-     * 获取上一级目录的相对路径
-     * 示例：
-     *   'a/b/c'     => 'a/b'
-     *   'a/b/'      => 'a'
-     *   'images'    => ''
-     *   ''          => ''
-     *   '/'         => ''
-     *   'docs/../images' => '' （经过 safePath 安全处理后）
-     *
-     * @param string $path 当前相对路径（可带或不带首尾斜杠）
-     * @return string 上一级目录的相对路径（空字符串表示根目录）
-     */
-    public function getParentDir(string $path = ''): string
-    {
-        // 先进行路径安全校验，防止目录穿越
-        $absPath = $this->safePath($path);
+	/**
+	 * 获取上一级目录的相对路径
+	 * 示例：
+	 *   'a/b/c'     => 'a/b'
+	 *   'a/b/'      => 'a'
+	 *   'images'    => ''
+	 *   ''          => ''
+	 *   '/'         => ''
+	 *   'docs/../images' => '' （经过 safePath 安全处理后）
+	 *
+	 * @param string $path 当前相对路径（可带或不带首尾斜杠）
+	 * @return string 上一级目录的相对路径（空字符串表示根目录）
+	 */
+	public function getParentDir(string $path = ''): string
+	{
+		// 先进行路径安全校验，防止目录穿越
+		$absPath = $this->safePath($path);
 
-        // 如果就是根目录，直接返回空字符串
-        if ($absPath === $this->rootPath) {
-            return '';
-        }
+		// 如果就是根目录，直接返回空字符串
+		if ($absPath === $this->rootPath) {
+			return '';
+		}
 
-        // 获取当前路径的父目录（服务器绝对路径）
-        $parentAbs = dirname($absPath);
+		// 获取当前路径的父目录（服务器绝对路径）
+		$parentAbs = dirname($absPath);
 
-        // 如果父目录就是根目录，返回空字符串
-        if ($parentAbs === $this->rootPath || $parentAbs === DIRECTORY_SEPARATOR) {
-            return '';
-        }
+		// 如果父目录就是根目录，返回空字符串
+		if ($parentAbs === $this->rootPath || $parentAbs === DIRECTORY_SEPARATOR) {
+			return '';
+		}
 
-        // 转换为相对于根目录的路径，并统一使用正斜杠
-        $parentRelative = $this->getRelativePath($parentAbs);
-        return str_replace('\\', '/', $parentRelative);
-    }
+		// 转换为相对于根目录的路径，并统一使用正斜杠
+		$parentRelative = $this->getRelativePath($parentAbs);
+		return str_replace('\\', '/', $parentRelative);
+	}
 
-    /**
-     * 将相对路径解析为面包屑导航数组
-     * 示例：'a/b/c/d' => ['a' => '/a', 'b' => '/a/b', 'c' => '/a/b/c', 'd' => '/a/b/c/d']
-     * 
-     * @param string $path 相对路径（可带或不带首尾斜杠）
-     * @return array
-     */
-    public function getBreadcrumb(string $path = ''): array
-    {
-        // 先安全化路径，防止目录穿越
-        $absPath = $this->safePath($path);
-    
-        // 获取相对于根目录的路径（已统一为 / 分隔符）
-        $relative = $this->getRelativePath($absPath);
-        $relative = str_replace('\\', '/', $relative); // 确保统一正斜杠
+	/**
+	 * 将相对路径解析为面包屑导航数组
+	 * 示例：'a/b/c/d' => ['a' => '/a', 'b' => '/a/b', 'c' => '/a/b/c', 'd' => '/a/b/c/d']
+	 * 
+	 * @param string $path 相对路径（可带或不带首尾斜杠）
+	 * @return array
+	 */
+	public function getBreadcrumb(string $path = ''): array
+	{
+		// 先安全化路径，防止目录穿越
+		$absPath = $this->safePath($path);
+	
+		// 获取相对于根目录的路径（已统一为 / 分隔符）
+		$relative = $this->getRelativePath($absPath);
+		$relative = str_replace('\\', '/', $relative); // 确保统一正斜杠
 
-        // 如果是根目录，返回空数组（或可根据需求返回 ['home' => '/']）
-        if ($relative === '' || $relative === '.') {
-            return [];
-        }
+		// 如果是根目录，返回空数组（或可根据需求返回 ['home' => '/']）
+		if ($relative === '' || $relative === '.') {
+			return [];
+		}
 
-        // 拆分路径段，去掉空段
-        $segments = explode('/', trim($relative, '/'));
+		// 拆分路径段，去掉空段
+		$segments = explode('/', trim($relative, '/'));
 
-        $breadcrumb = [];
-        $currentPath = '';
+		$breadcrumb = [];
+		$currentPath = '';
 
-        foreach ($segments as $segment) {
-            // 跳过空或 . ..
-            if ($segment === '' || $segment === '.' || $segment === '..') {
-                continue;
-            }
+		foreach ($segments as $segment) {
+			// 跳过空或 . ..
+			if ($segment === '' || $segment === '.' || $segment === '..') {
+				continue;
+			}
 
-            $currentPath .= '/' . $segment;
-            $breadcrumb[$segment] = $currentPath;
-        }
+			$currentPath .= '/' . $segment;
+			$breadcrumb[$segment] = $currentPath;
+		}
 
-        return $breadcrumb;
-    }
+		return $breadcrumb;
+	}
 
-    /**
-     * 获取文件/文件夹列表
-     * @param string $dir 相对路径
-     * @return array
-     */
-    public function getList(string $dir = ''): array
-    {
-        $absPath = $this->safePath($dir);
-        if (!is_dir($absPath)) {
-            return [];
-        }
+	/**
+	 * 获取文件/文件夹列表
+	 * @param string $dir 相对路径
+	 * @return array
+	 */
+	public function getList(string $dir = ''): array
+	{
+		$absPath = $this->safePath($dir);
+		if (!is_dir($absPath)) {
+			return [];
+		}
 
-        $items = [];
-        $entries = scandir($absPath);
-        foreach ($entries as $entry) {
-            if ($entry === '.' || $entry === '..') {
-                continue;
-            }
+		$items = [];
+		$entries = scandir($absPath);
+		foreach ($entries as $entry) {
+			if ($entry === '.' || $entry === '..') {
+				continue;
+			}
 
-            $fullPath = $absPath . DIRECTORY_SEPARATOR . $entry;
-            $relativePath = $this->getRelativePath($fullPath);
-            $url = $this->baseUrl . rawurlencode($relativePath);
+			$fullPath = $absPath . DIRECTORY_SEPARATOR . $entry;
+			$relativePath = $this->getRelativePath($fullPath);
+			$url = $this->baseUrl . rawurlencode($relativePath);
 
-            $isDir = is_dir($fullPath);
-            $items[] = [
-                'name'     => $entry,
-                'path'     => $relativePath,                    // 相对路径（不含开头的根）
-                'fullpath' => $fullPath,                         // 服务器绝对路径（仅调试用，生产慎露）
-                'type'     => $isDir ? 'dir' : pathinfo($entry, PATHINFO_EXTENSION),
-                'size'     => $isDir ? 'Folder' : $this->formatSize(filesize($fullPath)),
-                'time'     => date('Y-m-d H:i:s', filemtime($fullPath)),
-                'url'      => $isDir ? '' : $url,
-                'is_dir'   => $isDir,
-            ];
-        }
+			$isDir = is_dir($fullPath);
+			$items[] = [
+				'name'     => $entry,
+				'path'     => $relativePath,                    // 相对路径（不含开头的根）
+				'fullpath' => $fullPath,                         // 服务器绝对路径（仅调试用，生产慎露）
+				'type'     => $isDir ? 'dir' : pathinfo($entry, PATHINFO_EXTENSION),
+				'size'     => $isDir ? 'Folder' : $this->formatSize(filesize($fullPath)),
+				'time'     => date('Y-m-d H:i:s', filemtime($fullPath)),
+				'url'      => $isDir ? '' : $url,
+				'is_dir'   => $isDir,
+			];
+		}
 
-        // 可选：按名称排序
-        usort($items, function ($a, $b) {
-            if ($a['is_dir'] === $b['is_dir']) {
-                return strcasecmp($a['name'], $b['name']);
-            }
-            return $a['is_dir'] ? -1 : 1; // 文件夹在前
-        });
+		// 可选：按名称排序
+		usort($items, function ($a, $b) {
+			if ($a['is_dir'] === $b['is_dir']) {
+				return strcasecmp($a['name'], $b['name']);
+			}
+			return $a['is_dir'] ? -1 : 1; // 文件夹在前
+		});
 
-        return $items;
-    }
+		return $items;
+	}
 
-    /**
-     * 递归获取目录下所有文件（不包含文件夹）
-     * @param string $dir
-     * @return array
-     */
-    public function getAllFiles(string $dir = ''): array
-    {
-        $absPath = $this->safePath($dir);
-        $files = [];
+	/**
+	 * 递归获取目录下所有文件（不包含文件夹）
+	 * @param string $dir
+	 * @return array
+	 */
+	public function getAllFiles(string $dir = ''): array
+	{
+		$absPath = $this->safePath($dir);
+		$files = [];
 
-        if (!is_dir($absPath)) {
-            return $files;
-        }
+		if (!is_dir($absPath)) {
+			return $files;
+		}
 
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($absPath, RecursiveDirectoryIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::SELF_FIRST
-        );
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($absPath, RecursiveDirectoryIterator::SKIP_DOTS),
+			RecursiveIteratorIterator::SELF_FIRST
+		);
 
-        foreach ($iterator as $item) {
-            if ($item->isFile()) {
-                $fullPath = $item->getRealPath();
-                $relativePath = $this->getRelativePath($fullPath);
-                $url = $this->baseUrl . rawurlencode($relativePath);
+		foreach ($iterator as $item) {
+			if ($item->isFile()) {
+				$fullPath = $item->getRealPath();
+				$relativePath = $this->getRelativePath($fullPath);
+				$url = $this->baseUrl . rawurlencode($relativePath);
 
-                $files[] = [
-                    'name' => $item->getFilename(),
-                    'path' => $relativePath,
-                    'size' => $item->getSize(),
-                    'time' => $item->getMTime(),
-                    'url'  => $url,
-                ];
-            }
-        }
+				$files[] = [
+					'name' => $item->getFilename(),
+					'path' => $relativePath,
+					'size' => $item->getSize(),
+					'time' => $item->getMTime(),
+					'url'  => $url,
+				];
+			}
+		}
 
-        return $files;
-    }
+		return $files;
+	}
 
-    /**
-     * 创建文件夹
-     * @param string $dir 相对路径
-     * @return bool
-     */
-    public function createDir(string $dir): bool
-    {
-        $absPath = $this->safePath($dir);
-        if (is_dir($absPath)) {
-            return true;
-        }
+	/**
+	 * 创建文件夹
+	 * @param string $dir 相对路径
+	 * @return bool
+	 */
+	public function createDir(string $dir): bool
+	{
+		$absPath = $this->safePath($dir);
+		if (is_dir($absPath)) {
+			return true;
+		}
 
-        return mkdir($absPath, 0755);
-    }
+		return mkdir($absPath, 0755);
+	}
 
 	/**
 	 * 安全上传文件（自动递归创建目录）
@@ -249,6 +249,8 @@ class FileManager
 	 */
 	public function upload(string $relativePath, array $file): bool
 	{
+		set_time_limit(0);
+		
 		// 上传错误检查
 		if (!isset($file['error']) || $file['error'] !== UPLOAD_ERR_OK) {
 			return false;
@@ -320,164 +322,200 @@ class FileManager
 
 		// 5. 执行上传
 		if (move_uploaded_file($file['tmp_name'], $current . $filename)) {
+			chmod($current . $filename, 0755);
 			return true;
 		}
 
 		return false;
 	}
 
-    /**
-     * 重命名（文件或文件夹）
-     * @param string $oldPath 旧相对路径
-     * @param string $newName 新名称（仅名称，不含路径）
-     * @return bool
-     */
-    public function rename(string $oldPath, string $newName): bool
-    {
-        $oldAbs = $this->safePath($oldPath);
-        if (!file_exists($oldAbs)) {
-            return false;
-        }
+	/**
+	 * 重命名（文件或文件夹）
+	 * @param string $oldPath 旧相对路径
+	 * @param string $newName 新名称（仅名称，不含路径）
+	 * @return bool
+	 */
+	public function rename(string $oldPath, string $newName): bool
+	{
+		$oldAbs = $this->safePath($oldPath);
+		if (!file_exists($oldAbs)) {
+			return false;
+		}
 
-        $newAbs = dirname($oldAbs) . DIRECTORY_SEPARATOR . $newName;
-        if (file_exists($newAbs)) {
-            return false;
-        }
+		$newAbs = dirname($oldAbs) . DIRECTORY_SEPARATOR . $newName;
+		if (file_exists($newAbs)) {
+			return false;
+		}
 
-        return rename($oldAbs, $newAbs);
-    }
+		return rename($oldAbs, $newAbs);
+	}
 
-    /**
-     * 移动（文件或文件夹）
-     * @param string $source 源相对路径
-     * @param string $targetDir 目标目录相对路径
-     * @return bool
-     */
-    public function move(string $source, string $targetDir): bool
-    {
-        $sourceAbs = $this->safePath($source);
-        $targetAbs = $this->safePath($targetDir);
+	/**
+	 * 移动（文件或文件夹）
+	 * @param string $source 源相对路径
+	 * @param string $targetDir 目标目录相对路径
+	 * @return bool
+	 */
+	public function move(string $source, string $targetDir): bool
+	{
+		$sourceAbs = $this->safePath($source);
+		$targetAbs = $this->safePath($targetDir);
 
-        if (!file_exists($sourceAbs) || !is_dir($targetAbs)) {
-            return false;
-        }
+		if (!file_exists($sourceAbs) || !is_dir($targetAbs)) {
+			return false;
+		}
 
-        $newPath = $targetAbs . DIRECTORY_SEPARATOR . basename($sourceAbs);
-        if (file_exists($newPath)) {
-            return false;
-        }
+		$newPath = $targetAbs . DIRECTORY_SEPARATOR . basename($sourceAbs);
+		if (file_exists($newPath)) {
+			return false;
+		}
 
-        return rename($sourceAbs, $newPath);
-    }
+		return rename($sourceAbs, $newPath);
+	}
 
-    /**
-     * 复制（文件或文件夹）
-     * @param string $source
-     * @param string $targetDir
-     * @return bool
-     */
-    public function copy(string $source, string $targetDir): bool
-    {
-        $sourceAbs = $this->safePath($source);
-        $targetAbs = $this->safePath($targetDir);
+	/**
+	 * 复制（文件或文件夹）
+	 * @param string $source
+	 * @param string $targetDir
+	 * @return bool
+	 */
+	public function copy(string $source, string $targetDir): bool
+	{
+		$sourceAbs = $this->safePath($source);
+		$targetAbs = $this->safePath($targetDir);
 
-        if (!file_exists($sourceAbs) || !is_dir($targetAbs)) {
-            return false;
-        }
+		if (!file_exists($sourceAbs) || !is_dir($targetAbs)) {
+			return false;
+		}
 
-        $destination = $targetAbs . DIRECTORY_SEPARATOR . basename($sourceAbs);
+		$destination = $targetAbs . DIRECTORY_SEPARATOR . basename($sourceAbs);
 
-        if (is_file($sourceAbs)) {
-            return copy($sourceAbs, $destination);
-        }
+		if (is_file($sourceAbs)) {
+			return copy($sourceAbs, $destination);
+		}
 
-        // 递归复制目录
-        if (!is_dir($destination) && !mkdir($destination, 0755, true)) {
-            return false;
-        }
+		// 递归复制目录
+		if (!is_dir($destination) && !mkdir($destination, 0755, true)) {
+			return false;
+		}
 
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($sourceAbs, RecursiveDirectoryIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::SELF_FIRST
-        );
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($sourceAbs, RecursiveDirectoryIterator::SKIP_DOTS),
+			RecursiveIteratorIterator::SELF_FIRST
+		);
 
-        foreach ($iterator as $item) {
-            $targetPath = $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
-            if ($item->isDir()) {
-                if (!is_dir($targetPath)) {
-                    mkdir($targetPath, 0755, true);
-                }
-            } else {
-                copy($item->getRealPath(), $targetPath);
-            }
-        }
+		foreach ($iterator as $item) {
+			$targetPath = $destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+			if ($item->isDir()) {
+				if (!is_dir($targetPath)) {
+					mkdir($targetPath, 0755, true);
+				}
+			} else {
+				copy($item->getRealPath(), $targetPath);
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * 递归删除文件或文件夹
-     * @param string $path 相对路径
-     * @return bool
-     */
-    public function delete(string $path): bool
-    {
-        $absPath = $this->safePath($path);
-        if (!file_exists($absPath) || $absPath === $this->rootPath) {
-            return false; // 禁止删除根目录
-        }
+	/**
+	 * 递归删除文件或文件夹
+	 * @param string $path 相对路径
+	 * @return bool
+	 */
+	public function delete(string $path): bool
+	{
+		$absPath = $this->safePath($path);
+		if (!file_exists($absPath) || $absPath === $this->rootPath) {
+			return false; // 禁止删除根目录
+		}
 
-        if (is_file($absPath)) {
-            return unlink($absPath);
-        }
+		if (is_file($absPath)) {
+			return unlink($absPath);
+		}
 
-        // 删除目录
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($absPath, RecursiveDirectoryIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::CHILD_FIRST
-        );
+		// 删除目录
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($absPath, RecursiveDirectoryIterator::SKIP_DOTS),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
 
-        foreach ($iterator as $item) {
-            if ($item->isDir()) {
-                rmdir($item->getRealPath());
-            } else {
-                unlink($item->getRealPath());
-            }
-        }
+		foreach ($iterator as $item) {
+			if ($item->isDir()) {
+				rmdir($item->getRealPath());
+			} else {
+				unlink($item->getRealPath());
+			}
+		}
 
-        return rmdir($absPath);
-    }
+		return rmdir($absPath);
+	}
 
-    /**
-     * 判断文件或文件夹是否存在（相对于根目录的相对路径）
-     * 
-     * @param string $path 相对路径（如 'images/photo.jpg' 或 'docs/folder'）
-     * @return bool 存在返回 true，不存在或路径非法返回 false
-     */
-    public function exists(string $path = ''): bool
-    {
-        // 空路径视为根目录，根目录一定存在
-        if ($path === '' || $path === '/' || trim($path, '/\\') === '') {
-            return true;
-        }
+	/**
+	 * 判断文件或文件夹是否存在（相对于根目录的相对路径）
+	 * 
+	 * @param string $path 相对路径（如 'images/photo.jpg' 或 'docs/folder'）
+	 * @return bool 存在返回 true，不存在或路径非法返回 false
+	 */
+	public function exists(string $path = ''): bool
+	{
+		// 空路径视为根目录，根目录一定存在
+		if ($path === '' || $path === '/' || trim($path, '/\\') === '') {
+			return true;
+		}
 
-        // 通过 safePath 获取绝对路径（已防止穿越）
-        $absPath = $this->safePath($path);
+		// 通过 safePath 获取绝对路径（已防止穿越）
+		$absPath = $this->safePath($path);
 
-        // 如果 safePath 返回根目录，说明原路径非法或试图访问上级
-        // 但我们要区分：如果是明确传入根目录之外的非法路径，应返回 false
-        // 由于 safePath 会把非法路径降级为根目录，我们额外判断原始路径是否被截断
-        $relative = $this->getRelativePath($absPath);
-        $normalizedInput = trim(str_replace('\\', '/', $path), '/');
+		// 如果 safePath 返回根目录，说明原路径非法或试图访问上级
+		// 但我们要区分：如果是明确传入根目录之外的非法路径，应返回 false
+		// 由于 safePath 会把非法路径降级为根目录，我们额外判断原始路径是否被截断
+		$relative = $this->getRelativePath($absPath);
+		$normalizedInput = trim(str_replace('\\', '/', $path), '/');
 
-        // 如果处理后的相对路径与输入不一致（被截断），说明路径非法
-        if ($normalizedInput !== '' && $relative === '') {
-            return false;
-        }
+		// 如果处理后的相对路径与输入不一致（被截断），说明路径非法
+		if ($normalizedInput !== '' && $relative === '') {
+			return false;
+		}
 
-        // 最终判断文件/文件夹是否存在
-        return file_exists($absPath);
-    }
+		// 最终判断文件/文件夹是否存在
+		return file_exists($absPath);
+	}
+
+	/**
+	 * 安全读取文件内容
+	 * 
+	 * @param string $path 文件相对路径
+	 * @return string|false 成功返回文件内容，失败返回false
+	 */
+	public function readFile(string $path): string|false
+	{
+		$absPath = $this->safePath($path);
+		
+		if (!file_exists($absPath) || !is_file($absPath)) {
+			return false;
+		}
+		
+		return file_get_contents($absPath);
+	}
+
+	/**
+	 * 安全写入文件内容
+	 * 
+	 * @param string $path 文件相对路径
+	 * @param string $content 要写入的内容
+	 * @return bool 成功返回true，失败返回false
+	 */
+	public function writeFile(string $path, string $content): bool
+	{
+		$absPath = $this->safePath($path);
+		
+		if (!file_exists($absPath) || !is_file($absPath)) {
+			return false;
+		}
+		
+		return file_put_contents($absPath, $content);
+	}
 
 	private function formatSize($bytes) {
 		// 定义单位

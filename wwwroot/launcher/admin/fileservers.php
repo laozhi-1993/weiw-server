@@ -238,17 +238,17 @@
 		</style>
 	</head>
 	<body>
-		<div class="upload-container hidden">
-			<div>
-				<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
-					<path d="M925.696 384q19.456 0 37.376 7.68t30.72 20.48 20.48 30.72 7.68 37.376q0 20.48-7.68 37.888t-20.48 30.208-30.72 20.48-37.376 7.68l-287.744 0 0 287.744q0 20.48-7.68 37.888t-20.48 30.208-30.72 20.48-37.376 7.68q-20.48 0-37.888-7.68t-30.208-20.48-20.48-30.208-7.68-37.888l0-287.744-287.744 0q-20.48 0-37.888-7.68t-30.208-20.48-20.48-30.208-7.68-37.888q0-19.456 7.68-37.376t20.48-30.72 30.208-20.48 37.888-7.68l287.744 0 0-287.744q0-19.456 7.68-37.376t20.48-30.72 30.208-20.48 37.888-7.68q39.936 0 68.096 28.16t28.16 68.096l0 287.744 287.744 0z"></path>
-				</svg>
-			</div>
-		</div>
-		
 		<section>
 			<includes-scrollbar><?php include('../includes/scrollbar.html') ?></includes-scrollbar>
 			<includes-message><?php include('../includes/message.html') ?></includes-message>
+			
+			<div class="upload-container hidden">
+				<div>
+					<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+						<path d="M925.696 384q19.456 0 37.376 7.68t30.72 20.48 20.48 30.72 7.68 37.376q0 20.48-7.68 37.888t-20.48 30.208-30.72 20.48-37.376 7.68l-287.744 0 0 287.744q0 20.48-7.68 37.888t-20.48 30.208-30.72 20.48-37.376 7.68q-20.48 0-37.888-7.68t-30.208-20.48-20.48-30.208-7.68-37.888l0-287.744-287.744 0q-20.48 0-37.888-7.68t-30.208-20.48-20.48-30.208-7.68-37.888q0-19.456 7.68-37.376t20.48-30.72 30.208-20.48 37.888-7.68l287.744 0 0-287.744q0-19.456 7.68-37.376t20.48-30.72 30.208-20.48 37.888-7.68q39.936 0 68.096 28.16t28.16 68.096l0 287.744 287.744 0z"></path>
+					</svg>
+				</div>
+			</div>
 			
 			<main>
 				<div class="header-container">
@@ -324,6 +324,12 @@
 							<td>{echo:var.value.time}</td>
 							
 							<td if(var.value.is_dir,==,false) class="file-actions">
+								<svg class="svg-icon pointer" onclick="new TextEditor('{echo:var.value.path}')" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+									<path d="M275.3 608.2c0 17.6 14.4 32.1 32.1 32.1h409.2c17.7 0 32.1-14.4 32.1-32.1 0-17.6-14.4-32.1-32.1-32.1H307.4c-17.6 0-32.1 14.4-32.1 32.1zM498.5 320H307.4c-17.6 0-32.1 14.4-32.1 32.1 0 17.6 14.4 32.1 32.1 32.1h191.1c17.7 0 32.2-14.4 32.1-32.1 0-17.6-14.4-32.1-32.1-32.1zM848.9 132.5L579.8 401.6c-12.5 12.5-12.5 32.9 0.1 45.4 12.5 12.5 32.9 12.5 45.4 0l269-269.1c12.5-12.5 12.5-32.9 0-45.4s-32.9-12.5-45.4 0z" fill="#ddd"></path>
+									<path d="M931.8 62.8a32.2 32.1 0 1 0 64.4 0 32.2 32.1 0 1 0-64.4 0Z" fill="#ddd"></path>
+									<path d="M865.9 352c-17.8 0-32.2 14.4-32.2 32.1v0.1h-0.3v446.4c0 35.2-28.8 64-64 64H222.2c-35.2 0-64-28.8-64-64V192c0-35.2 28.8-64 64-64h482.4c17.6-0.3 31.7-14.5 31.7-32.1 0-17.7-14.4-32.1-32.2-32.1-0.8 0-1.6 0-2.4 0.1H226c-70.4 0-128 57.6-128 128v639.7c0 70.4 57.6 128 128 128h574c70.4 0 98-57.6 98-128V386.5c0.1-0.8 0.1-1.6 0.1-2.4 0-17.7-14.4-32.1-32.2-32.1z" fill="#ddd"></path>
+								</svg>
+								
 								<svg class="svg-icon pointer" onclick="openDelete('{echo:var.value.name}', '{echo:var.value.path}')"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
 									<path fill="#f44336" d="M51.2 237.056V215.04c9.728-17.408 25.088-22.528 45.568-22.016 58.88 1.024 118.272 0.512 177.152 0.512 7.68 0 16.384-0.512 25.088-1.024v-26.624c1.024-48.128 30.208-76.8 81.408-78.848 11.776-0.512 23.04 0 34.304 0 73.728 0 147.456-0.512 221.184 0 57.856 0.512 87.552 27.136 90.112 82.432l1.536 24.064c68.608 0 135.168 0.512 201.728-0.512 19.968-0.512 34.304 5.632 43.52 22.016v22.016c-12.8 16.896-31.744 20.48-52.224 19.456-26.624-1.024-53.248 0-81.92 0v550.912c0 51.2-19.456 91.648-69.632 115.712-13.824 6.656-29.696 9.728-45.056 14.336H300.032c-93.184-28.16-114.176-56.32-114.176-152.064V256.512c-30.72 0-58.88-1.024-87.04 0.512-19.968 0.512-36.352-4.096-47.616-19.968z m313.856-45.568h293.376c0-9.216-0.512-16.384 0-23.552 1.024-12.8-5.632-18.432-18.944-18.432-84.992 0.512-169.984 0-254.976 0-13.824 0-19.968 6.144-19.456 18.432v23.552z m336.384 390.144c0-53.76 0-108.544-0.512-163.328 0-26.624-9.728-40.448-29.696-40.96-18.944-0.512-31.232 14.336-31.232 39.936-0.512 108.032 0 215.552 0 323.072 0.512 25.6 12.288 40.96 31.232 40.448 18.944-0.512 30.208-15.36 30.208-41.472v-157.696z m-314.368-2.048c-0.512 0-0.512 0 0 0-0.512-55.808 0-111.616 0-167.424-0.512-20.992-13.312-33.792-30.72-33.792-17.92 0.512-29.184 12.8-30.72 34.304v324.096c0 5.632-1.024 11.776 0.512 17.408 3.584 16.896 13.312 27.648 30.208 27.648 16.384-0.512 27.136-10.24 29.696-27.648 1.024-7.168 1.024-14.336 1.024-22.016v-152.576z m158.72 0.512V414.208c0-23.04-11.264-36.352-30.208-36.864-19.456-0.512-31.232 13.824-31.232 37.888v328.192c0 23.04 11.776 36.864 30.208 37.376 18.944 0.512 31.232-13.824 31.232-37.888v-162.816z"></path>
 								</svg>
@@ -343,6 +349,230 @@
 				</table>
 			</main>
 		</section>
+		
+		
+		<div-editor>
+			<style>
+				.editor-container {
+					position: fixed;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					z-index: 99;
+					background-color: #2d2d2d;
+					display: flex;
+					flex-direction: column;
+				}
+				.editor-container.hidden {
+					display: none;
+				}
+
+				.editor-container .toolbar {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					margin-top: 10px;
+					padding: 10px;
+					background-color: #202020;
+					border-radius: 6px;
+					flex-shrink: 0;
+				}
+
+				.editor-container .toolbar-left {
+					display: flex;
+					gap: 12px;
+				}
+
+				.editor-container .toolbar-right {
+					display: flex;
+					gap: 12px;
+				}
+
+				.editor-container .toolbar-button {
+					background-color: #3a3a3a;
+					border: none;
+					border-radius: 6px;
+					color: #e0e0e0;
+					padding: 10px 16px;
+					display: flex;
+					align-items: center;
+					gap: 8px;
+					cursor: pointer;
+					transition: all 0.2s ease;
+					font-size: 0.95rem;
+				}
+
+				.editor-container .toolbar-button:hover {
+					background-color: #4a4a4a;
+				}
+
+				.editor-container .toolbar-button:disabled {
+					opacity: 0.5;
+					cursor: not-allowed;
+				}
+
+				.editor-container .toolbar-button svg {
+					width: 18px;
+					height: 18px;
+				}
+
+				.editor-container .action-button {
+					padding: 10px 16px;
+					border-radius: 6px;
+					border: none;
+					font-size: 0.95rem;
+					font-weight: 500;
+					cursor: pointer;
+					transition: all 0.2s ease;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					gap: 8px;
+					min-width: 80px;
+				}
+
+				.editor-container .action-button svg {
+					width: 18px;
+					height: 18px;
+				}
+
+				.editor-container .cancel-button {
+					background-color: #3a3a3a;
+					color: #e0e0e0;
+				}
+
+				.editor-container .cancel-button:hover {
+					background-color: #4a4a4a;
+				}
+
+				.editor-container .save-button {
+					background-color: #6c8cff;
+					color: #ffffff;
+				}
+
+				.editor-container .save-button:hover {
+					background-color: #5a7cff;
+				}
+
+				.editor-container .save-button:disabled {
+					background-color: #4a5a9a;
+					cursor: not-allowed;
+				}
+
+				.editor-container .editor-area-wrapper {
+					flex: 1;
+					overflow: hidden;
+					display: flex;
+					flex-direction: column;
+				}
+
+				.editor-container .editor-area {
+					width: 100%;
+					height: 100%;
+					background-color: #252525;
+					border: 1px solid #404040;
+					border-radius: 6px;
+					padding: 15px;
+					color: #e0e0e0;
+					font-size: 1rem;
+					line-height: 1.6;
+					outline: none;
+					resize: none;
+					font-family: inherit;
+					box-sizing: border-box;
+				}
+
+				/* 自定义滚动条样式 */
+				.editor-container .editor-area::-webkit-scrollbar {
+					width: 10px;
+				}
+
+				.editor-container .editor-area::-webkit-scrollbar-track {
+					background: #202020;
+					border-radius: 4px;
+				}
+
+				.editor-container .editor-area::-webkit-scrollbar-thumb {
+					background: #6c8cff;
+					border-radius: 4px;
+				}
+
+				.editor-container .editor-area::-webkit-scrollbar-thumb:hover {
+					background: #5a7cff;
+				}
+
+				.editor-container .editor-area:focus {
+					border-color: #6c8cff;
+					box-shadow: 0 0 0 2px rgba(108, 140, 255, 0.2);
+				}
+
+				/* 移除原有的placeholder样式，使用textarea原生placeholder */
+				.editor-container .editor-area::placeholder {
+					color: #888;
+					font-style: italic;
+				}
+
+				/* 加载动画 */
+				.editor-container .loading-spinner {
+					display: inline-block;
+					width: 18px;
+					height: 18px;
+					border: 2px solid rgba(255, 255, 255, 0.3);
+					border-radius: 50%;
+					border-top-color: #ffffff;
+					animation: spin 0.8s linear infinite;
+				}
+
+				@keyframes spin {
+					to { transform: rotate(360deg); }
+				}
+			</style>
+			<div class="editor-container hidden">
+				<div class="editor-area-wrapper">
+					<textarea 
+						id="editor" 
+						class="editor-area" 
+						spellcheck="false"
+						placeholder="在这里输入文本..."
+					></textarea>
+				</div>
+				
+				<div class="toolbar">
+					<div class="toolbar-left">
+						<button id="undoBtn" class="toolbar-button" disabled>
+							<svg viewBox="0 0 24 24" fill="currentColor">
+								<path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/>
+							</svg>
+							撤回
+						</button>
+						
+						<button id="redoBtn" class="toolbar-button" disabled>
+							<svg viewBox="0 0 24 24" fill="currentColor">
+								<path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L15 19h9v-9l-3.6 3.6z"/>
+							</svg>
+							重做
+						</button>
+					</div>
+					
+					<div class="toolbar-right">
+						<button id="cancelBtn" class="action-button cancel-button">
+							<svg viewBox="0 0 24 24" fill="currentColor">
+								<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+							</svg>
+							关闭
+						</button>
+						
+						<button id="saveBtn" class="action-button save-button">
+							<svg viewBox="0 0 24 24" fill="currentColor">
+								<path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+							</svg>
+							保存
+						</button>
+					</div>
+				</div>
+			</div>
+		</div-editor>
 		
 		
 		<div-modal>
@@ -538,6 +768,189 @@
 		
 		
 		<script>
+			class TextEditor {
+				constructor(path) {
+					this.path = path;
+					
+					this.editor = document.getElementById('editor'); // 现在这是一个 textarea
+					this.undoBtn = document.getElementById('undoBtn');
+					this.redoBtn = document.getElementById('redoBtn');
+					this.saveBtn = document.getElementById('saveBtn');
+					this.cancelBtn = document.getElementById('cancelBtn');
+					this.statusMessage = document.getElementById('statusMessage');
+					
+					// 历史记录相关
+					this.history = [''];
+					this.currentIndex = 0;
+					
+					// 初始化
+					this.init();
+				}
+				
+				init() {
+					// 初始化事件监听
+					this.editor.onclick    = () => this.handleInput();
+					this.undoBtn.onclick   = () => this.undo();
+					this.redoBtn.onclick   = () => this.redo();
+					this.saveBtn.onclick   = () => this.save();
+					this.cancelBtn.onclick = () => this.cancel();
+					
+					// 添加键盘快捷键
+					document.addEventListener('keydown', (e) => {
+						// Ctrl+Z 撤回
+						if (e.ctrlKey && e.key === 'z') {
+							e.preventDefault();
+							this.undo();
+						}
+						
+						// Ctrl+Y 重做
+						if (e.ctrlKey && e.key === 'y') {
+							e.preventDefault();
+							this.redo();
+						}
+						
+						// Ctrl+S 保存
+						if (e.ctrlKey && e.key === 's') {
+							e.preventDefault();
+							this.save();
+						}
+						
+						// Esc 取消
+						if (e.key === 'Escape') {
+							this.cancel();
+						}
+					});
+					
+					// 初始化按钮状态
+					this.updateButtons();
+					
+					// 加载文件内容
+					fetch(`/weiw/index.php?mods=fileserver_read&p=${this.path}`)
+						.then(response => response.json())
+						.then(data => {
+							if (data.error) {
+								throw new Error(data.error);
+								return;
+							}
+							
+							this.editor.value = data.data;
+							// 初始化历史记录
+							this.history = [data.data];
+							this.currentIndex = 0;
+							this.updateButtons();
+							
+							// 显示编辑器
+							this.show();
+						})
+						.catch(error => {
+							showMessage('读取文件失败: ' + error.message);
+						});
+				}
+				
+				handleInput() {
+					// 延迟添加到历史记录，避免频繁记录
+					clearTimeout(this.inputTimeout);
+					this.inputTimeout = setTimeout(() => {
+						this.addToHistory();
+					}, 500);
+				}
+				
+				addToHistory() {
+					const text = this.editor.value; // 使用 value 而不是 innerHTML
+					
+					// 如果当前文本与历史记录中最新的一条相同，则不添加
+					if (this.history[this.currentIndex] === text) {
+						return;
+					}
+					
+					// 移除当前索引之后的所有历史记录
+					this.history = this.history.slice(0, this.currentIndex + 1);
+					
+					// 添加新记录
+					this.history.push(text);
+					this.currentIndex++;
+					
+					// 限制历史记录数量，避免内存占用过大
+					if (this.history.length > 100) {
+						this.history = this.history.slice(-50);
+						this.currentIndex = this.history.length - 1;
+					}
+					
+					// 更新UI
+					this.updateButtons();
+				}
+				
+				undo() {
+					if (this.currentIndex > 0) {
+						this.currentIndex--;
+						this.editor.value = this.history[this.currentIndex]; // 使用 value
+						this.updateButtons();
+						setTimeout(() => this.hideStatus(), 1500);
+					}
+				}
+				
+				redo() {
+					if (this.currentIndex < this.history.length - 1) {
+						this.currentIndex++;
+						this.editor.value = this.history[this.currentIndex]; // 使用 value
+						this.updateButtons();
+						setTimeout(() => this.hideStatus(), 1500);
+					}
+				}
+				
+				updateButtons() {
+					this.undoBtn.disabled = this.currentIndex <= 0;
+					this.redoBtn.disabled = this.currentIndex >= this.history.length - 1;
+				}
+				
+				save() {
+					// 禁用保存按钮，显示加载动画
+					this.saveBtn.disabled = true;
+					this.saveBtn.innerHTML = '<span class="loading-spinner"></span> 保存中...';
+					
+					const formData = new FormData();
+					formData.append('path', this.path);
+					formData.append('content', this.editor.value);
+					
+					// 发送保存请求到服务器
+					fetch('/weiw/index.php?mods=fileserver_write', {
+						method: 'POST',
+						body: formData
+					})
+					.then(response => response.json())
+					.then(data => {
+						if (data.error) {
+							throw new Error(data.error);
+						}
+						
+						// 保存成功
+						showMessage('内容已成功保存！');
+					})
+					.catch(error => {
+						showMessage('保存失败: ' + error.message);
+					})
+					.finally(() => {
+						// 恢复保存按钮
+						this.saveBtn.disabled = false;
+						this.saveBtn.innerHTML = '保存';
+						this.cancel();
+					});
+				}
+				
+				show() {
+					document.body.style.overflow = 'hidden';
+					document.querySelector(".editor-container").classList.remove('hidden');
+				}
+				
+				cancel() {
+					document.body.style.overflow = 'auto';
+					document.querySelector(".editor-container").classList.add('hidden');
+				}
+			}
+			
+			
+			
+			
 			let total = 0;
 			let loaded = 0;
 			let dragCount = 0;

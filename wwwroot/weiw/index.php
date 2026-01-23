@@ -79,7 +79,12 @@
 				}
 				catch (Error $error)
 				{
-					mkh_error::view($error->getCode(),$error->getMessage(),$error->getfile(),$error->getLine());
+					$json = json_encode([
+						'error' => $error->getMessage(),
+						'file' =>  $error->getfile(),
+						'code' =>  $error->getCode(),
+						'line' =>  $error->getLine(),
+					]);
 				}
 			}
 			else
