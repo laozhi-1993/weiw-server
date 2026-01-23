@@ -11,27 +11,18 @@
 	}
 	
 	
-	$customAutoload = function($className)
-	{
+	spl_autoload_register(function($className) {
 		if(file_exists($classRoute = rootdir('fc', strtolower("class {$className}.php"))) && is_file($classRoute))
 		{
 			require_once($classRoute);
 		}
-	};
-	
-	$customErrorHandler = function($error_level,$error_message,$error_file,$error_line)
-	{
-		throw new mkh_error($error_level,$error_message,$error_file,$error_line);
-	};
+	});
 	
 	
 	error_reporting(~E_NOTICE);
 	
     define('__MKHDIR__', __DIR__);
     define('__currenttime__', microtime(true));
-	
-	spl_autoload_register($customAutoload);
-	set_error_handler($customErrorHandler);
 	
 	
 	$files = glob(rootdir('config', '*.example'));

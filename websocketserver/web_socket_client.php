@@ -347,16 +347,8 @@ class web_socket_client
         if (feof($this->socket)) {
             return;
         }
-
-        set_error_handler(function($errno, $errstr) {
-            return true;
-        }, E_WARNING);
-
-        try {
-            fwrite($this->socket, $data);
-        } finally {
-            restore_error_handler();
-        }
+		
+		fwrite($this->socket, $data);
     }
 
     /** 关闭客户端连接 */
