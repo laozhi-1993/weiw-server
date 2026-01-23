@@ -198,6 +198,20 @@ class Simple
      */
     public static function run()
     {
+		// 设置错误处理器，处理 E_WARNING 错误
+		set_error_handler(function($errno, $errstr, $errfile, $errline) {
+			// 忽略 stream_select 的系统调用中断错误
+			if ($errno === E_WARNING && 
+				(strpos($errstr, 'stream_select():') !== false ||
+				 strpos($errstr, 'Unable to select') !== false ||
+				 strpos($errstr, 'Interrupted system call') !== false)) {
+				return true; // 返回 true 表示已处理，不抛出错误
+			}
+			
+			// 其他错误按原样处理
+			return false;
+		});
+		
         // 流选择器的参数初始化
         $write  = null;    // 不需要监控可写流
         $except = null;    // 不需要监控异常流
