@@ -340,8 +340,22 @@ class web_socket_client
     /** 向客户端发送数据 */
     public function send(string $data)
     {
-        if (is_resource($this->socket)) {
+        if (!is_resource($this->socket)) {
+            return;
+        }
+
+        if (feof($this->socket)) {
+            return;
+        }
+
+        set_error_handler(function($errno, $errstr) {
+            return true;
+        }, E_WARNING);
+
+        try {
             fwrite($this->socket, $data);
+        } finally {
+            restore_error_handler();
         }
     }
 
