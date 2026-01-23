@@ -343,7 +343,7 @@
 							</td>
 							
 							<td if(var.value.is_dir,==,true) class="file-actions">
-								<svg class="svg-icon pointer" onclick="window.location.replace('clientedit.php?name={echo:var.value.name}');window.parent.loading()" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+								<svg if(var.fileclient_list.path,===,'') class="svg-icon pointer" onclick="window.location.replace('clientedit.php?name={echo:var.value.name}');window.parent.loading()" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
 									<path d="M275.3 608.2c0 17.6 14.4 32.1 32.1 32.1h409.2c17.7 0 32.1-14.4 32.1-32.1 0-17.6-14.4-32.1-32.1-32.1H307.4c-17.6 0-32.1 14.4-32.1 32.1zM498.5 320H307.4c-17.6 0-32.1 14.4-32.1 32.1 0 17.6 14.4 32.1 32.1 32.1h191.1c17.7 0 32.2-14.4 32.1-32.1 0-17.6-14.4-32.1-32.1-32.1zM848.9 132.5L579.8 401.6c-12.5 12.5-12.5 32.9 0.1 45.4 12.5 12.5 32.9 12.5 45.4 0l269-269.1c12.5-12.5 12.5-32.9 0-45.4s-32.9-12.5-45.4 0z" fill="#ddd"></path>
 									<path d="M931.8 62.8a32.2 32.1 0 1 0 64.4 0 32.2 32.1 0 1 0-64.4 0Z" fill="#ddd"></path>
 									<path d="M865.9 352c-17.8 0-32.2 14.4-32.2 32.1v0.1h-0.3v446.4c0 35.2-28.8 64-64 64H222.2c-35.2 0-64-28.8-64-64V192c0-35.2 28.8-64 64-64h482.4c17.6-0.3 31.7-14.5 31.7-32.1 0-17.7-14.4-32.1-32.2-32.1-0.8 0-1.6 0-2.4 0.1H226c-70.4 0-128 57.6-128 128v639.7c0 70.4 57.6 128 128 128h574c70.4 0 98-57.6 98-128V386.5c0.1-0.8 0.1-1.6 0.1-2.4 0-17.7-14.4-32.1-32.2-32.1z" fill="#ddd"></path>
