@@ -1,0 +1,22 @@
+:8080 {
+	handle_path /websocket {
+		reverse_proxy 127.0.0.1:9001
+	}
+
+	handle_path /clients/* {
+		root * clients
+		file_server browse
+	}
+
+	handle {
+		root * wwwroot
+
+		php_fastcgi 127.0.0.1:9000 {
+			index {path}/index.php
+		}
+
+		file_server browse {
+			index {path}/index.html
+		}
+	}
+}
