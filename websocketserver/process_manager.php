@@ -106,6 +106,29 @@ class process_manager
         return array_filter($this->processes, fn($p) => $p->isRunning());
     }
 
+    public function to_utf8(string $str)
+    {
+        if ($str === '') return $str;
+
+        // 已是 UTF-8 直接返回
+        if (mb_check_encoding($str, 'UTF-8')) {
+            return $str;
+        }
+
+        // 常见编码检测
+        $enc = mb_detect_encoding($str, [
+            'UTF-8', 'GBK', 'GB2312', 'BIG5',
+            'ISO-8859-1', 'ASCII', 'Windows-1252'
+        ], true);
+
+        if ($enc !== false) {
+            return mb_convert_encoding($str, 'UTF-8', $enc);
+        }
+
+        // 兜底方案
+        return mb_convert_encoding($str, 'UTF-8', 'auto');
+    }
+
 	public function start()
 	{
 		$this->websocket->onConnect(function ($ws, $client) {
@@ -184,14 +207,14 @@ class process_manager
 			foreach ($this->all() as $name => $Process)
 			{
 				foreach($Process->freadStdout() as $stdout) {
-					$stdout = mb_convert_encoding($stdout, 'UTF-8', 'GBK');
+					$stdout = $this->to_utf8($stdout);
 					$stdout = web_socket_client::encode($stdout);
 					
 					$this->websocket->broadcast($name, $stdout);
 				}
 
 				foreach($Process->freadStderr() as $stderr) {
-					$stderr = mb_convert_encoding($stderr, 'UTF-8', 'GBK');
+					$stderr = $this->to_utf8($stderr);
 					$stderr = web_socket_client::encode($stderr);
 					
 					$this->websocket->broadcast($name, $stderr);
