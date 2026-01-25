@@ -329,7 +329,7 @@
 							
 							<td if(var.value.is_dir,==,true)>
 								<span class="icon">📂</span>
-								<a href="?p={echo:var.value.path}">{echo:var.value.name}</a>
+								<a href="?p={echo:var.value.path}" onclick="window.parent.loading()">{echo:var.value.name}</a>
 							</td>
 							
 							<td>{echo:var.value.size}</td>
@@ -337,19 +337,19 @@
 							<td>{echo:var.value.time}</td>
 							
 							<td if(var.value.is_dir,==,false) class="file-actions">
-								<svg class="svg-icon pointer" onclick="openDelete('{echo:var.value.name}', '{echo:var.value.path}')"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+								<svg class="svg-icon pointer" onclick="openDelete({echo:var.key})"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
 									<path fill="#f44336" d="M51.2 237.056V215.04c9.728-17.408 25.088-22.528 45.568-22.016 58.88 1.024 118.272 0.512 177.152 0.512 7.68 0 16.384-0.512 25.088-1.024v-26.624c1.024-48.128 30.208-76.8 81.408-78.848 11.776-0.512 23.04 0 34.304 0 73.728 0 147.456-0.512 221.184 0 57.856 0.512 87.552 27.136 90.112 82.432l1.536 24.064c68.608 0 135.168 0.512 201.728-0.512 19.968-0.512 34.304 5.632 43.52 22.016v22.016c-12.8 16.896-31.744 20.48-52.224 19.456-26.624-1.024-53.248 0-81.92 0v550.912c0 51.2-19.456 91.648-69.632 115.712-13.824 6.656-29.696 9.728-45.056 14.336H300.032c-93.184-28.16-114.176-56.32-114.176-152.064V256.512c-30.72 0-58.88-1.024-87.04 0.512-19.968 0.512-36.352-4.096-47.616-19.968z m313.856-45.568h293.376c0-9.216-0.512-16.384 0-23.552 1.024-12.8-5.632-18.432-18.944-18.432-84.992 0.512-169.984 0-254.976 0-13.824 0-19.968 6.144-19.456 18.432v23.552z m336.384 390.144c0-53.76 0-108.544-0.512-163.328 0-26.624-9.728-40.448-29.696-40.96-18.944-0.512-31.232 14.336-31.232 39.936-0.512 108.032 0 215.552 0 323.072 0.512 25.6 12.288 40.96 31.232 40.448 18.944-0.512 30.208-15.36 30.208-41.472v-157.696z m-314.368-2.048c-0.512 0-0.512 0 0 0-0.512-55.808 0-111.616 0-167.424-0.512-20.992-13.312-33.792-30.72-33.792-17.92 0.512-29.184 12.8-30.72 34.304v324.096c0 5.632-1.024 11.776 0.512 17.408 3.584 16.896 13.312 27.648 30.208 27.648 16.384-0.512 27.136-10.24 29.696-27.648 1.024-7.168 1.024-14.336 1.024-22.016v-152.576z m158.72 0.512V414.208c0-23.04-11.264-36.352-30.208-36.864-19.456-0.512-31.232 13.824-31.232 37.888v328.192c0 23.04 11.776 36.864 30.208 37.376 18.944 0.512 31.232-13.824 31.232-37.888v-162.816z"></path>
 								</svg>
 							</td>
 							
 							<td if(var.value.is_dir,==,true) class="file-actions">
-								<svg if(var.fileclient_list.path,===,'') class="svg-icon pointer" onclick="window.location.replace('clientedit.php?name={echo:var.value.name}');window.parent.loading()" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+								<svg if(var.fileclient_list.path,===,'') class="svg-icon pointer" onclick="urlclientedit({echo:var.key})" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
 									<path d="M275.3 608.2c0 17.6 14.4 32.1 32.1 32.1h409.2c17.7 0 32.1-14.4 32.1-32.1 0-17.6-14.4-32.1-32.1-32.1H307.4c-17.6 0-32.1 14.4-32.1 32.1zM498.5 320H307.4c-17.6 0-32.1 14.4-32.1 32.1 0 17.6 14.4 32.1 32.1 32.1h191.1c17.7 0 32.2-14.4 32.1-32.1 0-17.6-14.4-32.1-32.1-32.1zM848.9 132.5L579.8 401.6c-12.5 12.5-12.5 32.9 0.1 45.4 12.5 12.5 32.9 12.5 45.4 0l269-269.1c12.5-12.5 12.5-32.9 0-45.4s-32.9-12.5-45.4 0z" fill="#ddd"></path>
 									<path d="M931.8 62.8a32.2 32.1 0 1 0 64.4 0 32.2 32.1 0 1 0-64.4 0Z" fill="#ddd"></path>
 									<path d="M865.9 352c-17.8 0-32.2 14.4-32.2 32.1v0.1h-0.3v446.4c0 35.2-28.8 64-64 64H222.2c-35.2 0-64-28.8-64-64V192c0-35.2 28.8-64 64-64h482.4c17.6-0.3 31.7-14.5 31.7-32.1 0-17.7-14.4-32.1-32.2-32.1-0.8 0-1.6 0-2.4 0.1H226c-70.4 0-128 57.6-128 128v639.7c0 70.4 57.6 128 128 128h574c70.4 0 98-57.6 98-128V386.5c0.1-0.8 0.1-1.6 0.1-2.4 0-17.7-14.4-32.1-32.2-32.1z" fill="#ddd"></path>
 								</svg>
 								
-								<svg class="svg-icon pointer" onclick="openDelete('{echo:var.value.name}', '{echo:var.value.path}')"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+								<svg class="svg-icon pointer" onclick="openDelete({echo:var.key})"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
 									<path fill="#f44336" d="M51.2 237.056V215.04c9.728-17.408 25.088-22.528 45.568-22.016 58.88 1.024 118.272 0.512 177.152 0.512 7.68 0 16.384-0.512 25.088-1.024v-26.624c1.024-48.128 30.208-76.8 81.408-78.848 11.776-0.512 23.04 0 34.304 0 73.728 0 147.456-0.512 221.184 0 57.856 0.512 87.552 27.136 90.112 82.432l1.536 24.064c68.608 0 135.168 0.512 201.728-0.512 19.968-0.512 34.304 5.632 43.52 22.016v22.016c-12.8 16.896-31.744 20.48-52.224 19.456-26.624-1.024-53.248 0-81.92 0v550.912c0 51.2-19.456 91.648-69.632 115.712-13.824 6.656-29.696 9.728-45.056 14.336H300.032c-93.184-28.16-114.176-56.32-114.176-152.064V256.512c-30.72 0-58.88-1.024-87.04 0.512-19.968 0.512-36.352-4.096-47.616-19.968z m313.856-45.568h293.376c0-9.216-0.512-16.384 0-23.552 1.024-12.8-5.632-18.432-18.944-18.432-84.992 0.512-169.984 0-254.976 0-13.824 0-19.968 6.144-19.456 18.432v23.552z m336.384 390.144c0-53.76 0-108.544-0.512-163.328 0-26.624-9.728-40.448-29.696-40.96-18.944-0.512-31.232 14.336-31.232 39.936-0.512 108.032 0 215.552 0 323.072 0.512 25.6 12.288 40.96 31.232 40.448 18.944-0.512 30.208-15.36 30.208-41.472v-157.696z m-314.368-2.048c-0.512 0-0.512 0 0 0-0.512-55.808 0-111.616 0-167.424-0.512-20.992-13.312-33.792-30.72-33.792-17.92 0.512-29.184 12.8-30.72 34.304v324.096c0 5.632-1.024 11.776 0.512 17.408 3.584 16.896 13.312 27.648 30.208 27.648 16.384-0.512 27.136-10.24 29.696-27.648 1.024-7.168 1.024-14.336 1.024-22.016v-152.576z m158.72 0.512V414.208c0-23.04-11.264-36.352-30.208-36.864-19.456-0.512-31.232 13.824-31.232 37.888v328.192c0 23.04 11.776 36.864 30.208 37.376 18.944 0.512 31.232-13.824 31.232-37.888v-162.816z"></path>
 								</svg>
 							</td>
@@ -553,6 +553,7 @@
 		
 		
 		<script>
+			const list = {json:var.fileclient_list.list};
 			let total = 0;
 			let loaded = 0;
 			let dragCount = 0;
@@ -633,7 +634,10 @@
 			{
 				return new Promise((resolve, reject) => {
 					const urlParams = new URLSearchParams(window.location.search);
-					const p = urlParams.get('p') ?? '';
+					const url = new URL('/weiw/index.php', window.location.origin);
+					url.searchParams.append('mods', 'fileclient_upload');
+					url.searchParams.append('p', `${urlParams.get('p') ?? ''}/${path}`);
+					
 					const xhr = new XMLHttpRequest();
 					const formData = new FormData();
 					let previousLoaded = 0;
@@ -655,7 +659,7 @@
 					});
 					
 					xhr.addEventListener("error", () => reject("Network error"));
-					xhr.open("POST", `/weiw/index.php?mods=fileclient_upload&p=${encodeURIComponent(p+'/'+path)}`, true);
+					xhr.open("POST", url.toString(), true);
 					xhr.send(formData);
 				});
 			}
@@ -714,18 +718,28 @@
 				});
 			}
 			
-			
+			// 跳转到编辑客户端页面
+			function urlclientedit(index)
+			{
+				window.location.replace('clientedit.php?name='+encodeURIComponent(list[index].name));
+				window.parent.loading();
+			}
 			
 			// 打开删除确认窗口
-			function openDelete(name, path)
+			function openDelete(index)
 			{
 				document.body.style.overflow = 'hidden';
 				document.querySelector(".delete").classList.remove('hidden');
-				document.querySelector(".file-name").textContent = name;
+				document.querySelector(".file-name").textContent = list[index].name;
 				document.querySelector('.btn-delete').onclick = () => {
-					const password = document.querySelector(".password-input").value;
 					
-					fetch(`/weiw/index.php?mods=fileclient_delete&p=${path}&password=${password}`)
+					const url = new URL('/weiw/index.php', window.location.origin);
+					url.searchParams.append('mods', 'fileclient_delete');
+					url.searchParams.append('password', document.querySelector(".password-input").value);
+					url.searchParams.append('p', list[index].path);
+					
+					
+					fetch(url.toString())
 						.then(data => data.json())
 						.then(data => {
 							if (data.error) {
