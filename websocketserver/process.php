@@ -155,7 +155,7 @@ class Process
      */
     public function kill(): void
     {
-        if ($this->isRunning() && is_resource($this->process)) {
+        if ($this->isRunning()) {
             proc_terminate($this->process);
         }
     }

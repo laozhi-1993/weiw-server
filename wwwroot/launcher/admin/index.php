@@ -115,10 +115,10 @@
 			
 			/* 返回首页按钮特殊样式 */
 			.home-btn {
-				background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+				background-color: #3a3a3a;
 				border: none;
 				border-radius: 8px;
-				color: white;
+				color: #e0e0e0;
 				padding: 10px 20px;
 				display: flex;
 				align-items: center;
@@ -131,7 +131,7 @@
 			}
 			
 			.home-btn:hover {
-				background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
+				background-color: #4a4a4a;
 				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 				transform: translateY(-2px);
 			}
