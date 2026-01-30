@@ -159,22 +159,22 @@ class process_manager
 			
 			if ($name) {
 				
-				if ($msg === 'start') {
-					$Process->send($this->runscript);
-					return;
-				}
-				
-				if ($msg === 'kill') {
-					$Process->kill();
-					return;
-				}
-				
 				if ($Process->isRunning())
 				{
 					$Process->writeCommand($msg);
 				}
 				else
 				{
+					if ($msg === 'start') {
+						$Process->send($this->runscript);
+						return;
+					}
+					
+					if ($msg === 'kill') {
+						$Process->kill();
+						return;
+					}
+					
 					$Process->send($msg);
 				}
 				
