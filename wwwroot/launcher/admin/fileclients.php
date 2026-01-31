@@ -277,7 +277,7 @@
 							<a class="button" href="javascript:document.getElementById('folderInput').click()"><svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M546.1504 153.6a51.2 51.2 0 0 1 30.72 10.24L665.6 230.4h204.8a51.2 51.2 0 0 1 51.2 51.2V819.2a51.2 51.2 0 0 1-51.2 51.2H153.6a51.2 51.2 0 0 1-51.2-51.2V204.8a51.2 51.2 0 0 1 51.2-51.2h392.5504z m-14.7456 76.8H179.2v563.2h665.6V307.2h-193.9456a51.2 51.2 0 0 1-30.72-10.24l-88.7296-66.56z m-44.7488 139.264a38.4 38.4 0 0 1 54.272 0l126.7712 126.72a38.4 38.4 0 0 1-54.272 54.272l-63.0272-62.976v163.84a38.4 38.4 0 1 1-76.8 0v-160.256l-59.3408 59.392a38.4 38.4 0 0 1-54.272-54.272z"></path></svg>上传文件夹</a>
 						</div>
 						<div class="buttons">
-							<a class="button" href="clientnew.php" onclick="window.parent.loading()">
+							<a class="button" href="client.php" onclick="window.parent.loading()">
 								<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
 									<path d="M604.4 957.6H155.8c-50.5 0-91.5-41-91.5-91.3V156.6c0-50.4 41.1-91.3 91.5-91.3h711.7c50.5 0 91.5 41 91.5 91.3v490.8c0 12.7-10.3 23-23 23s-23-10.3-23-23V156.6c0-25-20.4-45.3-45.5-45.3H155.8c-25.1 0-45.5 20.3-45.5 45.3v709.6c0 25 20.4 45.3 45.5 45.3h448.7c12.7 0 23 10.3 23 23s-10.4 23.1-23.1 23.1z"></path>
 									<path d="M299.5 815.6c-23.2 0-46.5-8.8-64.2-26.5-17.1-17.1-26.6-39.9-26.6-64.2 0-24.2 9.4-47 26.6-64.2l266.1-266.1c9-9 23.5-9 32.5 0s9 23.5 0 32.5l-266 266.1c-8.5 8.5-13.1 19.7-13.1 31.7s4.7 23.2 13.1 31.7c17.5 17.5 45.9 17.5 63.3 0l268.2-268.2c9-9 23.5-9 32.5 0s9 23.5 0 32.5L363.7 789c-17.7 17.7-40.9 26.6-64.2 26.6z"></path>
@@ -721,7 +721,7 @@
 			// 跳转到编辑客户端页面
 			function urlclientedit(index)
 			{
-				window.location.replace('clientedit.php?name='+encodeURIComponent(list[index].name));
+				window.location.replace('client.php?name='+encodeURIComponent(list[index].name));
 				window.parent.loading();
 			}
 			

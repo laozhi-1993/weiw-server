@@ -8,9 +8,13 @@
 			
 			$requiredParams = [
 				'name',
+				'version',
+				'extension-type',
+				'extension-value',
 				'weight',
 				'server',
 				'jvm',
+				'game',
 				'downloads',
 			];
 			
@@ -26,30 +30,32 @@
 				throw new Exception('非法的客户端名字');
 			}
 			
-			if (!$clientManager->isClient($_POST['name']))
-			{
-				throw new Exception('客户端不存在');
-			}
-			
-			$client = $clientManager->getClient($_POST['name']);
-			if (!$client)
-			{
-				throw new Exception('读取客户端数据失败');
+			if (!in_array($_POST['extension-type'], ['fabric', 'forge', 'neoforge'], true)) {
+				$_POST['extension-type'] = 'none';
 			}
 			
 			
-			$client->setManifest('weight',          $_POST['weight']);
-			$client->setManifest('server',          $_POST['server']);
-			$client->setManifest('jvm',             $_POST['jvm']);
-			$client->setManifest('downloads',       $_POST['downloads']);
+			$client = new client($_POST['name']);
+			$client->setVersion($_POST['version']);
+			$client->setExtensionType($_POST['extension-type']);
+			$client->setExtensionValue($_POST['extension-value']);
+			$client->setWeight($_POST['weight']);
+			$client->setServer($_POST['server']);
+			$client->setJvm($_POST['jvm']);
+			$client->setGame($_POST['game']);
+			$client->setDownloads($_POST['downloads']);
 			
 			
-			if (!$clientManager->saveClient($client))
+			if ($clientManager->isClient($_POST['name']))
 			{
-				throw new Exception('保存失败');
+				$clientManager->saveClient($client);
+				return ['message' => 'save'];
 			}
-			
-			return ['message' => 'ok'];
+			else
+			{
+				$clientManager->saveClient($client);
+				return ['message' => 'add'];
+			}
 		}
 		catch (Exception $Exception)
 		{

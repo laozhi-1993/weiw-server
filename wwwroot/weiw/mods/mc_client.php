@@ -10,18 +10,18 @@
 			$clientManager = new client_manager();
 			if (!$clientManager->isValidName($name))
 			{
-				throw new Exception('非法的客户端名字');
+				return [];
 			}
 			
 			if (!$clientManager->isClient($name))
 			{
-				throw new Exception('客户端不存在');
+				return [];
 			}
 			
 			$client = $clientManager->getClient($name);
 			if (!$client)
 			{
-				throw new Exception('读取客户端数据失败');
+				return [];
 			}
 			
 			

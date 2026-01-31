@@ -14,6 +14,7 @@ class Client
 		$this->manifest = $manifest;
 	}
 	
+	
 	public function getAuthServerUrl()
 	{
 		if (isset($this->config['authServerUrl']) && $this->config['authServerUrl']) {
@@ -41,30 +42,6 @@ class Client
 		return '';
 	}
 	
-	public function getJvm()
-	{
-		return array_filter(preg_split('!\r\n|\n|\r!', $this->getManifest('jvm')));
-	}
-	
-	public function getServer()
-	{
-		$servers = array();
-		$serverLines = array_filter(preg_split('!\r\n|\n|\r!', $this->getManifest('server')));
-		
-		foreach($serverLines as $serverLine)
-		{
-			$serverComponents = array_filter(explode(':', $serverLine, 3));
-			
-			$servers[] = [
-				'address' => $serverComponents [0] ?? '127.0.0.1',
-				'port'    => $serverComponents [1] ?? '25565',
-				'name'    => $serverComponents [2] ?? '我的世界服务器',
-			];
-		}
-		
-		return $servers;
-	}
-	
 	public function getName()
 	{
 		return $this->name;
@@ -83,10 +60,65 @@ class Client
 		return false;
 	}
 	
-	public function setManifest($key, $value)
+	
+	public function setVersion($value)
 	{
-		$this->manifest[$key] = $value;
+		$this->manifest['version'] = $value;
 	}
+	
+	public function setExtensionType($value)
+	{
+		$this->manifest['extensionType'] = $value;
+	}
+	
+	public function setExtensionValue($value)
+	{
+		$this->manifest['extensionValue'] = $value;
+	}
+	
+	public function setWeight($value)
+	{
+		if (is_numeric($value)) {
+			$this->manifest['weight'] = $value;
+		} else {
+			$this->manifest['weight'] = 0;
+		}
+	}
+	
+	public function setServer($value)
+	{
+		$servers = array();
+		$serverLines = array_filter(preg_split('!\r\n|\n|\r!', $value));
+		
+		foreach($serverLines as $serverLine)
+		{
+			$serverComponents = array_filter(explode(':', $serverLine, 3));
+			
+			$servers[] = [
+				'address' => $serverComponents [0] ?? '127.0.0.1',
+				'port'    => $serverComponents [1] ?? '25565',
+				'name'    => $serverComponents [2] ?? '我的世界服务器',
+			];
+		}
+		
+		$this->manifest['server'] = $servers;
+	}
+	
+	public function setJvm($value)
+	{
+		$this->manifest['jvm'] = preg_split('!\r\n|\n|\r!', $value);
+	}
+	
+	public function setGame($value)
+	{
+		$this->manifest['game'] = preg_split('!\r\n|\n|\r!', $value);
+	}
+	
+	public function setDownloads($value)
+	{
+		$this->manifest['downloads'] = $value;
+	}
+	
 	
 	public function isManifestEmpty()
 	{
@@ -114,15 +146,18 @@ class Client
 		$clientData['uuid']        = $userData['uuid'];
 		$clientData['accessToken'] = $userData['accessToken'];
 		
-		$clientData['name']           = $this->getName();
+		$clientData['name']          = $this->getName();
+		$clientData['authPath']      = $this->getAuthPath();
+		$clientData['authServerUrl'] = $this->getAuthServerUrl();
+		
 		$clientData['weight']         = $this->getManifest('weight');
 		$clientData['version']        = $this->getManifest('version');
 		$clientData['extensionType']  = $this->getManifest('extensionType');
 		$clientData['extensionValue'] = $this->getManifest('extensionValue');
-		$clientData['jvm']            = $this->getJvm();
-		$clientData['server']         = $this->getServer();
-		$clientData['authPath']       = $this->getAuthPath();
-		$clientData['authServerUrl']  = $this->getAuthServerUrl();
+		$clientData['jvm']            = $this->getManifest('jvm');
+		$clientData['game']           = $this->getManifest('game');
+		$clientData['server']         = $this->getManifest('server');
+		
 		
 		$clientData['mods'] = Array();
 		$clientData['downloads'] = Array([
@@ -157,10 +192,6 @@ class Client
 		
 		foreach($FileManager->getAllFiles() as $file)
 		{
-			if ($file['path'] === 'manifest.json') {
-				continue;
-			}
-			
 			$clientData['downloads'][] = [
 				'url'  => $file['url'],
 				'path' => $file['path'],
