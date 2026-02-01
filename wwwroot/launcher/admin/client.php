@@ -329,7 +329,7 @@
 				
 				<div class="form-group">
 					<label for="server">服务器地址</label>
-					<textarea name="server" id="server" rows="5" placeholder="在此输入服务器地址，每行一个地址"></textarea>
+					<textarea name="server" id="server" rows="5" spellcheck="false" placeholder="在此输入服务器地址，每行一个地址"></textarea>
 					<div class="info-text">每行一个地址</div>
 				</div>
 			</div>
@@ -342,13 +342,13 @@
 				
 				<div class="form-group">
 					<label for="game">游戏参数</label>
-					<textarea name="game" id="game" rows="5" placeholder="在此输入游戏参数，每行一个参数"></textarea>
+					<textarea name="game" id="game" rows="5" spellcheck="false" placeholder="在此输入游戏参数，每行一个参数"></textarea>
 					<div class="info-text">每行一个游戏启动参数</div>
 				</div>
 				
 				<div class="form-group">
 					<label for="jvm">虚拟机参数 (JVM)</label>
-					<textarea name="jvm" id="jvm" rows="15" placeholder="在此输入JVM参数，每行一个参数"></textarea>
+					<textarea name="jvm" id="jvm" rows="15" spellcheck="false" placeholder="在此输入JVM参数，每行一个参数"></textarea>
 					<div class="info-text">每行一个JVM参数，用于调整Java虚拟机设置</div>
 				</div>
 			</div>
@@ -401,7 +401,7 @@
 				</h2>
 				
 				<div class="form-group">
-					<textarea name="downloads" id="downloads" rows="20" placeholder="在此输入资源地址，每行一个地址"></textarea>
+					<textarea name="downloads" id="downloads" rows="20" spellcheck="false" placeholder="在此输入资源地址，每行一个地址"></textarea>
 					<div class="info-text">每行一个地址</div>
 				</div>
 			</div>
@@ -478,7 +478,7 @@
 				
 				if (type === 'forge')
 				{
-					getJson('clientnew.php/forge', loaders, (data, addDiv) => {
+					getJson('client.php/forge', loaders, (data, addDiv) => {
 						if (data[version.value]) {
 							for(const item of data[version.value].reverse()) {
 								addDiv([type,item].join('-'), () => {
