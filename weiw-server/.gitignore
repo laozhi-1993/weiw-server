@@ -1,0 +1,14 @@
+*.log
+*.bat
+*.exe
+
+caddy/
+php/
+clients/
+servers/
+user/
+userskins/
+
+
+wwwroot/weiw/data/
+wwwroot/weiw/config/*.php
