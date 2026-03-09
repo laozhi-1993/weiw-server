@@ -40,6 +40,7 @@
 	imagefill($av, 0, 0, imagecolorallocatealpha($av, 0, 0, 0, 127));
 	
 	
+	header("Cache-Control: public, max-age=30672000");
 	header('Content-type: image/png');
 	imagecopyresized($av, $im, 0, 0, 1, 1, $size['width'], $size['height'], 10, 16);
 	imagepng($av);

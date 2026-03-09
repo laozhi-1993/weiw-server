@@ -251,6 +251,7 @@
 				$output .= '8BnDsvFL/YZwCnzwsK4ALgGcCJ8wLnTUCQTP/8Hn4DsAh5tPm8HxQAAAAASUVORK5CYII=';
 				$output = base64_decode($output);
 				
+				header("Cache-Control: public, max-age=30672000");
 				header('Content-Type: image/png');
 				die($output);
 			}
@@ -275,6 +276,7 @@
 				$output .= 'K/gL4WlU0/HKH/gAAAABJRU5ErkJggg==';
 				$output = base64_decode($output);
 				
+				header("Cache-Control: public, max-age=30672000");
 				header('Content-Type: image/png');
 				die($output);
 			}
@@ -289,6 +291,7 @@
 				$output .= 'ElFTkSuQmCC';
 				$output = base64_decode($output);
 				
+				header("Cache-Control: public, max-age=30672000");
 				header('Content-Type: image/png');
 				die($output);
 			}
@@ -296,12 +299,14 @@
 			
 			if(file_exists($texture = "{$this->capesDir}{$hash[1]}.png"))
 			{
+				header("Cache-Control: public, max-age=30672000");
 				header('Content-Type: image/png');
 				die(file_get_contents($texture));
 			}
 			
 			if(file_exists($texture = "{$this->skinsDir}{$hash[1]}.png"))
 			{
+				header("Cache-Control: public, max-age=30672000");
 				header('Content-Type: image/png');
 				die(file_get_contents($texture));
 			}
@@ -312,6 +317,7 @@
 					if($output = file_get_contents("https://mcskin.com.cn/textures/{$hash[1]}"))
 					{
 						file_put_contents($texture, $output);
+						header("Cache-Control: public, max-age=30672000");
 						header('Content-Type: image/png');
 						die($output);
 					}
@@ -391,6 +397,7 @@
 			imagecopyresized($av, $im, intval($size/16), intval($size/16), intval($ss[0]/8.0), intval($ss[0]/8), intval($size-$size/8), intval($size-$size/8), intval($ss[0]/8), intval($ss[0]/8));
 			imagecopyresized($av, $im, 0, 0, intval($ss[0]/1.6), intval($ss[0]/8), intval($size), intval($size), intval($ss[0]/8), intval($ss[0]/8));
 			
+			header("Cache-Control: public, max-age=30672000");
 			header('Content-type: image/png');
 			imagepng($av);
 			imagedestroy($av);
