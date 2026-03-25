@@ -496,13 +496,25 @@
 					getJson('https://maven.neoforged.net/api/maven/versions/releases/net/neoforged/neoforge', loaders, (data, addDiv) => {
 						const [ v1, v2, v3 ] = version.value.split('.');
 						
-						for(const item of data.versions.reverse()) {
-							if (item.startsWith([v2, v3 ?? 0, ''].join('.'))) {
-								addDiv([type,item].join('-'), () => {
-									loaders.innerHTML = `<center>${type}-${item}</center>`;
-									loaderType.value = type;
-									loaderValue.value = item;
-								});
+						if (v1 == 1) {
+							for(const item of data.versions.reverse()) {
+								if (item.startsWith([v2, v3 ?? 0, ''].join('.'))) {
+									addDiv([type,item].join('-'), () => {
+										loaders.innerHTML = `<center>${type}-${item}</center>`;
+										loaderType.value = type;
+										loaderValue.value = item;
+									});
+								}
+							}
+						} else {
+							for(const item of data.versions.reverse()) {
+								if (item.startsWith([v1, v2, v3 ?? 0, ''].join('.'))) {
+									addDiv([type,item].join('-'), () => {
+										loaders.innerHTML = `<center>${type}-${item}</center>`;
+										loaderType.value = type;
+										loaderValue.value = item;
+									});
+								}
 							}
 						}
 					});
