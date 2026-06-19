@@ -156,7 +156,17 @@ class Process
     public function kill(): void
     {
         if ($this->isRunning()) {
-            proc_terminate($this->process);
+            $PID = proc_get_status($this->process)['pid'];
+
+            if ($this->isWindows()) {
+                exec("taskkill /F /T /PID {$PID} >nul 2>&1");
+            } else {
+                // Unix
+                exec("kill -9 -{$PID} 2>/dev/null");  // 杀进程组
+                posix_kill($PID, 9);
+            }
+
+            $this->close();
         }
     }
 

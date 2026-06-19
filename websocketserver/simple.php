@@ -198,18 +198,19 @@ class Simple
      */
     public static function run()
     {
-		// 设置错误处理器，处理 E_WARNING 错误
-		set_error_handler(function($errno, $errstr, $errfile, $errline) {
-			// 忽略 stream_select 的系统调用中断错误
-			if (strpos($errstr, 'stream_select():') !== false ||
-				strpos($errstr, 'Unable to select') !== false ||
-				strpos($errstr, 'Interrupted system call') !== false) {
-				return true; // 返回 true 表示已处理，不抛出错误
-			}
-			
-			// 其他警告错误按原样处理
-			return false;
-		}, E_WARNING);
+        // 设置错误处理器，处理 E_WARNING 错误
+        set_error_handler(function($errno, $errstr, $errfile, $errline) {
+            // 忽略 stream_select 的系统调用中断错误
+            if (strpos($errstr, 'stream_select():') !== false ||
+                strpos($errstr, 'Unable to select') !== false ||
+                strpos($errstr, 'Interrupted system call') !== false) {
+                return true; // 返回 true 表示已处理，不抛出错误
+            }
+            
+            // 其他警告错误按原样处理
+            // throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+            return false;
+        }, E_WARNING);
 		
         // 流选择器的参数初始化
         $write  = null;    // 不需要监控可写流
@@ -220,66 +221,74 @@ class Simple
         // 主事件循环，无限运行
         while(true)
         {
-            // ===== 步骤1：执行主循环回调 =====
-            // 执行所有注册的onLoop回调函数
-            foreach(static::$onLoops as $callbacks) {
-                $callbacks();
-            }
-            
-            // ===== 步骤2：检查并执行间隔定时器 =====
-            // 遍历所有定时器，检查是否到达执行时间
-            foreach(static::$onIntervals as $id => $interval)
+            try
             {
-                // 计算距离上次执行的时间差
-                if ((time() - $interval['time']) >= $interval['interval']) {
-                    // 更新定时器最后执行时间
-                    static::$onIntervals[$id]['time'] = time();
-                    
-                    // 执行定时器回调
-                    $interval['callback']();
+                // ===== 步骤1：执行主循环回调 =====
+                // 执行所有注册的onLoop回调函数
+                foreach(static::$onLoops as $callbacks) {
+                    $callbacks();
                 }
-            }
             
-            
-            // ===== 步骤3：构建可读流数组 =====
-            $read = static::$streams;
-            
-            
-            // ===== 步骤4：使用stream_select监控流状态 =====
-            // 会修改$read数组，只保留当前可读的流
-            @stream_select(
-                $read,      // 输入：要监控的可读流数组；输出：实际可读的流
-                $write,     // 可写流数组（未使用）
-                $except,    // 异常流数组（未使用）
-                $tv_sec,    // 超时时间（秒）
-                $tv_usec    // 超时时间（微秒）
-            );
-            
-            
-            // ===== 步骤5：处理就绪的流 =====
-            // 遍历所有可读的流，调用对应实例的handleRead方法
-            foreach($read as $id => $stream)
-            {
-                // 如果实例里有 handleRead 方法就执行它
-                if (is_callable([static::$instances[$id], 'handleRead'])) {
-                    static::$instances[$id]->handleRead($id, $stream);
-                }
-
-                // 判断是否是有效的流或流以关闭
-                if (!is_resource($stream) || feof($stream)) {
-
-                    // 如果实例里有 handleClose 就执行它
-                    if (is_callable([static::$instances[$id], 'handleClose'])) {
-                        static::$instances[$id]->handleClose($id, $stream);
+                // ===== 步骤2：检查并执行间隔定时器 =====
+                // 遍历所有定时器，检查是否到达执行时间
+                foreach(static::$onIntervals as $id => $interval)
+                {
+                    // 计算距离上次执行的时间差
+                    if ((time() - $interval['time']) >= $interval['interval']) {
+                        // 更新定时器最后执行时间
+                        static::$onIntervals[$id]['time'] = time();
+                        
+                        // 执行定时器回调
+                        $interval['callback']();
                     }
-
-                    // 从管理器中移除无效流
-                    static::remove($id);
                 }
+                
+                
+                // ===== 步骤3：构建可读流数组 =====
+                $read = static::$streams;
+                
+                
+                // ===== 步骤4：使用stream_select监控流状态 =====
+                // 会修改$read数组，只保留当前可读的流
+                @stream_select(
+                    $read,      // 输入：要监控的可读流数组；输出：实际可读的流
+                    $write,     // 可写流数组（未使用）
+                    $except,    // 异常流数组（未使用）
+                    $tv_sec,    // 超时时间（秒）
+                    $tv_usec    // 超时时间（微秒）
+                );
+                
+                
+                // ===== 步骤5：处理就绪的流 =====
+                // 遍历所有可读的流，调用对应实例的handleRead方法
+                foreach($read as $id => $stream)
+                {
+                    // 如果实例里有 handleRead 方法就执行它
+                    if (is_callable([static::$instances[$id], 'handleRead'])) {
+                        static::$instances[$id]->handleRead($id, $stream);
+                    }
+                    
+                    // 判断是否是有效的流或流以关闭
+                    if (!is_resource($stream) || feof($stream)) {
+                        
+                        // 如果实例里有 handleClose 就执行它
+                        if (is_callable([static::$instances[$id], 'handleClose'])) {
+                            static::$instances[$id]->handleClose($id, $stream);
+                        }
+
+                        // 从管理器中移除无效流
+                        static::remove($id);
+                    }
+                }
+                
+                // 注意：这里没有显式的usleep，因为stream_select已经提供了阻塞/超时机制
+                // 当没有流事件时，循环会等待最多1秒，避免CPU占用过高
             }
-            
-            // 注意：这里没有显式的usleep，因为stream_select已经提供了阻塞/超时机制
-            // 当没有流事件时，循环会等待最多1秒，避免CPU占用过高
+            catch(Throwable $error)
+            {
+                echo $error->getMessage() . PHP_EOL;
+                sleep(1);
+            }
         }
     }
 }
